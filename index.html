@@ -481,22 +481,33 @@
     }
 
     // =========================================================================
-    // LEVEL 4: UNLIMITED NON-REPEATING STORY ENGINE (15 DIVERSE SCENARIOS)
+    // LEVEL 4: UNLIMITED VERSATILE NON-REPEATING STORY ENGINE
     // =========================================================================
     const namePool = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
     
+    const timeOpeners = [
+      "Yesterday morning",
+      "Last weekend",
+      "A few days ago",
+      "On a cozy afternoon",
+      "During their day off",
+      "Earlier this week",
+      "Last Friday evening",
+      "On a bright Sunday morning"
+    ];
+
     const storyTemplates = [
       {
-        action: "met at the park early at 6 AM for a 5K run in Zone 2",
+        action: "met at the park early for a 5K run in Zone 2",
         outcome: "bought iced Americano at a local coffee shop right after",
         question: "What did the characters do after their morning run?",
         correct: "Bought iced Americano at a local coffee shop",
         wrong: "Went straight back home to sleep"
       },
       {
-        action: "decided to bake homemade dark chocolate brownies on a rainy afternoon",
+        action: "decided to bake homemade dark chocolate brownies",
         outcome: "shared the warm brownies with friends who loved every bite",
-        question: "What baked treat was prepared on the rainy afternoon?",
+        question: "What baked treat was prepared by the characters?",
         correct: "Dark chocolate brownies",
         wrong: "Cheese pizza"
       },
@@ -508,14 +519,14 @@
         wrong: "By private car"
       },
       {
-        action: "spent Sunday afternoon roasting chicken fillet and sweet potatoes",
-        outcome: "used an air fryer to keep the weekly diet clean and healthy",
+        action: "spent time roasting chicken fillet and sweet potatoes",
+        outcome: "used an air fryer to keep their weekly diet clean and healthy",
         question: "Which appliance was used for healthy meal prep?",
         correct: "An air fryer",
         wrong: "A standard microwave"
       },
       {
-        action: "visited a brand new Japanese ramen restaurant in Bintaro on Friday night",
+        action: "visited a brand new Japanese ramen restaurant in Bintaro",
         outcome: "loved the rich chicken broth and promised to come back next month",
         question: "Where was the new ramen restaurant located?",
         correct: "In Bintaro",
@@ -523,7 +534,7 @@
       },
       {
         action: "bought a new pair of running shoes with maximum cushioning online",
-        outcome: "tested the shoes during a smooth easy run the next morning",
+        outcome: "tested the shoes during a smooth easy run",
         question: "What was the main feature of the new running shoes?",
         correct: "Maximum cushioning",
         wrong: "Heavy iron soles"
@@ -537,7 +548,7 @@
       },
       {
         action: "adopted an energetic golden retriever puppy and brought him home",
-        outcome: "spent the whole weekend playing fetch in the backyard",
+        outcome: "spent time playing fetch together in the backyard",
         question: "What kind of pet was brought home?",
         correct: "An energetic golden retriever puppy",
         wrong: "A quiet Persian cat"
@@ -557,14 +568,14 @@
         wrong: "A large desktop computer"
       },
       {
-        action: "drove down to Pangandaran beach early Saturday morning",
+        action: "drove down to Pangandaran beach",
         outcome: "watched the sunset while drinking fresh coconut water",
         question: "What did they drink while watching the sunset at the beach?",
         correct: "Fresh coconut water",
         wrong: "Hot chocolate milk"
       },
       {
-        action: "spent Saturday morning cleaning and decluttering the living room",
+        action: "spent time cleaning and decluttering the living room",
         outcome: "decorated the space with green indoor plants and candles",
         question: "How was the living room decorated after cleaning?",
         correct: "With green indoor plants and candles",
@@ -603,7 +614,6 @@
         for (let i = 0; i < storyTemplates.length; i++) {
           availableStoryIndices.push(i);
         }
-        // Fisher-Yates Shuffle
         for (let i = availableStoryIndices.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [availableStoryIndices[i], availableStoryIndices[j]] = [availableStoryIndices[j], availableStoryIndices[i]];
@@ -619,8 +629,9 @@
       while (char1 === char2) char2 = namePool[Math.floor(Math.random() * namePool.length)];
 
       let tpl = getNextStoryTemplate();
+      let timeOpener = timeOpeners[Math.floor(Math.random() * timeOpeners.length)];
 
-      let storyText = `Every weekend, ${char1} and ${char2} love hanging out together. Last time, they ${tpl.action}. Afterward, they ${tpl.outcome}.`;
+      let storyText = `${timeOpener}, ${char1} and ${char2} spent time together. They ${tpl.action}. Afterward, they ${tpl.outcome}.`;
       
       let isCorrectA = Math.random() < 0.5;
 
