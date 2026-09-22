@@ -139,9 +139,7 @@
             <input type="text" id="personInput" class="form-input" placeholder="Nama teman (misal: Eggha)...">
             <button class="btn-secondary" onclick="addPerson()">+ Tambah Nama</button>
           </div>
-          <div id="personList" style="margin-top:10px;">
-            <!-- Tag Nama muncul di sini -->
-          </div>
+          <div id="personList" style="margin-top:10px;"></div>
         </div>
 
         <!-- STEP 2: OCR / INPUT ITEM -->
@@ -165,7 +163,6 @@
             <button class="btn-secondary" onclick="addManualItem()">+ Tambah Item</button>
           </div>
 
-          <!-- TABEL DAFTAR ITEM -->
           <table class="item-table" id="itemTable">
             <thead>
               <tr>
@@ -175,15 +172,13 @@
                 <th style="width:8%; text-align:center;">Aksi</th>
               </tr>
             </thead>
-            <tbody id="itemTableBody">
-              <!-- Item baris dinamis -->
-            </tbody>
+            <tbody id="itemTableBody"></tbody>
           </table>
         </div>
 
         <!-- STEP 3: PAJAK & SERVICE -->
         <div class="card">
-          <h3>🧾 Step 3: Pajak & ChargeTambahan</h3>
+          <h3>🧾 Step 3: Pajak & Charge Tambahan</h3>
           <div class="input-group">
             <div style="flex:1;">
               <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Pajak PB1 / VAT (%):</label>
@@ -208,10 +203,7 @@
             <h3>📊 Hasil Hitungan Split Bill</h3>
             <button class="btn-secondary" style="background:#10b981;" onclick="copyWAText()">📋 Copy Format WA</button>
           </div>
-
-          <div id="breakdownContainer">
-            <!-- Breakdown per orang dimunculkan di sini -->
-          </div>
+          <div id="breakdownContainer"></div>
         </div>
 
       </section>
@@ -225,10 +217,11 @@
           <button class="level-btn active" onclick="openLevel('level1')">Lvl 1: Listening (10)</button>
           <button class="level-btn" onclick="openLevel('level2')">Lvl 2: Core Tenses (40)</button>
           <button class="level-btn" onclick="openLevel('level3')">Lvl 3: Daily Phrases (30)</button>
-          <button class="level-btn" onclick="openLevel('level4')">Lvl 4: Unlimited Stories ♾️</button>
+          <button class="level-btn" onclick="openLevel('level4')">Lvl 4: Dynamic Stories ♾️</button>
           <button class="level-btn" onclick="openLevel('level5')">Lvl 5: Speaking Sim ♾️</button>
         </div>
 
+        <!-- LEVEL 1: BASIC LISTENING -->
         <div id="level1" class="level-content">
           <div class="card">
             <h3>🎧 Level 1: Daily Listening & Response (10 Questions)</h3>
@@ -259,9 +252,35 @@
         <div id="level3" class="level-content" style="display: none;">
           <div class="card"><h3>30 Daily Phrases Module</h3></div>
         </div>
+
+        <!-- LEVEL 4: DYNAMIC ENGLISH STORIES -->
         <div id="level4" class="level-content" style="display: none;">
-          <div class="card"><h3>Unlimited Stories Module</h3></div>
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>📖 Level 4: Pure Listening Dynamic Story Engine</h3>
+              <span class="streak-badge" id="storyStreakBadge">🔥 Stories Completed: 0</span>
+            </div>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the procedurally generated story below (text hidden) &rarr; answer the question &rarr; click "Next Story"!</p>
+
+            <div class="story-box" id="dynamicStoryBox" style="text-align: center; padding: 25px;">
+              <h4 id="storyTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Story Challenge</h4>
+              <p style="color:#64748b; font-size:14px; margin-bottom:15px;">🎧 Listen to the story carefully:</p>
+              <button class="audio-btn" id="storyAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentStoryAudio()">🔊 Play Story Audio</button>
+            </div>
+
+            <div class="quiz-group">
+              <p class="quiz-title" id="storyQuestionText">Loading Question...</p>
+              <label class="quiz-option" id="optLabelA"><input type="radio" name="dynStoryQ" value="a"><span id="optTextA">Option A</span></label>
+              <label class="quiz-option" id="optLabelB"><input type="radio" name="dynStoryQ" value="b"><span id="optTextB">Option B</span></label>
+            </div>
+
+            <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Check Answer</button>
+            <div id="res-dynamic-story" class="result-box"></div>
+
+            <button id="nextStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomStory()">Next Dynamic Story ▶️</button>
+          </div>
         </div>
+
         <div id="level5" class="level-content" style="display: none;">
           <div class="card"><h3>Speaking Simulator Module</h3></div>
         </div>
@@ -271,7 +290,52 @@
       <section id="mandarin" class="module-section">
         <h1>🏮 Mandarin Daily Life Hub</h1>
         <p class="subtitle">Daily Mandarin Training Program Complete with Hanzi & Pinyin (Levels 1–5)</p>
-        <div class="card"><h3>Mandarin Learning Center</h3></div>
+
+        <div class="level-tab-container">
+          <button class="level-btn active" onclick="openMandarinLevel('m_level1')">Lvl 1: Basic Listening (10)</button>
+          <button class="level-btn" onclick="openMandarinLevel('m_level2')">Lvl 2: Basic Grammar (10)</button>
+          <button class="level-btn" onclick="openMandarinLevel('m_level3')">Lvl 3: Daily Phrases (30)</button>
+          <button class="level-btn" onclick="openMandarinLevel('m_level4')">Lvl 4: Dynamic Stories ♾️</button>
+          <button class="level-btn" onclick="openMandarinLevel('m_level5')">Lvl 5: Speaking Sim ♾️</button>
+        </div>
+
+        <div id="m_level1" class="mandarin-level-content"><div class="card"><h3>Mandarin Level 1</h3></div></div>
+        <div id="m_level2" class="mandarin-level-content" style="display:none;"><div class="card"><h3>Mandarin Level 2</h3></div></div>
+        <div id="m_level3" class="mandarin-level-content" style="display:none;"><div class="card"><h3>Mandarin Level 3</h3></div></div>
+
+        <!-- MANDARIN LEVEL 4: DYNAMIC STORIES -->
+        <div id="m_level4" class="mandarin-level-content" style="display: none;">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>📖 Level 4: Mandarin Dynamic Story Generator</h3>
+              <span class="streak-badge" id="mandarinStoryStreakBadge">🔥 Stories Completed: 0</span>
+            </div>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the Mandarin story audio &rarr; check the Latin Pinyin guide &rarr; answer the question in English!</p>
+
+            <div class="story-box" id="mandarinDynamicStoryBox" style="text-align: center; padding: 25px;">
+              <h4 id="mandarinStoryTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Mandarin Story Challenge</h4>
+              
+              <div id="mandarinPinyinTextDisplay" style="font-size: 16px; color: #e11d48; font-weight: 600; margin-bottom: 10px; line-height: 1.5;">
+                Loading Pinyin Latin...
+              </div>
+
+              <button class="audio-btn" id="mandarinStoryAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentMandarinStoryAudio()">🔊 Play Mandarin Story Audio</button>
+            </div>
+
+            <div class="quiz-group">
+              <p class="quiz-title" id="mandarinStoryQuestionText">Loading Question...</p>
+              <label class="quiz-option" id="mOptLabelA"><input type="radio" name="dynMandarinStoryQ" value="a"><span id="mOptTextA">Option A</span></label>
+              <label class="quiz-option" id="mOptLabelB"><input type="radio" name="dynMandarinStoryQ" value="b"><span id="mOptTextB">Option B</span></label>
+            </div>
+
+            <button class="submit-btn" onclick="checkDynamicMandarinStoryAnswer()">Check Answer</button>
+            <div id="res-dynamic-mandarin-story" class="result-box"></div>
+
+            <button id="nextMandarinStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomMandarinStory()">Next Dynamic Story ▶️</button>
+          </div>
+        </div>
+
+        <div id="m_level5" class="mandarin-level-content" style="display:none;"><div class="card"><h3>Mandarin Level 5</h3></div></div>
       </section>
 
       <!-- OTHER MODULES -->
@@ -297,7 +361,20 @@
       event.currentTarget.classList.add('active');
     }
 
-    // Universal Text-to-Speech Engine
+    function openLevel(levelId) {
+      document.querySelectorAll('.level-content').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('#english .level-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(levelId).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    function openMandarinLevel(levelId) {
+      document.querySelectorAll('.mandarin-level-content').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('#mandarin .level-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(levelId).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
     function playAudio(text, lang = 'en-US') {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -311,7 +388,7 @@
     // =========================================================================
     // SPLIT BILL LOGIC & TESSERACT OCR ENGINE
     // =========================================================================
-    let peopleList = ['Eggha', 'Rebeca', 'Adam']; // Default nama awal
+    let peopleList = ['Eggha', 'Rebeca', 'Adam'];
     let itemList = [
       { id: 1, name: 'Nasi Rames', price: 25000, assignedTo: ['Eggha'] },
       { id: 2, name: 'Teh Manis', price: 6000, assignedTo: ['Eggha', 'Rebeca'] },
@@ -346,7 +423,6 @@
     function removePerson(index) {
       const removedName = peopleList[index];
       peopleList.splice(index, 1);
-      // Hapus dari assignment item jika ada
       itemList.forEach(item => {
         item.assignedTo = item.assignedTo.filter(p => p !== removedName);
       });
@@ -415,7 +491,6 @@
       renderItemTable();
     }
 
-    // OCR ENGINE DENGAN TESSERACT.JS
     async function scanReceiptOCR() {
       const fileInput = document.getElementById('receiptImage');
       const statusDiv = document.getElementById('ocrStatus');
@@ -431,7 +506,7 @@
       statusDiv.innerHTML = "⏳ Membaca teks struk dengan Tesseract.js... Mohon tunggu.";
 
       try {
-        const worker = await Tesseract.createWorker('ind'); // Menggunakan bahasa Indonesia
+        const worker = await Tesseract.createWorker('ind');
         const ret = await worker.recognize(file);
         await worker.terminate();
 
@@ -439,14 +514,12 @@
         let scannedCount = 0;
 
         lines.forEach(line => {
-          // Regex sederhana untuk menangkap teks di kiri dan angka nominal di kanan
           const match = line.match(/(.+?)\s+([\d\.\,]{3,})/);
           if (match) {
             let itemName = match[1].trim().replace(/[^a-zA-A0-9\s]/g, '');
             let rawPrice = match[2].replace(/[^\d]/g, '');
             let price = parseFloat(rawPrice);
 
-            // Filter kata kunci yang bukan nama produk (misal total/subtotal/pajak)
             const ignoreKeywords = ['total', 'subtotal', 'pajak', 'tax', 'cash', 'kembali', 'change', 'tunai'];
             const isIgnore = ignoreKeywords.some(kw => itemName.toLowerCase().includes(kw));
 
@@ -467,7 +540,6 @@
       }
     }
 
-    // KALKULASI SPLIT BILL PROPORSIONAL
     let lastCalculatedBreakdown = null;
 
     function calculateSplitBill() {
@@ -478,7 +550,6 @@
       const servicePct = parseFloat(document.getElementById('servicePercentInput').value) || 0;
       const discount = parseFloat(document.getElementById('discountInput').value) || 0;
 
-      // 1. Hitung Subtotal per Orang
       let personTotals = {};
       peopleList.forEach(p => personTotals[p] = { subtotal: 0, items: [] });
 
@@ -500,13 +571,11 @@
 
       if (grandSubtotal === 0) { alert("Pastikan centang minimal 1 orang untuk tiap item pesanan!"); return; }
 
-      // 2. Hitung Tax & Service Nominal Total
       const subtotalAfterDiscount = Math.max(0, grandSubtotal - discount);
       const totalTax = subtotalAfterDiscount * (taxPct / 100);
       const totalService = subtotalAfterDiscount * (servicePct / 100);
       const totalTaxAndService = totalTax + totalService;
 
-      // 3. Distribusi Proporsional
       let container = document.getElementById('breakdownContainer');
       container.innerHTML = '';
 
@@ -556,8 +625,251 @@
       alert("✅ Rincian tagihan berhasil di-copy! Tinggal paste ke grup WhatsApp.");
     }
 
-    // Init Tag & Table
+    // =========================================================================
+    // LEVEL 4: DYNAMIC PROCEDURAL ENGLISH STORY ENGINE (NEVER REPEATS)
+    // =========================================================================
+    let storiesCompleted = 0;
+    let currentStoryObj = null;
+
+    function generateDynamicEnglishStory() {
+      const names = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
+      const c1 = names[Math.floor(Math.random() * names.length)];
+      let c2 = names[Math.floor(Math.random() * names.length)];
+      while(c1 === c2) c2 = names[Math.floor(Math.random() * names.length)];
+
+      const times = ["Yesterday morning", "Last Saturday", "A few days ago", "On a cozy afternoon", "Last Friday night", "Earlier this morning"];
+      const t = times[Math.floor(Math.random() * times.length)];
+
+      const scenarios = [
+        {
+          template: `${t}, ${c1} and ${c2} went to a famous cafe in Bintaro. They ordered {drink} and shared a piece of chocolate cake.`,
+          vars: { drink: ['iced Americano', 'matcha latte', 'iced lemon tea', 'cappuccino'] },
+          question: "What drink did they order at the cafe?",
+          getAns: (v) => v.drink,
+          wrong: "Hot chocolate"
+        },
+        {
+          template: `${t}, ${c1} and ${c2} joined a {dist} morning run in the city park. They finished the run together and felt super energized.`,
+          vars: { dist: ['5K', '10K', '12K', '8K'] },
+          question: "How far did they run in the park?",
+          getAns: (v) => `${v.dist} run`,
+          wrong: "21K marathon"
+        },
+        {
+          template: `${t}, ${c1} cooked meal prep with ${c2} in the kitchen. They used an air fryer to prepare {food}.`,
+          vars: { food: ['chicken fillet and sweet potatoes', 'tempeh orek and eggplant', 'salmon fillet with veggies', 'tofu and roasted potatoes'] },
+          question: "What did they cook using the air fryer?",
+          getAns: (v) => v.food,
+          wrong: "Fried rice"
+        },
+        {
+          template: `${t}, ${c1} bought new {item} online. ${c2} came over to try it out together.`,
+          vars: { item: ['cushioned running shoes', 'wireless Bluetooth headphones', 'camera lens for microstock', 'smartwatch for running'] },
+          question: "What item was purchased online?",
+          getAns: (v) => v.item,
+          wrong: "Leather jacket"
+        },
+        {
+          template: `${t}, ${c1} and ${c2} ate dinner at a local Japanese spot. They ordered {dish} and enjoyed the warm broth.`,
+          vars: { dish: ['chicken ramen with soft boiled egg', 'chicken chicken katsu curry', 'spicy ramen with extra toppings'] },
+          question: "What dish did they order for dinner?",
+          getAns: (v) => v.dish,
+          wrong: "Cheese pizza"
+        }
+      ];
+
+      const sc = scenarios[Math.floor(Math.random() * scenarios.length)];
+      let storyText = sc.template;
+      let pickedVar = {};
+
+      for(let key in sc.vars) {
+        const arr = sc.vars[key];
+        const val = arr[Math.floor(Math.random() * arr.length)];
+        pickedVar[key] = val;
+        storyText = storyText.replace(`{${key}}`, val);
+      }
+
+      const correctAns = sc.getAns(pickedVar);
+      const isCorrectA = Math.random() < 0.5;
+
+      return {
+        title: `Dynamic English Story #${storiesCompleted + 1}`,
+        text: storyText,
+        question: sc.question,
+        correctValue: isCorrectA ? 'a' : 'b',
+        optA: isCorrectA ? correctAns : sc.wrong,
+        optB: isCorrectA ? sc.wrong : correctAns
+      };
+    }
+
+    function loadNewRandomStory() {
+      currentStoryObj = generateDynamicEnglishStory();
+
+      document.getElementById('storyTitle').innerText = currentStoryObj.title;
+      document.getElementById('storyQuestionText').innerText = "Question: " + currentStoryObj.question;
+      document.getElementById('optTextA').innerText = currentStoryObj.optA;
+      document.getElementById('optTextB').innerText = currentStoryObj.optB;
+      document.querySelectorAll('input[name="dynStoryQ"]').forEach(r => r.checked = false);
+
+      document.getElementById('optLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('optLabelB').classList.remove('correct-option', 'wrong-option');
+
+      document.getElementById('res-dynamic-story').style.display = 'none';
+      document.getElementById('nextStoryBtn').style.display = 'none';
+    }
+
+    function playCurrentStoryAudio() {
+      if (currentStoryObj) playAudio(currentStoryObj.text);
+    }
+
+    function checkDynamicStoryAnswer() {
+      let selectedInput = document.querySelector('input[name="dynStoryQ"]:checked');
+      let resDiv = document.getElementById('res-dynamic-story');
+      resDiv.style.display = 'block';
+
+      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
+
+      const correctVal = currentStoryObj.correctValue;
+      const correctLabel = correctVal === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
+      correctLabel.classList.add('correct-option');
+
+      if (selectedInput.value === correctVal) {
+        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
+        resDiv.innerText = "✅ Excellent listening! Click below for a brand new dynamic story.";
+        document.getElementById('nextStoryBtn').style.display = 'block';
+        storiesCompleted++;
+        document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
+      } else {
+        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
+        wrongLabel.classList.add('wrong-option');
+        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
+        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green!";
+      }
+    }
+
+    // =========================================================================
+    // LEVEL 4: DYNAMIC PROCEDURAL MANDARIN STORY ENGINE (NEVER REPEATS)
+    // =========================================================================
+    let mandarinStoriesCompleted = 0;
+    let currentMandarinStoryObj = null;
+
+    function generateDynamicMandarinStory() {
+      const names = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
+      const c1 = names[Math.floor(Math.random() * names.length)];
+      let c2 = names[Math.floor(Math.random() * names.length)];
+      while(c1 === c2) c2 = names[Math.floor(Math.random() * names.length)];
+
+      const scenarios = [
+        {
+          hanzi: `昨天早上，${c1} 和 ${c2} 一起去咖啡馆。${c1} 喝了一杯{itemHanzi}。`,
+          pinyin: `Zuótiān zǎoshang, ${c1} hé ${c2} yìqǐ qù kāfēiguǎn. ${c1} hē le yì bēi {itemPinyin}.`,
+          vars: [
+            { itemHanzi: '冰美式咖啡', itemPinyin: 'bīng měishì kāfēi', eng: 'Iced Americano', wrong: 'Hot milk tea' },
+            { itemHanzi: '抹茶拿铁', itemPinyin: 'mǒchá nátiě', eng: 'Matcha Latte', wrong: 'Iced lemon tea' },
+            { itemHanzi: '热咖啡', itemPinyin: 'rè kāfēi', eng: 'Hot Coffee', wrong: 'Fruit juice' }
+          ],
+          q: `What drink did ${c1} order at the cafe?`
+        },
+        {
+          hanzi: `星期天，${c1} 和 ${c2} 去公园跑步。他们跑了{itemHanzi}。`,
+          pinyin: `Xīngqītiān, ${c1} hé ${c2} qù gōngyuán pǎobù. Tāmen pǎo le {itemPinyin}.`,
+          vars: [
+            { itemHanzi: '五公里', itemPinyin: 'wǔ gōnglǐ', eng: '5 Kilometers (5K)', wrong: '21K marathon' },
+            { itemHanzi: '十公里', itemPinyin: 'shí gōnglǐ', eng: '10 Kilometers (10K)', wrong: '1 Kilometer' },
+            { itemHanzi: '八公里', itemPinyin: 'bā gōnglǐ', eng: '8 Kilometers (8K)', wrong: '42 Kilometers' }
+          ],
+          q: `How far did ${c1} and ${c2} run in the park?`
+        },
+        {
+          hanzi: `晚上，${c1} 用空气炸锅做了{itemHanzi}。${c2} 觉得非常好吃。`,
+          pinyin: `Wǎnshang, ${c1} yòng kōngqì zhàguō zuò le {itemPinyin}. ${c2} juéde fēicháng hǎochī.`,
+          vars: [
+            { itemHanzi: '鸡胸肉', itemPinyin: 'jīxiōngròu', eng: 'Chicken fillet', wrong: 'Fried noodles' },
+            { itemHanzi: '红薯和豆腐', itemPinyin: 'hóngshǔ hé dòufu', eng: 'Sweet potatoes and tofu', wrong: 'Cheese pizza' }
+          ],
+          q: `What food was cooked using the air fryer?`
+        },
+        {
+          hanzi: `${c1} 在网上买了一双新的{itemHanzi}。第二天早上他去试跑。`,
+          pinyin: `${c1} zài wǎngshang mǎi le yì shuāng xīn de {itemPinyin}. Dì-èr tiān zǎoshang tā qù shìpǎo.`,
+          vars: [
+            { itemHanzi: '跑步鞋', itemPinyin: 'pǎobùxié', eng: 'Running shoes', wrong: 'Leather boots' },
+            { itemHanzi: '运动鞋', itemPinyin: 'yùndòngxié', eng: 'Sports sneakers', wrong: 'High heels' }
+          ],
+          q: `What item did ${c1} buy online?`
+        }
+      ];
+
+      const sc = scenarios[Math.floor(Math.random() * scenarios.length)];
+      const pickedVar = sc.vars[Math.floor(Math.random() * sc.vars.length)];
+
+      const hanziText = sc.hanzi.replace('{itemHanzi}', pickedVar.itemHanzi);
+      const pinyinText = sc.pinyin.replace('{itemPinyin}', pickedVar.itemPinyin);
+
+      const isCorrectA = Math.random() < 0.5;
+
+      return {
+        title: `Mandarin Dynamic Story #${mandarinStoriesCompleted + 1}`,
+        hanzi: hanziText,
+        pinyin: pinyinText,
+        question: sc.q,
+        correctValue: isCorrectA ? 'a' : 'b',
+        optA: isCorrectA ? pickedVar.eng : pickedVar.wrong,
+        optB: isCorrectA ? pickedVar.wrong : pickedVar.eng
+      };
+    }
+
+    function loadNewRandomMandarinStory() {
+      currentMandarinStoryObj = generateDynamicMandarinStory();
+
+      document.getElementById('mandarinStoryTitle').innerText = currentMandarinStoryObj.title;
+      document.getElementById('mandarinPinyinTextDisplay').innerText = "Pinyin: " + currentMandarinStoryObj.pinyin;
+      document.getElementById('mandarinStoryQuestionText').innerText = "Question: " + currentMandarinStoryObj.question;
+      document.getElementById('mOptTextA').innerText = currentMandarinStoryObj.optA;
+      document.getElementById('mOptTextB').innerText = currentMandarinStoryObj.optB;
+
+      document.querySelectorAll('input[name="dynMandarinStoryQ"]').forEach(r => r.checked = false);
+
+      document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
+
+      document.getElementById('res-dynamic-mandarin-story').style.display = 'none';
+      document.getElementById('nextMandarinStoryBtn').style.display = 'none';
+    }
+
+    function playCurrentMandarinStoryAudio() {
+      if (currentMandarinStoryObj) playAudio(currentMandarinStoryObj.hanzi, 'zh-CN');
+    }
+
+    function checkDynamicMandarinStoryAnswer() {
+      let selectedInput = document.querySelector('input[name="dynMandarinStoryQ"]:checked');
+      let resDiv = document.getElementById('res-dynamic-mandarin-story');
+      resDiv.style.display = 'block';
+
+      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
+
+      const correctVal = currentMandarinStoryObj.correctValue;
+      const correctLabel = correctVal === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
+      correctLabel.classList.add('correct-option');
+
+      if (selectedInput.value === correctVal) {
+        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
+        resDiv.innerText = "✅ Correct! Great Mandarin comprehension. Click below for the next dynamic story.";
+        document.getElementById('nextMandarinStoryBtn').style.display = 'block';
+        mandarinStoriesCompleted++;
+        document.getElementById('mandarinStoryStreakBadge').innerText = `🔥 Stories Completed: ${mandarinStoriesCompleted}`;
+      } else {
+        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
+        wrongLabel.classList.add('wrong-option');
+        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
+        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green!";
+      }
+    }
+
+    // Init Dynamic UI Engine & Tag Lists
     renderPersonTags();
+    loadNewRandomStory();
+    loadNewRandomMandarinStory();
   </script>
 
 </body>
