@@ -65,7 +65,8 @@
     /* Speaking Simulator UI */
     .sim-box { text-align: center; padding: 25px; border: 2px dashed #0284c7; border-radius: 12px; background: #f0f9ff; margin-top: 15px; }
     .sim-timer { font-size: 32px; font-weight: bold; color: #e11d48; margin: 15px 0; }
-    .sim-transcript { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 15px; min-height: 60px; font-style: italic; }
+    .sim-transcript { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 15px; min-height: 50px; text-align: left; line-height: 1.5; }
+    .sample-response { background: #e0f2fe; padding: 15px; border-radius: 8px; border: 1px solid #7dd3fc; margin-top: 12px; text-align: left; color: #0369a1; }
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
@@ -119,8 +120,8 @@
             <div class="quiz-group">
               <p class="quiz-title">Soal 1:</p>
               <button class="audio-btn" onclick="playAudio('What are you doing right now, Eggha?')">🔊 Putar Audio 1</button>
-              <label class="quiz-option"><input type="radio" name="l1q1" value="a"> "I'm making coffee in the kitchen."</label>
-              <label class="quiz-option"><input type="radio" name="l1q1" value="b"> "I do coffee yesterday."</label>
+              <label class="quiz-option"><input type="radio" name="l1q1" value="a"> "I do coffee yesterday."</label>
+              <label class="quiz-option"><input type="radio" name="l1q1" value="b"> "I'm making coffee in the kitchen."</label>
             </div>
 
             <!-- Q2 -->
@@ -135,8 +136,8 @@
             <div class="quiz-group">
               <p class="quiz-title">Soal 3:</p>
               <button class="audio-btn" onclick="playAudio('How was your day, Adam?')">🔊 Putar Audio 3</button>
-              <label class="quiz-option"><input type="radio" name="l1q3" value="a"> "It was pretty good, thanks!"</label>
-              <label class="quiz-option"><input type="radio" name="l1q3" value="b"> "I go home tomorrow."</label>
+              <label class="quiz-option"><input type="radio" name="l1q3" value="a"> "I go home tomorrow."</label>
+              <label class="quiz-option"><input type="radio" name="l1q3" value="b"> "It was pretty good, thanks!"</label>
             </div>
 
             <!-- Q4 -->
@@ -151,8 +152,8 @@
             <div class="quiz-group">
               <p class="quiz-title">Soal 5:</p>
               <button class="audio-btn" onclick="playAudio('Where did Eggha buy those new running shoes?')">🔊 Putar Audio 5</button>
-              <label class="quiz-option"><input type="radio" name="l1q5" value="a"> "He bought them online last week."</label>
-              <label class="quiz-option"><input type="radio" name="l1q5" value="b"> "He buys them tomorrow."</label>
+              <label class="quiz-option"><input type="radio" name="l1q5" value="a"> "He buys them tomorrow."</label>
+              <label class="quiz-option"><input type="radio" name="l1q5" value="b"> "He bought them online last week."</label>
             </div>
 
             <!-- Q6 -->
@@ -167,8 +168,8 @@
             <div class="quiz-group">
               <p class="quiz-title">Soal 7:</p>
               <button class="audio-btn" onclick="playAudio('What time does Rebeca usually wake up?')">🔊 Putar Audio 7</button>
-              <label class="quiz-option"><input type="radio" name="l1q7" value="a"> "She usually wakes up around 6 AM."</label>
-              <label class="quiz-option"><input type="radio" name="l1q7" value="b"> "She woke up next morning."</label>
+              <label class="quiz-option"><input type="radio" name="l1q7" value="a"> "She woke up next morning."</label>
+              <label class="quiz-option"><input type="radio" name="l1q7" value="b"> "She usually wakes up around 6 AM."</label>
             </div>
 
             <!-- Q8 -->
@@ -183,8 +184,8 @@
             <div class="quiz-group">
               <p class="quiz-title">Soal 9:</p>
               <button class="audio-btn" onclick="playAudio('How was the movie last night, Eggha?')">🔊 Putar Audio 9</button>
-              <label class="quiz-option"><input type="radio" name="l1q9" value="a"> "It was really funny and entertaining!"</label>
-              <label class="quiz-option"><input type="radio" name="l1q9" value="b"> "I am watching it next week."</label>
+              <label class="quiz-option"><input type="radio" name="l1q9" value="a"> "I am watching it next week."</label>
+              <label class="quiz-option"><input type="radio" name="l1q9" value="b"> "It was really funny and entertaining!"</label>
             </div>
 
             <!-- Q10 -->
@@ -215,18 +216,18 @@
               <h3>📌 Simple Past Tense (10 Soal)</h3>
               <div class="formula">Rumus: Subject + Verb 2</div>
 
-              <div class="quiz-group"><p class="quiz-title">1. Rebeca _______ a delicious chocolate cake yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> baked</label><label class="quiz-option"><input type="radio" name="p1" value="b"> bakes</label></div>
+              <div class="quiz-group"><p class="quiz-title">1. Rebeca _______ a delicious chocolate cake yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> bakes</label><label class="quiz-option"><input type="radio" name="p1" value="b"> baked</label></div>
               <div class="quiz-group"><p class="quiz-title">2. Adam and Eggha _______ 10 kilometers in the park last Sunday.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> ran</label><label class="quiz-option"><input type="radio" name="p2" value="b"> run</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Anita _______ her keys on the dining table last night.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> left</label><label class="quiz-option"><input type="radio" name="p3" value="b"> leave</label></div>
+              <div class="quiz-group"><p class="quiz-title">3. Anita _______ her keys on the dining table last night.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> leave</label><label class="quiz-option"><input type="radio" name="p3" value="b"> left</label></div>
               <div class="quiz-group"><p class="quiz-title">4. Zoey _______ a new pair of running shoes yesterday morning.</p><label class="quiz-option"><input type="radio" name="p4" value="a"> bought</label><label class="quiz-option"><input type="radio" name="p4" value="b"> buys</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. Eggha _______ an iced Americano at the cafe two hours ago.</p><label class="quiz-option"><input type="radio" name="p5" value="a"> drank</label><label class="quiz-option"><input type="radio" name="p5" value="b"> drink</label></div>
+              <div class="quiz-group"><p class="quiz-title">5. Eggha _______ an iced Americano at the cafe two hours ago.</p><label class="quiz-option"><input type="radio" name="p5" value="a"> drink</label><label class="quiz-option"><input type="radio" name="p5" value="b"> drank</label></div>
               <div class="quiz-group"><p class="quiz-title">6. We _______ a great action movie at the cinema last weekend.</p><label class="quiz-option"><input type="radio" name="p6" value="a"> watched</label><label class="quiz-option"><input type="radio" name="p6" value="b"> watch</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Adam _______ Rebeca to ask about dinner plans yesterday.</p><label class="quiz-option"><input type="radio" name="p7" value="a"> called</label><label class="quiz-option"><input type="radio" name="p7" value="b"> calls</label></div>
+              <div class="quiz-group"><p class="quiz-title">7. Adam _______ Rebeca to ask about dinner plans yesterday.</p><label class="quiz-option"><input type="radio" name="p7" value="a"> calls</label><label class="quiz-option"><input type="radio" name="p7" value="b"> called</label></div>
               <div class="quiz-group"><p class="quiz-title">8. Zoey _______ her room before going out last Saturday.</p><label class="quiz-option"><input type="radio" name="p8" value="a"> cleaned</label><label class="quiz-option"><input type="radio" name="p8" value="b"> cleans</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Anita _______ to Jogja for vacation last month.</p><label class="quiz-option"><input type="radio" name="p9" value="a"> went</label><label class="quiz-option"><input type="radio" name="p9" value="b"> go</label></div>
+              <div class="quiz-group"><p class="quiz-title">9. Anita _______ to Jogja for vacation last month.</p><label class="quiz-option"><input type="radio" name="p9" value="a"> go</label><label class="quiz-option"><input type="radio" name="p9" value="b"> went</label></div>
               <div class="quiz-group"><p class="quiz-title">10. Eggha and Zoey _______ pasta for dinner yesterday evening.</p><label class="quiz-option"><input type="radio" name="p10" value="a"> cooked</label><label class="quiz-option"><input type="radio" name="p10" value="b"> cook</label></div>
 
-              <button class="submit-btn" onclick="checkQuiz('past', ['a','a','a','a','a','a','a','a','a','a'])">Cek Hasil Simple Past</button>
+              <button class="submit-btn" onclick="checkQuiz('past', ['b','a','b','a','b','a','b','a','b','a'])">Cek Hasil Simple Past</button>
               <div id="res-past" class="result-box"></div>
             </div>
           </div>
@@ -238,17 +239,17 @@
               <div class="formula">Rumus: Subject + Verb 1 (+s/es untuk He/She/It)</div>
 
               <div class="quiz-group"><p class="quiz-title">1. Eggha _______ black coffee every morning.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> drinks</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> drank</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Rebeca _______ taking photos of city architecture.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> loves</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> loved</label></div>
+              <div class="quiz-group"><p class="quiz-title">2. Rebeca _______ taking photos of city architecture.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> loved</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> loves</label></div>
               <div class="quiz-group"><p class="quiz-title">3. Adam and Zoey _______ to the gym three times a week.</p><label class="quiz-option"><input type="radio" name="pr3" value="a"> go</label><label class="quiz-option"><input type="radio" name="pr3" value="b"> goes</label></div>
-              <div class="quiz-group"><p class="quiz-title">4. Anita always _______ overnight oats for her breakfast.</p><label class="quiz-option"><input type="radio" name="pr4" value="a"> prepares</label><label class="quiz-option"><input type="radio" name="pr4" value="b"> prepare</label></div>
+              <div class="quiz-group"><p class="quiz-title">4. Anita always _______ overnight oats for her breakfast.</p><label class="quiz-option"><input type="radio" name="pr4" value="a"> prepare</label><label class="quiz-option"><input type="radio" name="pr4" value="b"> prepares</label></div>
               <div class="quiz-group"><p class="quiz-title">5. Zoey _______ her dog in the park every afternoon.</p><label class="quiz-option"><input type="radio" name="pr5" value="a"> walks</label><label class="quiz-option"><input type="radio" name="pr5" value="b"> walk</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. They _______ living in South Tangerang.</p><label class="quiz-option"><input type="radio" name="pr6" value="a"> enjoy</label><label class="quiz-option"><input type="radio" name="pr6" value="b"> enjoys</label></div>
+              <div class="quiz-group"><p class="quiz-title">6. They _______ living in South Tangerang.</p><label class="quiz-option"><input type="radio" name="pr6" value="a"> enjoys</label><label class="quiz-option"><input type="radio" name="pr6" value="b"> enjoy</label></div>
               <div class="quiz-group"><p class="quiz-title">7. Adam _______ acoustic guitar in his free time.</p><label class="quiz-option"><input type="radio" name="pr7" value="a"> plays</label><label class="quiz-option"><input type="radio" name="pr7" value="b"> play</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. Eggha _______ early every weekend for his morning run.</p><label class="quiz-option"><input type="radio" name="pr8" value="a"> wakes up</label><label class="quiz-option"><input type="radio" name="pr8" value="b"> wake up</label></div>
+              <div class="quiz-group"><p class="quiz-title">8. Eggha _______ early every weekend for his morning run.</p><label class="quiz-option"><input type="radio" name="pr8" value="a"> wake up</label><label class="quiz-option"><input type="radio" name="pr8" value="b"> wakes up</label></div>
               <div class="quiz-group"><p class="quiz-title">9. Rebeca and Anita _______ shopping at the local market on Saturdays.</p><label class="quiz-option"><input type="radio" name="pr9" value="a"> go</label><label class="quiz-option"><input type="radio" name="pr9" value="b"> goes</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ reading novels before going to sleep.</p><label class="quiz-option"><input type="radio" name="pr10" value="a"> likes</label><label class="quiz-option"><input type="radio" name="pr10" value="b"> like</label></div>
+              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ reading novels before going to sleep.</p><label class="quiz-option"><input type="radio" name="pr10" value="a"> like</label><label class="quiz-option"><input type="radio" name="pr10" value="b"> likes</label></div>
 
-              <button class="submit-btn" onclick="checkQuiz('present', ['a','a','a','a','a','a','a','a','a','a'])">Cek Hasil Simple Present</button>
+              <button class="submit-btn" onclick="checkQuiz('present', ['a','b','a','b','a','b','a','b','a','b'])">Cek Hasil Simple Present</button>
               <div id="res-present" class="result-box"></div>
             </div>
           </div>
@@ -259,18 +260,18 @@
               <h3>📌 Present Continuous Tense (10 Soal)</h3>
               <div class="formula">Rumus: Subject + am/is/are + Verb-ing</div>
 
-              <div class="quiz-group"><p class="quiz-title">1. Look! Eggha _______ chicken fillet using the air fryer right now.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> is cooking</label><label class="quiz-option"><input type="radio" name="c1" value="b"> cooks</label></div>
+              <div class="quiz-group"><p class="quiz-title">1. Look! Eggha _______ chicken fillet using the air fryer right now.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> cooks</label><label class="quiz-option"><input type="radio" name="c1" value="b"> is cooking</label></div>
               <div class="quiz-group"><p class="quiz-title">2. Rebeca and Zoey _______ a new movie on Netflix at the moment.</p><label class="quiz-option"><input type="radio" name="c2" value="a"> are watching</label><label class="quiz-option"><input type="radio" name="c2" value="b"> is watching</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Adam _______ his favorite playlist on Spotify.</p><label class="quiz-option"><input type="radio" name="c3" value="a"> is listening to</label><label class="quiz-option"><input type="radio" name="c3" value="b"> listens</label></div>
+              <div class="quiz-group"><p class="quiz-title">3. Adam _______ his favorite playlist on Spotify.</p><label class="quiz-option"><input type="radio" name="c3" value="a"> listens</label><label class="quiz-option"><input type="radio" name="c3" value="b"> is listening to</label></div>
               <div class="quiz-group"><p class="quiz-title">4. Anita _______ for her running marathon this Sunday.</p><label class="quiz-option"><input type="radio" name="c4" value="a"> is training</label><label class="quiz-option"><input type="radio" name="c4" value="b"> trained</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. Shtt! The baby is asleep; Eggha and Zoey _______ quietly.</p><label class="quiz-option"><input type="radio" name="c5" value="a"> are talking</label><label class="quiz-option"><input type="radio" name="c5" value="b"> talk</label></div>
+              <div class="quiz-group"><p class="quiz-title">5. Shtt! The baby is asleep; Eggha and Zoey _______ quietly.</p><label class="quiz-option"><input type="radio" name="c5" value="a"> talk</label><label class="quiz-option"><input type="radio" name="c5" value="b"> are talking</label></div>
               <div class="quiz-group"><p class="quiz-title">6. Rebeca _______ her new photo album to Lightroom right now.</p><label class="quiz-option"><input type="radio" name="c6" value="a"> is editing</label><label class="quiz-option"><input type="radio" name="c6" value="b"> edited</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Adam and Anita _______ dinner together at a ramen place.</p><label class="quiz-option"><input type="radio" name="c7" value="a"> are having</label><label class="quiz-option"><input type="radio" name="c7" value="b"> have</label></div>
+              <div class="quiz-group"><p class="quiz-title">7. Adam and Anita _______ dinner together at a ramen place.</p><label class="quiz-option"><input type="radio" name="c7" value="a"> have</label><label class="quiz-option"><input type="radio" name="c7" value="b"> are having</label></div>
               <div class="quiz-group"><p class="quiz-title">8. Zoey _______ her room right now because her friends are coming.</p><label class="quiz-option"><input type="radio" name="c8" value="a"> is cleaning</label><label class="quiz-option"><input type="radio" name="c8" value="b"> cleans</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Why _______ Eggha _______ his jacket? Is it cold outside?</p><label class="quiz-option"><input type="radio" name="c9" value="a"> is / wearing</label><label class="quiz-option"><input type="radio" name="c9" value="b"> does / wear</label></div>
+              <div class="quiz-group"><p class="quiz-title">9. Why _______ Eggha _______ his jacket? Is it cold outside?</p><label class="quiz-option"><input type="radio" name="c9" value="a"> does / wear</label><label class="quiz-option"><input type="radio" name="c9" value="b"> is / wearing</label></div>
               <div class="quiz-group"><p class="quiz-title">10. We _______ a trip to Pangandaran for next month.</p><label class="quiz-option"><input type="radio" name="c10" value="a"> are planning</label><label class="quiz-option"><input type="radio" name="c10" value="b"> plan</label></div>
 
-              <button class="submit-btn" onclick="checkQuiz('continuous', ['a','a','a','a','a','a','a','a','a','a'])">Cek Hasil Present Continuous</button>
+              <button class="submit-btn" onclick="checkQuiz('continuous', ['b','a','b','a','b','a','b','a','b','a'])">Cek Hasil Present Continuous</button>
               <div id="res-continuous" class="result-box"></div>
             </div>
           </div>
@@ -282,17 +283,17 @@
               <div class="formula">Rumus: Subject + have/has + Verb 3</div>
 
               <div class="quiz-group"><p class="quiz-title">1. Eggha _______ his morning coffee, so he is ready to start his day.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> has finished</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finished</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Rebeca and Anita _______ that new cafe in Bintaro twice this week.</p><label class="quiz-option"><input type="radio" name="pf2" value="a"> have visited</label><label class="quiz-option"><input type="radio" name="pf2" value="b"> visited</label></div>
+              <div class="quiz-group"><p class="quiz-title">2. Rebeca and Anita _______ that new cafe in Bintaro twice this week.</p><label class="quiz-option"><input type="radio" name="pf2" value="a"> visited</label><label class="quiz-option"><input type="radio" name="pf2" value="b"> have visited</label></div>
               <div class="quiz-group"><p class="quiz-title">3. Adam _______ three 10K running events so far this year.</p><label class="quiz-option"><input type="radio" name="pf3" value="a"> has completed</label><label class="quiz-option"><input type="radio" name="pf3" value="b"> completed</label></div>
               <div class="quiz-group"><p class="quiz-title">4. Zoey _______ her room; it looks super clean now!</p><label class="quiz-option"><input type="radio" name="pf4" value="a"> has tidy up</label><label class="quiz-option"><input type="radio" name="pf4" value="b"> has tidied up</label></div>
               <div class="quiz-group"><p class="quiz-title">5. We _______ to the new pop album together.</p><label class="quiz-option"><input type="radio" name="pf5" value="a"> have listened</label><label class="quiz-option"><input type="radio" name="pf5" value="b"> listened</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. Anita _______ three books this month.</p><label class="quiz-option"><input type="radio" name="pf6" value="a"> has read</label><label class="quiz-option"><input type="radio" name="pf6" value="b"> readed</label></div>
+              <div class="quiz-group"><p class="quiz-title">6. Anita _______ three books this month.</p><label class="quiz-option"><input type="radio" name="pf6" value="a"> readed</label><label class="quiz-option"><input type="radio" name="pf6" value="b"> has read</label></div>
               <div class="quiz-group"><p class="quiz-title">7. Eggha and Adam _______ a new recipe for meal prep.</p><label class="quiz-option"><input type="radio" name="pf7" value="a"> have tried</label><label class="quiz-option"><input type="radio" name="pf7" value="b"> tried</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. _______ you ever _______ Japanese ramen in Jakarta?</p><label class="quiz-option"><input type="radio" name="pf8" value="a"> Have / tasted</label><label class="quiz-option"><input type="radio" name="pf8" value="b"> Did / taste</label></div>
+              <div class="quiz-group"><p class="quiz-title">8. _______ you ever _______ Japanese ramen in Jakarta?</p><label class="quiz-option"><input type="radio" name="pf8" value="a"> Did / taste</label><label class="quiz-option"><input type="radio" name="pf8" value="b"> Have / tasted</label></div>
               <div class="quiz-group"><p class="quiz-title">9. Rebeca _______ her photography portfolio to Shutterstock.</p><label class="quiz-option"><input type="radio" name="pf9" value="a"> has uploaded</label><label class="quiz-option"><input type="radio" name="pf9" value="b"> uploaded</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ back from her morning walk yet.</p><label class="quiz-option"><input type="radio" name="pf10" value="a"> hasn't come</label><label class="quiz-option"><input type="radio" name="pf10" value="b"> didn't come</label></div>
+              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ back from her morning walk yet.</p><label class="quiz-option"><input type="radio" name="pf10" value="a"> didn't come</label><label class="quiz-option"><input type="radio" name="pf10" value="b"> hasn't come</label></div>
 
-              <button class="submit-btn" onclick="checkQuiz('perfect', ['a','a','a','b','a','a','a','a','a','a'])">Cek Hasil Present Perfect</button>
+              <button class="submit-btn" onclick="checkQuiz('perfect', ['a','b','a','b','a','b','a','b','a','b'])">Cek Hasil Present Perfect</button>
               <div id="res-perfect" class="result-box"></div>
             </div>
           </div>
@@ -351,8 +352,8 @@
             </div>
             <div class="quiz-group">
               <p class="quiz-title">1. Apa yang dilakukan Eggha dan Adam setelah lari pagi?</p>
-              <label class="quiz-option"><input type="radio" name="l4q1" value="a"> Membeli iced Americano di warung kopi lokal.</label>
-              <label class="quiz-option"><input type="radio" name="l4q1" value="b"> Langsung tidur kembali di rumah.</label>
+              <label class="quiz-option"><input type="radio" name="l4q1" value="a"> Langsung tidur kembali di rumah.</label>
+              <label class="quiz-option"><input type="radio" name="l4q1" value="b"> Membeli iced Americano di warung kopi lokal.</label>
             </div>
 
             <!-- Story 2 -->
@@ -373,8 +374,8 @@
             </div>
             <div class="quiz-group">
               <p class="quiz-title">3. Transportasi apa yang dipakai Anita dan Rebeca ke Jogja?</p>
-              <label class="quiz-option"><input type="radio" name="l4q3" value="a"> Kereta api pagi.</label>
-              <label class="quiz-option"><input type="radio" name="l4q3" value="b"> Mobil pribadi.</label>
+              <label class="quiz-option"><input type="radio" name="l4q3" value="a"> Mobil pribadi.</label>
+              <label class="quiz-option"><input type="radio" name="l4q3" value="b"> Kereta api pagi.</label>
             </div>
 
             <!-- Story 4 -->
@@ -395,8 +396,8 @@
             </div>
             <div class="quiz-group">
               <p class="quiz-title">5. Di mana tempat makan ramen yang dikunjungi Eggha dan Rebeca?</p>
-              <label class="quiz-option"><input type="radio" name="l4q5" value="a"> Bintaro.</label>
-              <label class="quiz-option"><input type="radio" name="l4q5" value="b"> Bandung.</label>
+              <label class="quiz-option"><input type="radio" name="l4q5" value="a"> Bandung.</label>
+              <label class="quiz-option"><input type="radio" name="l4q5" value="b"> Bintaro.</label>
             </div>
 
             <!-- Story 6 -->
@@ -417,8 +418,8 @@
             </div>
             <div class="quiz-group">
               <p class="quiz-title">7. Alat apa yang dipakai Eggha buat masak meal prep sehatnya?</p>
-              <label class="quiz-option"><input type="radio" name="l4q7" value="a"> Air fryer.</label>
-              <label class="quiz-option"><input type="radio" name="l4q7" value="b"> Microwave biasa.</label>
+              <label class="quiz-option"><input type="radio" name="l4q7" value="a"> Microwave biasa.</label>
+              <label class="quiz-option"><input type="radio" name="l4q7" value="b"> Air fryer.</label>
             </div>
 
             <!-- Story 8 -->
@@ -439,8 +440,8 @@
             </div>
             <div class="quiz-group">
               <p class="quiz-title">9. Konser genre musik apa yang didatangi Anita dan Zoey?</p>
-              <label class="quiz-option"><input type="radio" name="l4q9" value="a"> Konser musik pop akustik outdoor.</label>
-              <label class="quiz-option"><input type="radio" name="l4q9" value="b"> Konser musik klasik indoor.</label>
+              <label class="quiz-option"><input type="radio" name="l4q9" value="a"> Konser musik klasik indoor.</label>
+              <label class="quiz-option"><input type="radio" name="l4q9" value="b"> Konser musik pop akustik outdoor.</label>
             </div>
 
             <!-- Story 10 -->
@@ -466,17 +467,31 @@
             <p style="color:#64748b; font-size:14px;">Latih refleks bicaramu! Dengarkan pertanyaan acak $\rightarrow$ tunggu timer 5 detik $\rightarrow$ langsung jawab via mikrofon.</p>
 
             <div class="sim-box">
-              <button class="audio-btn" style="padding:12px 20px; font-size:16px;" onclick="startSpeakingSim()">▶️ Start Random Prompt</button>
+              <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="simProgress">Prompt 1 of 10</div>
               
-              <div style="margin-top:20px;">
-                <h4 id="simPrompt" style="color:#0284c7;">Klik "Start" untuk memulai simulasi...</h4>
+              <button class="audio-btn" style="padding:12px 20px; font-size:15px;" onclick="startSpeakingSim()">▶️ Start Audio Prompt</button>
+              
+              <div style="margin-top:15px;">
+                <h4 id="simPrompt" style="color:#0284c7; font-size: 18px;">Klik "Start Audio Prompt" untuk mendengarkan...</h4>
               </div>
 
               <div class="sim-timer" id="simTimer">--</div>
 
-              <button id="simMicBtn" class="submit-btn" style="width:auto; padding:10px 20px; background:#e11d48;" onclick="startListeningSim()" disabled>🎙️ Jawab Sekarang (Bicara di Mic)</button>
+              <button id="simMicBtn" class="submit-btn" style="width:auto; padding:10px 22px; background:#e11d48;" onclick="startListeningSim()" disabled>🎙️ Jawab Sekarang (Bicara di Mic)</button>
 
-              <div class="sim-transcript" id="simTranscript">Transkrip jawabanmu bakal muncul di sini...</div>
+              <!-- Transkrip User -->
+              <div class="sim-transcript" id="simTranscript">
+                <em>Transkrip jawabanmu akan muncul di sini...</em>
+              </div>
+
+              <!-- Sample Native Response -->
+              <div class="sample-response" id="sampleResponseBox" style="display:none;">
+                <strong>💡 Contoh Jawaban Alami (Sample Native Response):</strong>
+                <p id="sampleText" style="margin-top:6px; font-weight:600;"></p>
+              </div>
+
+              <!-- Next Button -->
+              <button id="nextSimBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:15px;" onclick="nextSpeakingPrompt()">Next Question ▶️</button>
             </div>
           </div>
         </div>
@@ -540,12 +555,13 @@
       }
     }
 
-    // Level 1 Quiz Checker (10 Qs)
+    // Level 1 Quiz Checker (Randomized Keys: b, a, b, a, b, a, b, a, b, a)
     function checkLevel1Quiz() {
+      const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
       let score = 0;
       for (let i = 1; i <= 10; i++) {
         let selected = document.querySelector(`input[name="l1q${i}"]:checked`)?.value;
-        if (selected === 'a') score++;
+        if (selected === keys[i - 1]) score++;
       }
       const resDiv = document.getElementById('res-l1');
       resDiv.style.display = 'block';
@@ -571,12 +587,13 @@
       resDiv.innerHTML = `Skor Lu: ${score} / ${total} (${percentage}%)`;
     }
 
-    // Level 4 Story Quiz Checker (10 Stories)
+    // Level 4 Story Quiz Checker (Randomized Keys: b, a, b, a, b, a, b, a, b, a)
     function checkLevel4Quiz() {
+      const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
       let score = 0;
       for (let i = 1; i <= 10; i++) {
         let selected = document.querySelector(`input[name="l4q${i}"]:checked`)?.value;
-        if (selected === 'a') score++;
+        if (selected === keys[i - 1]) score++;
       }
       const resDiv = document.getElementById('res-l4');
       resDiv.style.display = 'block';
@@ -585,46 +602,80 @@
       resDiv.innerHTML = `Skor Story Listening: ${score} / 10 (${score * 10}%)`;
     }
 
-    // Level 5 Speaking Simulator Engine (10 Daily Prompts)
-    const simPrompts = [
-      "What did you do last weekend, Eggha?",
-      "What is your favorite food and why, Rebeca?",
-      "How do you usually spend your morning routine, Adam?",
-      "What are your plans for this coming weekend, Anita?",
-      "Can you describe your best friend to Zoey?",
-      "Where is your favorite place to hang out on Friday night?",
-      "What kind of music do you like listening to while working?",
-      "How do you stay healthy and active during busy weeks?",
-      "What was the last movie you watched at the cinema?",
-      "If you could travel anywhere right now, where would you go?"
+    // Level 5 Speaking Simulator Engine (10 Daily Prompts & Sample Responses)
+    const speakingData = [
+      {
+        prompt: "What did you do last weekend, Eggha?",
+        sample: "Last weekend, I went for a morning run at the park and then met my friends for iced coffee."
+      },
+      {
+        prompt: "What is your favorite food and why, Rebeca?",
+        sample: "My favorite food is Japanese ramen because I love hot, savory broth with delicious noodles."
+      },
+      {
+        prompt: "How do you usually spend your morning routine, Adam?",
+        sample: "I usually wake up at 6 AM, drink a glass of water, and do some light stretching before breakfast."
+      },
+      {
+        prompt: "What are your plans for this coming weekend, Anita?",
+        sample: "I'm planning to visit a local cafe with my friends and finish reading my favorite novel."
+      },
+      {
+        prompt: "Can you describe your best friend to Zoey?",
+        sample: "My best friend is very kind, energetic, and always supportive whenever I need help."
+      },
+      {
+        prompt: "Where is your favorite place to hang out on Friday night?",
+        sample: "I love hanging out at a cozy coffee shop with comfortable seating and chill music."
+      },
+      {
+        prompt: "What kind of music do you like listening to while relaxing?",
+        sample: "I really enjoy acoustic and neo-soul music because it helps me feel calm and relaxed."
+      },
+      {
+        prompt: "How do you stay healthy and active during busy weeks?",
+        sample: "I make sure to go for easy runs twice a week and prepare healthy meals using my air fryer."
+      },
+      {
+        prompt: "What was the last movie you watched at the cinema?",
+        sample: "The last movie I watched was an action comedy, and it was super entertaining."
+      },
+      {
+        prompt: "If you could travel anywhere right now, where would you go?",
+        sample: "I would love to travel to Kyoto in Japan to see the beautiful historic temples and streets."
+      }
     ];
 
-    function startSpeakingSim() {
-      const prompt = simPrompts[Math.floor(Math.random() * simPrompts.length)];
-      document.getElementById('simPrompt').innerText = '"' + prompt + '"';
-      document.getElementById('simTranscript').innerText = "Mendengarkan pertanyaan...";
+    let currentPromptIdx = 0;
+
+    function loadPromptUI() {
+      const data = speakingData[currentPromptIdx];
+      document.getElementById('simProgress').innerText = `Prompt ${currentPromptIdx + 1} of ${speakingData.length}`;
+      document.getElementById('simPrompt').innerText = '"' + data.prompt + '"';
+      document.getElementById('simTimer').innerText = '--';
+      document.getElementById('simTranscript').innerHTML = '<em>Transkrip jawabanmu akan muncul di sini...</em>';
+      document.getElementById('sampleResponseBox').style.display = 'none';
+      document.getElementById('nextSimBtn').style.display = 'none';
       document.getElementById('simMicBtn').disabled = true;
+    }
 
-      const utterance = new SpeechSynthesisUtterance(prompt);
-      utterance.lang = 'en-US';
+    function startSpeakingSim() {
+      const data = speakingData[currentPromptIdx];
+      playAudio(data.prompt);
+
+      let seconds = 5;
+      const timerDisplay = document.getElementById('simTimer');
+      timerDisplay.innerText = seconds + "s";
       
-      utterance.onend = function() {
-        let seconds = 5;
-        const timerDisplay = document.getElementById('simTimer');
+      const countdown = setInterval(() => {
+        seconds--;
         timerDisplay.innerText = seconds + "s";
-        
-        const countdown = setInterval(() => {
-          seconds--;
-          timerDisplay.innerText = seconds + "s";
-          if (seconds <= 0) {
-            clearInterval(countdown);
-            timerDisplay.innerText = "Waktunya Bicara!";
-            document.getElementById('simMicBtn').disabled = false;
-          }
-        }, 1000);
-      };
-
-      window.speechSynthesis.speak(utterance);
+        if (seconds <= 0) {
+          clearInterval(countdown);
+          timerDisplay.innerText = "Waktunya Bicara!";
+          document.getElementById('simMicBtn').disabled = false;
+        }
+      }, 1000);
     }
 
     function startListeningSim() {
@@ -640,11 +691,25 @@
 
       recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript;
-        document.getElementById("simTranscript").innerText = '"' + transcript + '"';
+        document.getElementById("simTranscript").innerHTML = `<strong>Jawabanmu:</strong> "${transcript}"`;
+        
+        // Show Sample Native Response
+        const data = speakingData[currentPromptIdx];
+        document.getElementById('sampleText').innerText = `"${data.sample}"`;
+        document.getElementById('sampleResponseBox').style.display = 'block';
+        document.getElementById('nextSimBtn').style.display = 'block';
       };
 
       recognition.start();
     }
+
+    function nextSpeakingPrompt() {
+      currentPromptIdx = (currentPromptIdx + 1) % speakingData.length;
+      loadPromptUI();
+    }
+
+    // Init UI
+    loadPromptUI();
   </script>
 
 </body>
