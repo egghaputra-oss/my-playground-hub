@@ -26,18 +26,31 @@
     .module-section { display: none; }
     .module-section.active { display: block; }
 
-    /* Shared Card & Component Styling */
+    /* Shared Card Styling */
     .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
     h1 { font-size: 24px; margin-bottom: 6px; }
     .subtitle { color: #64748b; margin-bottom: 24px; font-size: 15px; }
 
-    /* Inner Tabs for English Module */
+    /* Inner Level Tabs */
+    .level-tab-container { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .level-btn { padding: 10px 18px; border: none; background: none; color: #64748b; font-weight: 700; cursor: pointer; font-size: 15px; border-radius: 6px; }
+    .level-btn.active { background: #0284c7; color: white; }
+
+    /* Sub Tabs for Tenses & Categories */
     .sub-tab-container { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     .sub-tab-btn { padding: 8px 14px; border: none; background: #e2e8f0; color: #475569; font-weight: 600; border-radius: 6px; cursor: pointer; font-size: 14px; }
-    .sub-tab-btn.active { background: #0284c7; color: white; }
+    .sub-tab-btn.active { background: #38bdf8; color: #0f172a; }
 
     .formula { background: #f0f9ff; padding: 12px; border-left: 4px solid #0284c7; margin: 12px 0; font-weight: bold; }
     .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 6px; line-height: 1.6; }
+
+    /* Phrase Grid Layout */
+    .phrase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px; }
+    .phrase-card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 8px; background: #fafafa; position: relative; }
+    .phrase-title { font-weight: 700; color: #0284c7; margin-bottom: 4px; font-size: 15px; }
+    .phrase-desc { font-size: 13px; color: #64748b; margin-bottom: 10px; }
+    .audio-btn { background: #0284c7; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+    .audio-btn:hover { background: #0369a1; }
 
     /* Quiz Styling */
     .quiz-group { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; }
@@ -48,9 +61,6 @@
     button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
     button.submit-btn:hover { background-color: #059669; }
     .result-box { margin-top: 20px; font-weight: bold; padding: 14px; border-radius: 6px; display: none; text-align: center; }
-
-    /* Placeholder Badge */
-    .badge-dev { display: inline-block; background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 12px; }
 
     /* Responsive Mobile Navigation */
     @media (max-width: 768px) {
@@ -83,129 +93,193 @@
       <!-- ================= MODUL 1: ENGLISH EXERCISE ================= -->
       <section id="english" class="module-section active">
         <h1>🎙️ English Exercise Hub</h1>
-        <p class="subtitle">Modul Latihan Tenses Esensial untuk Komunikasi Kerja</p>
+        <p class="subtitle">Platform Latihan Komunikasi Kerja Praktis</p>
 
-        <!-- Sub Tabs for English Tenses -->
-        <div class="sub-tab-container">
-          <button class="sub-tab-btn active" onclick="openGrammarTab('past')">1. Simple Past</button>
-          <button class="sub-tab-btn" onclick="openGrammarTab('present')">2. Simple Present</button>
-          <button class="sub-tab-btn" onclick="openGrammarTab('continuous')">3. Present Continuous</button>
-          <button class="sub-tab-btn" onclick="openGrammarTab('perfect')">4. Present Perfect</button>
+        <!-- Level Selector Tabs -->
+        <div class="level-tab-container">
+          <button class="level-btn active" onclick="openLevel('level1')">Level 1: Basic Grammar</button>
+          <button class="level-btn" onclick="openLevel('level2')">Level 2: Work Conversation</button>
         </div>
 
-        <!-- TAB: SIMPLE PAST -->
-        <div id="past" class="grammar-tab-content">
-          <div class="card">
-            <h3>📌 Simple Past Tense (Kejadian Masa Lalu)</h3>
-            <div class="formula">Rumus: Subject + Verb 2</div>
-            <p>Dipakai untuk kejadian yang sudah selesai di masa lalu (yesterday, last week, 2 hours ago).</p>
+        <!-- LEVEL 1 CONTENT -->
+        <div id="level1" class="level-content">
+          <div class="sub-tab-container">
+            <button class="sub-tab-btn active" onclick="openGrammarTab('past')">Simple Past</button>
+            <button class="sub-tab-btn" onclick="openGrammarTab('present')">Simple Present</button>
+            <button class="sub-tab-btn" onclick="openGrammarTab('continuous')">Present Continuous</button>
+            <button class="sub-tab-btn" onclick="openGrammarTab('perfect')">Present Perfect</button>
+          </div>
 
-            <div class="quiz-group"><p class="quiz-title">1. The manager _______ the financial audit report yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> approved</label><label class="quiz-option"><input type="radio" name="p1" value="b"> approves</label><label class="quiz-option"><input type="radio" name="p1" value="c"> approving</label></div>
-            <div class="quiz-group"><p class="quiz-title">2. We _______ our regional partners in Kuala Lumpur last month.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> meet</label><label class="quiz-option"><input type="radio" name="p2" value="b"> met</label><label class="quiz-option"><input type="radio" name="p2" value="c"> meeting</label></div>
-            <div class="quiz-group"><p class="quiz-title">3. She _______ the client's invoice on Monday morning.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> pay</label><label class="quiz-option"><input type="radio" name="p3" value="b"> paid</label><label class="quiz-option"><input type="radio" name="p3" value="c"> paying</label></div>
+          <div id="past" class="grammar-tab-content">
+            <div class="card">
+              <h3>📌 Simple Past Tense (Kejadian Masa Lalu)</h3>
+              <div class="formula">Rumus: Subject + Verb 2</div>
+              <div class="quiz-group"><p class="quiz-title">1. The manager _______ the financial audit report yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> approved</label><label class="quiz-option"><input type="radio" name="p1" value="b"> approves</label></div>
+              <div class="quiz-group"><p class="quiz-title">2. We _______ our regional partners in Kuala Lumpur last month.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> meet</label><label class="quiz-option"><input type="radio" name="p2" value="b"> met</label></div>
+              <button class="submit-btn" onclick="checkQuiz('past', ['a','b'])">Cek Hasil Simple Past</button>
+              <div id="res-past" class="result-box"></div>
+            </div>
+          </div>
+
+          <div id="present" class="grammar-tab-content" style="display: none;">
+            <div class="card">
+              <h3>📌 Simple Present Tense (Rutinitas & Fakta)</h3>
+              <div class="formula">Rumus: Subject + Verb 1 (+s/es untuk He/She/It)</div>
+              <div class="quiz-group"><p class="quiz-title">1. Our department _______ weekly progress reports every Monday.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> holds</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> held</label></div>
+              <button class="submit-btn" onclick="checkQuiz('present', ['a'])">Cek Hasil Simple Present</button>
+              <div id="res-present" class="result-box"></div>
+            </div>
+          </div>
+
+          <div id="continuous" class="grammar-tab-content" style="display: none;">
+            <div class="card">
+              <h3>📌 Present Continuous Tense (Sedang Berlangsung)</h3>
+              <div class="formula">Rumus: Subject + am/is/are + Verb-ing</div>
+              <div class="quiz-group"><p class="quiz-title">1. Right now, I _______ the regional financial report.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> am auditing</label><label class="quiz-option"><input type="radio" name="c1" value="b"> audit</label></div>
+              <button class="submit-btn" onclick="checkQuiz('continuous', ['a'])">Cek Hasil Present Continuous</button>
+              <div id="res-continuous" class="result-box"></div>
+            </div>
+          </div>
+
+          <div id="perfect" class="grammar-tab-content" style="display: none;">
+            <div class="card">
+              <h3>📌 Present Perfect Tense (Sudah Selesai / Pengalaman)</h3>
+              <div class="formula">Rumus: Subject + have/has + Verb 3</div>
+              <div class="quiz-group"><p class="quiz-title">1. We _______ the quarterly financial statement.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> have finalized</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finalized</label></div>
+              <button class="submit-btn" onclick="checkQuiz('perfect', ['a'])">Cek Hasil Present Perfect</button>
+              <div id="res-perfect" class="result-box"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 2 CONTENT -->
+        <div id="level2" class="level-content" style="display: none;">
+          
+          <!-- Category 1: Asking & Giving Updates -->
+          <div class="card">
+            <h3>💬 1. Asking & Giving Updates</h3>
+            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Frasa efektif saat meeting atau chat Slack/Teams buat menanyakan status pekerjaan.</p>
             
-            <div class="story-box">
-              <h4>📖 Case Study:</h4>
-              <p>"Yesterday, our team <strong>(A. gathered / B. gathers)</strong> to discuss the tax audit. The auditor <strong>(C. pointed out / D. points out)</strong> three main errors, but we <strong>(E. resolved / F. resolve)</strong> them before 5 PM."</p>
+            <div class="phrase-grid">
+              <div class="phrase-card">
+                <div class="phrase-title">"Where do we stand on [project]?"</div>
+                <div class="phrase-desc">Menanyakan posisi terakhir suatu proyek secara profesional.</div>
+                <button class="audio-btn" onclick="playAudio('Where do we stand on the tax audit project?')">🔊 Dengarkan Audio</button>
+              </div>
+
+              <div class="phrase-card">
+                <div class="phrase-title">"We are currently on track to meet the deadline."</div>
+                <div class="phrase-desc">Jawaban jika pekerjaan berjalan sesuai jadwal target.</div>
+                <button class="audio-btn" onclick="playAudio('We are currently on track to meet the deadline.')">🔊 Dengarkan Audio</button>
+              </div>
+
+              <div class="phrase-card">
+                <div class="phrase-title">"We ran into a minor bottleneck with..."</div>
+                <div class="phrase-desc">Menjelaskan adanya sedikit kendala teknis atau hambatan.</div>
+                <button class="audio-btn" onclick="playAudio('We ran into a minor bottleneck with the supplier data.')">🔊 Dengarkan Audio</button>
+              </div>
             </div>
+          </div>
+
+          <!-- Category 2: Disagreeing & Interrupting -->
+          <div class="card">
+            <h3>🛡️ 2. Interrupting & Disagreeing Politely</h3>
+            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Cara menyela saat rapat atau menyampaikan opini berbeda tanpa menyinggung perasaan.</p>
+            
+            <div class="phrase-grid">
+              <div class="phrase-card">
+                <div class="phrase-title">"Sorry to interrupt, but may I add a quick point here?"</div>
+                <div class="phrase-desc">Menyela rapat secara sopan untuk menambahkan poin penting.</div>
+                <button class="audio-btn" onclick="playAudio('Sorry to interrupt, but may I add a quick point here?')">🔊 Dengarkan Audio</button>
+              </div>
+
+              <div class="phrase-card">
+                <div class="phrase-title">"I see your point, but from a cost perspective..."</div>
+                <div class="phrase-desc">Menolak opsi lawan bicara dari sudut pandang finansial/operasional.</div>
+                <button class="audio-btn" onclick="playAudio('I see your point, but from a cost perspective, this option might be too high.')">🔊 Dengarkan Audio</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category 3: Buying Time -->
+          <div class="card">
+            <h3>⏳ 3. Buying Time & Clarifying</h3>
+            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Gunakan frasa ini jika lu butuh waktu berpikir atau memastikan pertanyaan lawan bicara.</p>
+            
+            <div class="phrase-grid">
+              <div class="phrase-card">
+                <div class="phrase-title">"That's a good question. Let me double-check and get back to you."</div>
+                <div class="phrase-desc">Jawaban terbaik jika lu belum punya data pasti saat ditanya boss.</div>
+                <button class="audio-btn" onclick="playAudio('Thats a good question. Let me double check and get back to you by 3 PM.')">🔊 Dengarkan Audio</button>
+              </div>
+
+              <div class="phrase-card">
+                <div class="phrase-title">"Just to clarify, do you mean...?"</div>
+                <div class="phrase-desc">Memastikan kembali maksud pertanyaan lawan bicara agar tidak salah tangkap.</div>
+                <button class="audio-btn" onclick="playAudio('Just to clarify, do you mean we need to freeze the hiring budget?')">🔊 Dengarkan Audio</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scenario Quiz -->
+          <div class="card">
+            <h3>✏️ Work Conversation Quiz</h3>
+            <p style="color:#64748b; font-size:14px;">Pilih tanggapan terbaik untuk situasi rapat di bawah ini:</p>
+
             <div class="quiz-group">
-              <p class="quiz-title">4. Pilih kombinasi kata kerja yang tepat:</p>
-              <label class="quiz-option"><input type="radio" name="p4" value="a"> A - C - E (gathered, pointed out, resolved)</label>
-              <label class="quiz-option"><input type="radio" name="p4" value="b"> B - D - F (gathers, points out, resolve)</label>
+              <p class="quiz-title">1. Atasan bertanya saat meeting: "Do you have the exact Q3 tax figures right now?" (Padahal lu belum buka datanya). Jawaban paling profesional?</p>
+              <label class="quiz-option"><input type="radio" name="l2q1" value="a"> "I don't know."</label>
+              <label class="quiz-option"><input type="radio" name="l2q1" value="b"> "Let me double-check the system and get back to you right after this meeting."</label>
+              <label class="quiz-option"><input type="radio" name="l2q1" value="c"> "Ask the accounting manager."</label>
             </div>
 
-            <button class="submit-btn" onclick="checkQuiz('past', ['a','b','b','a'])">Cek Hasil Simple Past</button>
-            <div id="res-past" class="result-box"></div>
+            <div class="quiz-group">
+              <p class="quiz-title">2. Lu mau menyela rekan kerja yang sedang presentasi karena ada data angka yang salah ketik. Frasa mana yang tepat?</p>
+              <label class="quiz-option"><input type="radio" name="l2q2" value="a"> "You made a mistake in that row."</label>
+              <label class="quiz-option"><input type="radio" name="l2q2" value="b"> "Sorry to interrupt, but may I point out a small detail on slide 3?"</label>
+              <label class="quiz-option"><input type="radio" name="l2q2" value="c"> "Stop talking, look at slide 3."</label>
+            </div>
+
+            <button class="submit-btn" onclick="checkLevel2Quiz()">Cek Jawaban Level 2</button>
+            <div id="res-l2" class="result-box"></div>
           </div>
-        </div>
 
-        <!-- TAB: SIMPLE PRESENT -->
-        <div id="present" class="grammar-tab-content" style="display: none;">
-          <div class="card">
-            <h3>📌 Simple Present Tense (Rutinitas & Fakta)</h3>
-            <div class="formula">Rumus: Subject + Verb 1 (+s/es untuk He/She/It)</div>
-            <p>Dipakai untuk rutinitas kerja harian, regulasi, atau jadwal tetap.</p>
-
-            <div class="quiz-group"><p class="quiz-title">1. Our department _______ weekly progress reports every Monday.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> holds</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> held</label></div>
-            <div class="quiz-group"><p class="quiz-title">2. Senior accountants _______ complex tax reconciliation tasks.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> manages</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> manage</label></div>
-
-            <button class="submit-btn" onclick="checkQuiz('present', ['a','b'])">Cek Hasil Simple Present</button>
-            <div id="res-present" class="result-box"></div>
-          </div>
-        </div>
-
-        <!-- TAB: PRESENT CONTINUOUS -->
-        <div id="continuous" class="grammar-tab-content" style="display: none;">
-          <div class="card">
-            <h3>📌 Present Continuous Tense (Sedang Berlangsung)</h3>
-            <div class="formula">Rumus: Subject + am/is/are + Verb-ing</div>
-            <p>Dipakai untuk aktivitas yang sedang terjadi saat ini.</p>
-
-            <div class="quiz-group"><p class="quiz-title">1. Right now, I _______ the regional financial report.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> am auditing</label><label class="quiz-option"><input type="radio" name="c1" value="b"> audit</label></div>
-
-            <button class="submit-btn" onclick="checkQuiz('continuous', ['a'])">Cek Hasil Present Continuous</button>
-            <div id="res-continuous" class="result-box"></div>
-          </div>
-        </div>
-
-        <!-- TAB: PRESENT PERFECT -->
-        <div id="perfect" class="grammar-tab-content" style="display: none;">
-          <div class="card">
-            <h3>📌 Present Perfect Tense (Sudah Selesai / Pengalaman)</h3>
-            <div class="formula">Rumus: Subject + have/has + Verb 3</div>
-            <p>Dipakai untuk pekerjaan yang baru selesai dan hasilnya relevan sekarang.</p>
-
-            <div class="quiz-group"><p class="quiz-title">1. We _______ the quarterly financial statement.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> have finalized</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finalized</label></div>
-
-            <button class="submit-btn" onclick="checkQuiz('perfect', ['a'])">Cek Hasil Present Perfect</button>
-            <div id="res-perfect" class="result-box"></div>
-          </div>
         </div>
       </section>
 
-      <!-- ================= MODUL 2: MANDARIN EXERCISE ================= -->
+      <!-- MODUL LAIN (PLACEHOLDER) -->
       <section id="mandarin" class="module-section">
         <h1>🏮 Mandarin Exercise</h1>
-        <p class="subtitle">Latihan Nada (Tones), Pinyin, dan Kosakata Bisnis</p>
-        <div class="card">
-          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
-          <h3>Modul Mandarin Segera Hadir</h3>
-          <p>Section ini bakal diisi materi pengenalan 4 nada dasar, pinyin interaktif, dan kuis *flashcard* percakapan harian.</p>
-        </div>
+        <div class="card"><h3>Modul Mandarin Segera Hadir</h3></div>
       </section>
 
-      <!-- ================= MODUL 3: HPP SIMULATOR UMKM ================= -->
       <section id="hpp" class="module-section">
         <h1>📊 HPP Simulator UMKM</h1>
-        <p class="subtitle">Kalkulator Harga Pokok Penjualan & Margin Target</p>
-        <div class="card">
-          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
-          <h3>Kalkulator Penentuan Harga Jual</h3>
-          <p>Section ini bakal nampung form biaya bahan baku, biaya operasional, dan simulasi penetapan target keuntungan (margin %).</p>
-        </div>
+        <div class="card"><h3>Kalkulator Penentuan Harga Jual Segera Hadir</h3></div>
       </section>
 
-      <!-- ================= MODUL 4: ACCOUNTING & FINANCE ================= -->
       <section id="finance" class="module-section">
         <h1>📈 Accounting & Finance Hub</h1>
-        <p class="subtitle">Update Perpajakan, Jurnal Akuntansi, & Rasio Keuangan</p>
-        <div class="card">
-          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
-          <h3>Pusat Referensi Akuntansi & Pajak</h3>
-          <p>Section ini bakal berisi *cheat sheet* aturan pajak terbaru, latihan jurnal akuntansi, dan rumus rasio finansial sederhana.</p>
-        </div>
+        <div class="card"><h3>Pusat Referensi Akuntansi & Pajak Segera Hadir</h3></div>
       </section>
 
     </main>
   </div>
 
   <script>
-    // Module Switcher (Sidebar)
+    // Module Switcher
     function switchModule(moduleId) {
       document.querySelectorAll('.module-section').forEach(m => m.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      
       document.getElementById(moduleId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // Level Switcher (English)
+    function openLevel(levelId) {
+      document.querySelectorAll('.level-content').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(levelId).style.display = 'block';
       event.currentTarget.classList.add('active');
     }
 
@@ -213,34 +287,52 @@
     function openGrammarTab(tabName) {
       document.querySelectorAll('.grammar-tab-content').forEach(t => t.style.display = 'none');
       document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-
       document.getElementById(tabName).style.display = 'block';
       event.currentTarget.classList.add('active');
     }
 
-    // Quiz Checker Engine
+    // Text-to-Speech Engine
+    function playAudio(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop audio sebelumnya jika ada
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9; // Kecepatan sedikit natural
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert('Fitur audio tidak didukung di browser ini.');
+      }
+    }
+
+    // Quiz Checkers
     function checkQuiz(tabPrefix, answers) {
       let score = 0;
       let total = answers.length;
-
       for (let i = 1; i <= total; i++) {
         let prefixMap = { 'past': 'p', 'present': 'pr', 'continuous': 'c', 'perfect': 'pf' };
-        let inputName = prefixMap[tabPrefix] + i;
-        let selected = document.querySelector(`input[name="${inputName}"]:checked`)?.value;
-        
+        let selected = document.querySelector(`input[name="${prefixMap[tabPrefix]}${i}"]:checked`)?.value;
         if (selected === answers[i - 1]) score++;
       }
-
       let resDiv = document.getElementById(`res-${tabPrefix}`);
       resDiv.style.display = 'block';
       let percentage = Math.round((score / total) * 100);
+      resDiv.style.background = percentage >= 80 ? '#d1fae5' : '#fee2e2';
+      resDiv.style.color = percentage >= 80 ? '#065f46' : '#991b1b';
+      resDiv.innerHTML = `Skor Lu: ${score} / ${total} (${percentage}%)`;
+    }
 
-      if (percentage >= 80) {
+    function checkLevel2Quiz() {
+      const q1 = document.querySelector('input[name="l2q1"]:checked')?.value;
+      const q2 = document.querySelector('input[name="l2q2"]:checked')?.value;
+      const resDiv = document.getElementById('res-l2');
+      resDiv.style.display = 'block';
+
+      if (q1 === 'b' && q2 === 'b') {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerHTML = `🎉 Mantap! Skor Lu: ${score} / ${total} (${percentage}%)`;
+        resDiv.innerHTML = '🎉 Jawaban Lu 100% Benar! Frasa-frasa tersebut sangat profesional untuk situasi kerja.';
       } else {
         resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerHTML = `💪 Skor Lu: ${score} / ${total} (${percentage}%). Yuk coba dipelajari lagi!`;
+        resDiv.innerHTML = '💪 Masih ada yang keliru. Pilih jawaban yang mengulur waktu dengan sopan atau menyela secara santun ya!';
       }
     }
   </script>
