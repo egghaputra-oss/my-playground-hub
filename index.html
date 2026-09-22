@@ -42,7 +42,7 @@
     .sub-tab-btn.active { background: #38bdf8; color: #0f172a; }
 
     .formula { background: #f0f9ff; padding: 12px; border-left: 4px solid #0284c7; margin: 12px 0; font-weight: bold; }
-    .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 16px; margin: 15px 0; border-radius: 6px; line-height: 1.6; }
+    .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 20px; margin: 15px 0; border-radius: 8px; line-height: 1.6; }
 
     /* Phrase & Cards Grid */
     .phrase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px; }
@@ -61,6 +61,9 @@
     button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
     button.submit-btn:hover { background-color: #059669; }
     .result-box { margin-top: 20px; font-weight: bold; padding: 14px; border-radius: 6px; display: none; text-align: center; }
+
+    /* Streak Badge */
+    .streak-badge { display: inline-block; background: #dcfce7; color: #15803d; font-weight: bold; padding: 6px 12px; border-radius: 20px; font-size: 13px; margin-bottom: 12px; }
 
     /* Speaking Simulator UI */
     .sim-box { text-align: center; padding: 25px; border: 2px dashed #0284c7; border-radius: 12px; background: #f0f9ff; margin-top: 15px; }
@@ -106,17 +109,16 @@
           <button class="level-btn active" onclick="openLevel('level1')">Lvl 1: Listening (10)</button>
           <button class="level-btn" onclick="openLevel('level2')">Lvl 2: Core Tenses (40)</button>
           <button class="level-btn" onclick="openLevel('level3')">Lvl 3: Daily Phrases</button>
-          <button class="level-btn" onclick="openLevel('level4')">Lvl 4: Stories (10)</button>
-          <button class="level-btn" onclick="openLevel('level5')">Lvl 5: Speaking Sim</button>
+          <button class="level-btn" onclick="openLevel('level4')">Lvl 4: Unlimited Stories ♾️</button>
+          <button class="level-btn" onclick="openLevel('level5')">Lvl 5: Speaking Sim ♾️</button>
         </div>
 
-        <!-- ================= LEVEL 1: BASIC LISTENING & CONVERSATION (10 Qs) ================= -->
+        <!-- ================= LEVEL 1: BASIC LISTENING & CONVERSATION ================= -->
         <div id="level1" class="level-content">
           <div class="card">
             <h3>🎧 Level 1: Daily Listening & Response (10 Soal)</h3>
             <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan pertanyaan audio santai, lalu pilih jawaban yang paling alami.</p>
 
-            <!-- Q1 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 1:</p>
               <button class="audio-btn" onclick="playAudio('What are you doing right now, Eggha?')">🔊 Putar Audio 1</button>
@@ -124,7 +126,6 @@
               <label class="quiz-option"><input type="radio" name="l1q1" value="b"> "I'm making coffee in the kitchen."</label>
             </div>
 
-            <!-- Q2 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 2:</p>
               <button class="audio-btn" onclick="playAudio('What do you usually do on weekends, Rebeca?')">🔊 Putar Audio 2</button>
@@ -132,7 +133,6 @@
               <label class="quiz-option"><input type="radio" name="l1q2" value="b"> "I am sleeping now."</label>
             </div>
 
-            <!-- Q3 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 3:</p>
               <button class="audio-btn" onclick="playAudio('How was your day, Adam?')">🔊 Putar Audio 3</button>
@@ -140,7 +140,6 @@
               <label class="quiz-option"><input type="radio" name="l1q3" value="b"> "It was pretty good, thanks!"</label>
             </div>
 
-            <!-- Q4 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 4:</p>
               <button class="audio-btn" onclick="playAudio('Do you want to grab some dinner with Zoey, Anita?')">🔊 Putar Audio 4</button>
@@ -148,7 +147,6 @@
               <label class="quiz-option"><input type="radio" name="l1q4" value="b"> "No, dinner is food."</label>
             </div>
 
-            <!-- Q5 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 5:</p>
               <button class="audio-btn" onclick="playAudio('Where did Eggha buy those new running shoes?')">🔊 Putar Audio 5</button>
@@ -156,7 +154,6 @@
               <label class="quiz-option"><input type="radio" name="l1q5" value="b"> "He bought them online last week."</label>
             </div>
 
-            <!-- Q6 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 6:</p>
               <button class="audio-btn" onclick="playAudio('Have you seen Anita today, Adam?')">🔊 Putar Audio 6</button>
@@ -164,7 +161,6 @@
               <label class="quiz-option"><input type="radio" name="l1q6" value="b"> "Yes, I see her next Friday."</label>
             </div>
 
-            <!-- Q7 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 7:</p>
               <button class="audio-btn" onclick="playAudio('What time does Rebeca usually wake up?')">🔊 Putar Audio 7</button>
@@ -172,7 +168,6 @@
               <label class="quiz-option"><input type="radio" name="l1q7" value="b"> "She usually wakes up around 6 AM."</label>
             </div>
 
-            <!-- Q8 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 8:</p>
               <button class="audio-btn" onclick="playAudio('Would you like some iced tea, Zoey?')">🔊 Putar Audio 8</button>
@@ -180,7 +175,6 @@
               <label class="quiz-option"><input type="radio" name="l1q8" value="b"> "I drink tea yesterday."</label>
             </div>
 
-            <!-- Q9 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 9:</p>
               <button class="audio-btn" onclick="playAudio('How was the movie last night, Eggha?')">🔊 Putar Audio 9</button>
@@ -188,7 +182,6 @@
               <label class="quiz-option"><input type="radio" name="l1q9" value="b"> "It was really funny and entertaining!"</label>
             </div>
 
-            <!-- Q10 -->
             <div class="quiz-group">
               <p class="quiz-title">Soal 10:</p>
               <button class="audio-btn" onclick="playAudio('Are Anita and Zoey coming to the party?')">🔊 Putar Audio 10</button>
@@ -201,7 +194,7 @@
           </div>
         </div>
 
-        <!-- ================= LEVEL 2: CORE TENSES (40 Qs - 10 per Tense) ================= -->
+        <!-- ================= LEVEL 2: CORE TENSES (40 Qs) ================= -->
         <div id="level2" class="level-content" style="display: none;">
           <div class="sub-tab-container">
             <button class="sub-tab-btn active" onclick="openGrammarTab('past')">Simple Past (10)</button>
@@ -210,7 +203,7 @@
             <button class="sub-tab-btn" onclick="openGrammarTab('perfect')">Present Perfect (10)</button>
           </div>
 
-          <!-- TAB: SIMPLE PAST (10) -->
+          <!-- TAB: SIMPLE PAST -->
           <div id="past" class="grammar-tab-content">
             <div class="card">
               <h3>📌 Simple Past Tense (10 Soal)</h3>
@@ -232,7 +225,7 @@
             </div>
           </div>
 
-          <!-- TAB: SIMPLE PRESENT (10) -->
+          <!-- TAB: SIMPLE PRESENT -->
           <div id="present" class="grammar-tab-content" style="display: none;">
             <div class="card">
               <h3>📌 Simple Present Tense (10 Soal)</h3>
@@ -254,7 +247,7 @@
             </div>
           </div>
 
-          <!-- TAB: PRESENT CONTINUOUS (10) -->
+          <!-- TAB: PRESENT CONTINUOUS -->
           <div id="continuous" class="grammar-tab-content" style="display: none;">
             <div class="card">
               <h3>📌 Present Continuous Tense (10 Soal)</h3>
@@ -276,7 +269,7 @@
             </div>
           </div>
 
-          <!-- TAB: PRESENT PERFECT (10) -->
+          <!-- TAB: PRESENT PERFECT -->
           <div id="perfect" class="grammar-tab-content" style="display: none;">
             <div class="card">
               <h3>📌 Present Perfect Tense (10 Soal)</h3>
@@ -299,12 +292,10 @@
           </div>
         </div>
 
-        <!-- ================= LEVEL 3: DAILY CONVERSATION PHRASES ================= -->
+        <!-- ================= LEVEL 3: DAILY PHRASES ================= -->
         <div id="level3" class="level-content" style="display: none;">
-          
-          <!-- Category 1 -->
           <div class="card">
-            <h3>👋 1. Greeting & Casual Check-ins (5 Phrases)</h3>
+            <h3>👋 1. Greeting & Casual Check-ins</h3>
             <div class="phrase-grid">
               <div class="phrase-card"><div class="phrase-title">1. "How's it going with you, Rebeca?"</div><button class="audio-btn" onclick="playAudio('Hows it going with you, Rebeca?')">🔊 Audio</button></div>
               <div class="phrase-card"><div class="phrase-title">2. "What have you been up to, Eggha?"</div><button class="audio-btn" onclick="playAudio('What have you been up to, Eggha?')">🔊 Audio</button></div>
@@ -314,9 +305,8 @@
             </div>
           </div>
 
-          <!-- Category 2 -->
           <div class="card">
-            <h3>☕ 2. Making Plans & Inviting Friends (5 Phrases)</h3>
+            <h3>☕ 2. Making Plans & Inviting Friends</h3>
             <div class="phrase-grid">
               <div class="phrase-card"><div class="phrase-title">1. "Do you want to grab a coffee, Eggha?"</div><button class="audio-btn" onclick="playAudio('Do you want to grab a coffee, Eggha?')">🔊 Audio</button></div>
               <div class="phrase-card"><div class="phrase-title">2. "Are you free this Saturday, Rebeca?"</div><button class="audio-btn" onclick="playAudio('Are you free this Saturday, Rebeca?')">🔊 Audio</button></div>
@@ -326,9 +316,8 @@
             </div>
           </div>
 
-          <!-- Category 3 -->
           <div class="card">
-            <h3>💬 3. Expressing Opinions & Reacting (5 Phrases)</h3>
+            <h3>💬 3. Expressing Opinions & Reacting</h3>
             <div class="phrase-grid">
               <div class="phrase-card"><div class="phrase-title">1. "To be honest, I really like it!"</div><button class="audio-btn" onclick="playAudio('To be honest, I really like it!')">🔊 Audio</button></div>
               <div class="phrase-card"><div class="phrase-title">2. "That's awesome, Anita!"</div><button class="audio-btn" onclick="playAudio('Thats awesome, Anita!')">🔊 Audio</button></div>
@@ -339,135 +328,42 @@
           </div>
         </div>
 
-        <!-- ================= LEVEL 4: DAILY STORIES (10 STORIES) ================= -->
+        <!-- ================= LEVEL 4: UNLIMITED DYNAMIC STORIES (1 STORY AT A TIME) ================= -->
         <div id="level4" class="level-content" style="display: none;">
           <div class="card">
-            <h3>📖 Level 4: Daily Life Stories (10 Cerita)</h3>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan cerita audio santai, lalu jawab pertanyaan pemahamannya.</p>
-
-            <!-- Story 1 -->
-            <div class="story-box">
-              <h4>Story 1: Sunday Morning Run</h4>
-              <button class="audio-btn" onclick="playAudio('Every Sunday morning, Eggha and Adam meet at the park at 6 AM. They usually run for 5 kilometers in Zone 2 to build their endurance. After running, they buy iced Americano at a local coffee shop.')">🔊 Putar Audio Story 1</button>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>📖 Level 4: Unlimited Daily Story Generator</h3>
+              <span class="streak-badge" id="storyStreakBadge">🔥 Stories Completed: 0</span>
             </div>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan cerita unik di bawah ini $\rightarrow$ jawab kuis $\rightarrow$ klik "Next Story" jika benar!</p>
+
+            <div class="story-box" id="dynamicStoryBox">
+              <h4 id="storyTitle">Loading Story...</h4>
+              <p id="storyContent" style="margin: 10px 0; font-size:15px;"></p>
+              <button class="audio-btn" id="storyAudioBtn" onclick="playCurrentStoryAudio()">🔊 Putar Audio Cerita</button>
+            </div>
+
             <div class="quiz-group">
-              <p class="quiz-title">1. Apa yang dilakukan Eggha dan Adam setelah lari pagi?</p>
-              <label class="quiz-option"><input type="radio" name="l4q1" value="a"> Langsung tidur kembali di rumah.</label>
-              <label class="quiz-option"><input type="radio" name="l4q1" value="b"> Membeli iced Americano di warung kopi lokal.</label>
+              <p class="quiz-title" id="storyQuestionText">Loading Question...</p>
+              <label class="quiz-option"><input type="radio" name="dynStoryQ" value="a" id="optLabelA"><span id="optTextA">Option A</span></label>
+              <label class="quiz-option"><input type="radio" name="dynStoryQ" value="b" id="optLabelB"><span id="optTextB">Option B</span></label>
             </div>
 
-            <!-- Story 2 -->
-            <div class="story-box">
-              <h4>Story 2: Rebeca's Brownie Recipe</h4>
-              <button class="audio-btn" onclick="playAudio('Rebeca loves baking on rainy afternoons. Yesterday, she made dark chocolate brownies for her friends Anita and Zoey. Zoey said it was the best brownie she had ever tasted.')">🔊 Putar Audio Story 2</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">2. Kue apa yang dibuat Rebeca untuk Anita dan Zoey?</p>
-              <label class="quiz-option"><input type="radio" name="l4q2" value="a"> Dark chocolate brownies.</label>
-              <label class="quiz-option"><input type="radio" name="l4q2" value="b"> Cheese pizza.</label>
-            </div>
+            <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Cek Jawaban Cerita</button>
+            <div id="res-dynamic-story" class="result-box"></div>
 
-            <!-- Story 3 -->
-            <div class="story-box">
-              <h4>Story 3: Weekend Trip to Yogyakarta</h4>
-              <button class="audio-btn" onclick="playAudio('Anita planned a weekend trip to Jogja with Rebeca. They took an early morning train from Jakarta. During the trip, they enjoyed the beautiful views of green rice fields.')">🔊 Putar Audio Story 3</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">3. Transportasi apa yang dipakai Anita dan Rebeca ke Jogja?</p>
-              <label class="quiz-option"><input type="radio" name="l4q3" value="a"> Mobil pribadi.</label>
-              <label class="quiz-option"><input type="radio" name="l4q3" value="b"> Kereta api pagi.</label>
-            </div>
-
-            <!-- Story 4 -->
-            <div class="story-box">
-              <h4>Story 4: Zoey's New Running Shoes</h4>
-              <button class="audio-btn" onclick="playAudio('Zoey wanted to replace her old running footwear. Eggha recommended a brand with maximum cushioning. Zoey bought them online and tried them on yesterday.')">🔊 Putar Audio Story 4</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">4. Siapa yang merekomendasikan sepatu lari berbantalan empuk kepada Zoey?</p>
-              <label class="quiz-option"><input type="radio" name="l4q4" value="a"> Eggha.</label>
-              <label class="quiz-option"><input type="radio" name="l4q4" value="b"> Adam.</label>
-            </div>
-
-            <!-- Story 5 -->
-            <div class="story-box">
-              <h4>Story 5: Ramen Night in Bintaro</h4>
-              <button class="audio-btn" onclick="playAudio('On Friday night, Eggha and Rebeca tried a new ramen restaurant in Bintaro. The chicken broth was rich and delicious. They agreed to return next month.')">🔊 Putar Audio Story 5</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">5. Di mana tempat makan ramen yang dikunjungi Eggha dan Rebeca?</p>
-              <label class="quiz-option"><input type="radio" name="l4q5" value="a"> Bandung.</label>
-              <label class="quiz-option"><input type="radio" name="l4q5" value="b"> Bintaro.</label>
-            </div>
-
-            <!-- Story 6 -->
-            <div class="story-box">
-              <h4>Story 6: Adam's New Puppy</h4>
-              <button class="audio-btn" onclick="playAudio('Adam adopted a golden retriever puppy last week. He named him Milo. Anita and Zoey came over to his house to play with Milo on Saturday.')">🔊 Putar Audio Story 6</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">6. Siapa nama anak anjing yang diadopsi oleh Adam?</p>
-              <label class="quiz-option"><input type="radio" name="l4q6" value="a"> Milo.</label>
-              <label class="quiz-option"><input type="radio" name="l4q6" value="b"> Max.</label>
-            </div>
-
-            <!-- Story 7 -->
-            <div class="story-box">
-              <h4>Story 7: Healthy Air Fryer Meal Prep</h4>
-              <button class="audio-btn" onclick="playAudio('Eggha spends every Sunday afternoon doing meal prep. He roasts sweet potatoes, tempeh, and chicken fillets using an air fryer to keep his diet healthy.')">🔊 Putar Audio Story 7</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">7. Alat apa yang dipakai Eggha buat masak meal prep sehatnya?</p>
-              <label class="quiz-option"><input type="radio" name="l4q7" value="a"> Microwave biasa.</label>
-              <label class="quiz-option"><input type="radio" name="l4q7" value="b"> Air fryer.</label>
-            </div>
-
-            <!-- Story 8 -->
-            <div class="story-box">
-              <h4>Story 8: Photography Walk</h4>
-              <button class="audio-btn" onclick="playAudio('Rebeca took her mobile camera to the coffee festival in Jakarta. She took gorgeous photos of coffee cups and aesthetic indoor designs.')">🔊 Putar Audio Story 8</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">8. Apa objek foto yang diambil Rebeca di festival kopi?</p>
-              <label class="quiz-option"><input type="radio" name="l4q8" value="a"> Cangkir kopi dan desain interior estetis.</label>
-              <label class="quiz-option"><input type="radio" name="l4q8" value="b"> Bunga liar di hutan.</label>
-            </div>
-
-            <!-- Story 9 -->
-            <div class="story-box">
-              <h4>Story 9: Music Concert Night</h4>
-              <button class="audio-btn" onclick="playAudio('Anita and Zoey bought tickets for an outdoor pop music concert. Even though it rained briefly, they sang along to their favorite acoustic songs.')">🔊 Putar Audio Story 9</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">9. Konser genre musik apa yang didatangi Anita dan Zoey?</p>
-              <label class="quiz-option"><input type="radio" name="l4q9" value="a"> Konser musik klasik indoor.</label>
-              <label class="quiz-option"><input type="radio" name="l4q9" value="b"> Konser musik pop akustik outdoor.</label>
-            </div>
-
-            <!-- Story 10 -->
-            <div class="story-box">
-              <h4>Story 10: Sunday Room Makeover</h4>
-              <button class="audio-btn" onclick="playAudio('Adam spent his Sunday reorganizing his bedroom desk and adding warm desk lamps. Now his room feels cozy for reading books in the evening.')">🔊 Putar Audio Story 10</button>
-            </div>
-            <div class="quiz-group">
-              <p class="quiz-title">10. Barang baru apa yang ditambahkan Adam di meja kamarnya?</p>
-              <label class="quiz-option"><input type="radio" name="l4q10" value="a"> Lampu meja bernuansa hangat (warm desk lamp).</label>
-              <label class="quiz-option"><input type="radio" name="l4q10" value="b"> Televisi besar.</label>
-            </div>
-
-            <button class="submit-btn" onclick="checkLevel4Quiz()">Cek Hasil Story Listening</button>
-            <div id="res-l4" class="result-box"></div>
+            <button id="nextStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomStory()">Next Story ▶️</button>
           </div>
         </div>
 
-        <!-- ================= LEVEL 5: SPONTANEOUS SPEAKING SIMULATOR ================= -->
+        <!-- ================= LEVEL 5: SPONTANEOUS DYNAMIC SPEAKING SIMULATOR ================= -->
         <div id="level5" class="level-content" style="display: none;">
           <div class="card">
-            <h3>🎙️ Level 5: Daily Speaking Simulator</h3>
+            <h3>🎙️ Level 5: Dynamic Speaking Simulator (Unlimited)</h3>
             <p style="color:#64748b; font-size:14px;">Latih refleks bicaramu! Dengarkan pertanyaan acak $\rightarrow$ tunggu timer 5 detik $\rightarrow$ langsung jawab via mikrofon.</p>
 
             <div class="sim-box">
-              <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="simProgress">Prompt 1 of 10</div>
+              <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="simProgress">Prompt #1</div>
               
               <button class="audio-btn" style="padding:12px 20px; font-size:15px;" onclick="startSpeakingSim()">▶️ Start Audio Prompt</button>
               
@@ -479,19 +375,16 @@
 
               <button id="simMicBtn" class="submit-btn" style="width:auto; padding:10px 22px; background:#e11d48;" onclick="startListeningSim()" disabled>🎙️ Jawab Sekarang (Bicara di Mic)</button>
 
-              <!-- Transkrip User -->
               <div class="sim-transcript" id="simTranscript">
                 <em>Transkrip jawabanmu akan muncul di sini...</em>
               </div>
 
-              <!-- Sample Native Response -->
               <div class="sample-response" id="sampleResponseBox" style="display:none;">
                 <strong>💡 Contoh Jawaban Alami (Sample Native Response):</strong>
                 <p id="sampleText" style="margin-top:6px; font-weight:600;"></p>
               </div>
 
-              <!-- Next Button -->
-              <button id="nextSimBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:15px;" onclick="nextSpeakingPrompt()">Next Question ▶️</button>
+              <button id="nextSimBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:15px;" onclick="generateNextSpeakingPrompt()">Next Question ▶️</button>
             </div>
           </div>
         </div>
@@ -555,7 +448,7 @@
       }
     }
 
-    // Level 1 Quiz Checker (Randomized Keys: b, a, b, a, b, a, b, a, b, a)
+    // Level 1 Quiz Checker
     function checkLevel1Quiz() {
       const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
       let score = 0;
@@ -587,81 +480,180 @@
       resDiv.innerHTML = `Skor Lu: ${score} / ${total} (${percentage}%)`;
     }
 
-    // Level 4 Story Quiz Checker (Randomized Keys: b, a, b, a, b, a, b, a, b, a)
-    function checkLevel4Quiz() {
-      const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
-      let score = 0;
-      for (let i = 1; i <= 10; i++) {
-        let selected = document.querySelector(`input[name="l4q${i}"]:checked`)?.value;
-        if (selected === keys[i - 1]) score++;
-      }
-      const resDiv = document.getElementById('res-l4');
-      resDiv.style.display = 'block';
-      resDiv.style.background = score >= 8 ? '#d1fae5' : '#fee2e2';
-      resDiv.style.color = score >= 8 ? '#065f46' : '#991b1b';
-      resDiv.innerHTML = `Skor Story Listening: ${score} / 10 (${score * 10}%)`;
-    }
-
-    // Level 5 Speaking Simulator Engine (10 Daily Prompts & Sample Responses)
-    const speakingData = [
+    // =========================================================================
+    // LEVEL 4: UNLIMITED DYNAMIC STORY ENGINE
+    // =========================================================================
+    const namePool = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
+    
+    const storyTemplates = [
       {
-        prompt: "What did you do last weekend, Eggha?",
-        sample: "Last weekend, I went for a morning run at the park and then met my friends for iced coffee."
+        title: "Sunday Morning Run",
+        action: "met at the park early at 6 AM for a 5K run in Zone 2",
+        outcome: "bought iced Americano at a local coffee shop right after",
+        question: "Apa yang dilakukan karakter setelah lari pagi?",
+        correct: "Membeli iced Americano di warung kopi lokal",
+        wrong: "Langsung tidur kembali di rumah"
       },
       {
-        prompt: "What is your favorite food and why, Rebeca?",
-        sample: "My favorite food is Japanese ramen because I love hot, savory broth with delicious noodles."
+        title: "Baking Dark Chocolate Brownies",
+        action: "decided to bake homemade dark chocolate brownies on a rainy afternoon",
+        outcome: "shared the warm brownies with friends who loved every bite",
+        question: "Kue apa yang dibuat di sore hari yang hujan?",
+        correct: "Dark chocolate brownies",
+        wrong: "Cheese pizza"
       },
       {
-        prompt: "How do you usually spend your morning routine, Adam?",
-        sample: "I usually wake up at 6 AM, drink a glass of water, and do some light stretching before breakfast."
+        title: "Weekend Trip to Yogyakarta",
+        action: "took an early morning train from Jakarta for a weekend getaway to Jogja",
+        outcome: "enjoyed scenic green rice fields along the train journey",
+        question: "Transportasi apa yang dipakai untuk pergi liburan?",
+        correct: "Kereta api pagi",
+        wrong: "Mobil pribadi"
       },
       {
-        prompt: "What are your plans for this coming weekend, Anita?",
-        sample: "I'm planning to visit a local cafe with my friends and finish reading my favorite novel."
+        title: "Air Fryer Healthy Meal Prep",
+        action: "spent Sunday afternoon roasting chicken fillet and sweet potatoes",
+        outcome: "used an air fryer to keep the weekly diet clean and healthy",
+        question: "Alat apa yang dipakai untuk membuat meal prep sehat?",
+        correct: "Air fryer",
+        wrong: "Microwave biasa"
       },
       {
-        prompt: "Can you describe your best friend to Zoey?",
-        sample: "My best friend is very kind, energetic, and always supportive whenever I need help."
+        title: "Ramen Night in Bintaro",
+        action: "visited a brand new Japanese ramen restaurant in Bintaro on Friday night",
+        outcome: "loved the rich chicken broth and promised to come back next month",
+        question: "Di mana lokasi restoran ramen yang dikunjungi?",
+        correct: "Bintaro",
+        wrong: "Bandung"
       },
       {
-        prompt: "Where is your favorite place to hang out on Friday night?",
-        sample: "I love hanging out at a cozy coffee shop with comfortable seating and chill music."
+        title: "New Running Shoes",
+        action: "bought a new pair of running shoes with maximum cushioning online",
+        outcome: "tested the shoes during a smooth easy run the next morning",
+        question: "Apa keunggulan sepatu lari yang baru dibeli?",
+        correct: "Bantalan empuk (maximum cushioning)",
+        wrong: "Bahan besi tebal"
       },
       {
-        prompt: "What kind of music do you like listening to while relaxing?",
-        sample: "I really enjoy acoustic and neo-soul music because it helps me feel calm and relaxed."
-      },
-      {
-        prompt: "How do you stay healthy and active during busy weeks?",
-        sample: "I make sure to go for easy runs twice a week and prepare healthy meals using my air fryer."
-      },
-      {
-        prompt: "What was the last movie you watched at the cinema?",
-        sample: "The last movie I watched was an action comedy, and it was super entertaining."
-      },
-      {
-        prompt: "If you could travel anywhere right now, where would you go?",
-        sample: "I would love to travel to Kyoto in Japan to see the beautiful historic temples and streets."
+        title: "Coffee Festival Photography",
+        action: "brought a mobile camera to a vibrant coffee festival in Jakarta",
+        outcome: "captured gorgeous aesthetic photos of coffee cups and interior design",
+        question: "Apa objek foto utama yang diambil saat festival?",
+        correct: "Cangkir kopi dan dekorasi interior estetis",
+        wrong: "Hewan liar di hutan"
       }
     ];
 
-    let currentPromptIdx = 0;
+    let currentStoryObj = null;
+    let storiesCompleted = 0;
 
-    function loadPromptUI() {
-      const data = speakingData[currentPromptIdx];
-      document.getElementById('simProgress').innerText = `Prompt ${currentPromptIdx + 1} of ${speakingData.length}`;
-      document.getElementById('simPrompt').innerText = '"' + data.prompt + '"';
+    function loadNewRandomStory() {
+      // Pick random names
+      let char1 = namePool[Math.floor(Math.random() * namePool.length)];
+      let char2 = namePool[Math.floor(Math.random() * namePool.length)];
+      while (char1 === char2) char2 = namePool[Math.floor(Math.random() * namePool.length)];
+
+      // Pick random template
+      let tpl = storyTemplates[Math.floor(Math.random() * storyTemplates.length)];
+
+      let storyText = `Every weekend, ${char1} and ${char2} love hanging out together. Last time, they ${tpl.action}. Afterward, they ${tpl.outcome}.`;
+      
+      // Randomize correct answer position
+      let isCorrectA = Math.random() < 0.5;
+
+      currentStoryObj = {
+        title: `${tpl.title} (${char1} & ${char2})`,
+        text: storyText,
+        question: tpl.question,
+        correctValue: isCorrectA ? 'a' : 'b',
+        optA: isCorrectA ? tpl.correct : tpl.wrong,
+        optB: isCorrectA ? tpl.wrong : tpl.correct
+      };
+
+      // Render UI
+      document.getElementById('storyTitle').innerText = currentStoryObj.title;
+      document.getElementById('storyContent').innerText = currentStoryObj.text;
+      document.getElementById('storyQuestionText').innerText = "Pertanyaan: " + currentStoryObj.question;
+      document.getElementById('optTextA').innerText = currentStoryObj.optA;
+      document.getElementById('optTextB').innerText = currentStoryObj.optB;
+      
+      // Reset radio buttons & result UI
+      document.querySelectorAll('input[name="dynStoryQ"]').forEach(r => r.checked = false);
+      let resDiv = document.getElementById('res-dynamic-story');
+      resDiv.style.display = 'none';
+      document.getElementById('nextStoryBtn').style.display = 'none';
+    }
+
+    function playCurrentStoryAudio() {
+      if (currentStoryObj) playAudio(currentStoryObj.text);
+    }
+
+    function checkDynamicStoryAnswer() {
+      let selected = document.querySelector('input[name="dynStoryQ"]:checked')?.value;
+      let resDiv = document.getElementById('res-dynamic-story');
+      resDiv.style.display = 'block';
+
+      if (!selected) {
+        resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e';
+        resDiv.innerText = "⚠️ Pilih salah satu jawaban dulu ya!";
+        return;
+      }
+
+      if (selected === currentStoryObj.correctValue) {
+        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
+        resDiv.innerText = "✅ Benar Banget! Klik tombol di bawah untuk lanjut ke cerita baru berikutnya.";
+        document.getElementById('nextStoryBtn').style.display = 'block';
+        storiesCompleted++;
+        document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
+      } else {
+        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
+        resDiv.innerText = "❌ Kurang tepat. Coba putar audio cerita sekali lagi!";
+      }
+    }
+
+    // =========================================================================
+    // LEVEL 5: UNLIMITED DYNAMIC SPEAKING SIMULATOR ENGINE
+    // =========================================================================
+    const promptPatterns = [
+      { pattern: "What did {c1} do last weekend with {c2}?", sample: "They went for an easy morning run at the park and drank iced Americano together." },
+      { pattern: "What is {c1}'s favorite food to eat in Bintaro?", sample: "Their favorite food is rich chicken ramen with delicious broth." },
+      { pattern: "How does {c1} usually prepare for a morning run with {c2}?", sample: "They drink water, wear cushioned running shoes, and do light stretching." },
+      { pattern: "Where would {c1} like to travel for vacation with {c2}?", sample: "They would love to take a train trip to Yogyakarta to enjoy the scenic rice fields." },
+      { pattern: "What kind of music does {c1} enjoy listening to while relaxing?", sample: "They really enjoy acoustic and pop music because it feels calm and refreshing." },
+      { pattern: "Why does {c1} prefer making meal prep with an air fryer?", sample: "Because it uses less oil, making chicken fillets and sweet potatoes healthier and fast." },
+      { pattern: "How do {c1} and {c2} usually spend a rainy afternoon?", sample: "They love baking chocolate brownies or watching movies together on Netflix." }
+    ];
+
+    let speakingCount = 1;
+    let currentSpeakingObj = null;
+
+    function generateNextSpeakingPrompt() {
+      let c1 = namePool[Math.floor(Math.random() * namePool.length)];
+      let c2 = namePool[Math.floor(Math.random() * namePool.length)];
+      while (c1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
+
+      let tpl = promptPatterns[Math.floor(Math.random() * promptPatterns.length)];
+      let promptText = tpl.pattern.replace('{c1}', c1).replace('{c2}', c2);
+
+      currentSpeakingObj = {
+        prompt: promptText,
+        sample: tpl.sample
+      };
+
+      document.getElementById('simProgress').innerText = `Prompt #${speakingCount}`;
+      document.getElementById('simPrompt').innerText = '"' + promptText + '"';
       document.getElementById('simTimer').innerText = '--';
       document.getElementById('simTranscript').innerHTML = '<em>Transkrip jawabanmu akan muncul di sini...</em>';
       document.getElementById('sampleResponseBox').style.display = 'none';
       document.getElementById('nextSimBtn').style.display = 'none';
       document.getElementById('simMicBtn').disabled = true;
+
+      speakingCount++;
     }
 
     function startSpeakingSim() {
-      const data = speakingData[currentPromptIdx];
-      playAudio(data.prompt);
+      if (!currentSpeakingObj) return;
+      playAudio(currentSpeakingObj.prompt);
 
       let seconds = 5;
       const timerDisplay = document.getElementById('simTimer');
@@ -694,8 +686,7 @@
         document.getElementById("simTranscript").innerHTML = `<strong>Jawabanmu:</strong> "${transcript}"`;
         
         // Show Sample Native Response
-        const data = speakingData[currentPromptIdx];
-        document.getElementById('sampleText').innerText = `"${data.sample}"`;
+        document.getElementById('sampleText').innerText = `"${currentSpeakingObj.sample}"`;
         document.getElementById('sampleResponseBox').style.display = 'block';
         document.getElementById('nextSimBtn').style.display = 'block';
       };
@@ -703,13 +694,9 @@
       recognition.start();
     }
 
-    function nextSpeakingPrompt() {
-      currentPromptIdx = (currentPromptIdx + 1) % speakingData.length;
-      loadPromptUI();
-    }
-
-    // Init UI
-    loadPromptUI();
+    // Init Dynamic UI
+    loadNewRandomStory();
+    generateNextSpeakingPrompt();
   </script>
 
 </body>
