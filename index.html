@@ -328,19 +328,19 @@
           </div>
         </div>
 
-        <!-- ================= LEVEL 4: UNLIMITED DYNAMIC STORIES (1 STORY AT A TIME) ================= -->
+        <!-- ================= LEVEL 4: PURE LISTENING UNLIMITED STORIES ================= -->
         <div id="level4" class="level-content" style="display: none;">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <h3>📖 Level 4: Unlimited Daily Story Generator</h3>
+              <h3>📖 Level 4: Pure Listening Story Challenge</h3>
               <span class="streak-badge" id="storyStreakBadge">🔥 Stories Completed: 0</span>
             </div>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan cerita unik di bawah ini $\rightarrow$ jawab kuis $\rightarrow$ klik "Next Story" jika benar!</p>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan audio cerita di bawah ini (tanpa teks) $\rightarrow$ jawab kuis pemahaman $\rightarrow$ klik "Next Story" jika benar!</p>
 
-            <div class="story-box" id="dynamicStoryBox">
-              <h4 id="storyTitle">Loading Story...</h4>
-              <p id="storyContent" style="margin: 10px 0; font-size:15px;"></p>
-              <button class="audio-btn" id="storyAudioBtn" onclick="playCurrentStoryAudio()">🔊 Putar Audio Cerita</button>
+            <div class="story-box" id="dynamicStoryBox" style="text-align: center; padding: 25px;">
+              <h4 id="storyTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Story Challenge</h4>
+              <p style="color:#64748b; font-size:14px; margin-bottom:15px;">🎧 Dengarkan cerita secara seksama:</p>
+              <button class="audio-btn" id="storyAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentStoryAudio()">🔊 Putar Audio Cerita</button>
             </div>
 
             <div class="quiz-group">
@@ -481,7 +481,7 @@
     }
 
     // =========================================================================
-    // LEVEL 4: UNLIMITED DYNAMIC STORY ENGINE
+    // LEVEL 4: UNLIMITED DYNAMIC STORY ENGINE (PURE LISTENING - NO STORY TEXT)
     // =========================================================================
     const namePool = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
     
@@ -548,21 +548,18 @@
     let storiesCompleted = 0;
 
     function loadNewRandomStory() {
-      // Pick random names
       let char1 = namePool[Math.floor(Math.random() * namePool.length)];
       let char2 = namePool[Math.floor(Math.random() * namePool.length)];
       while (char1 === char2) char2 = namePool[Math.floor(Math.random() * namePool.length)];
 
-      // Pick random template
       let tpl = storyTemplates[Math.floor(Math.random() * storyTemplates.length)];
 
       let storyText = `Every weekend, ${char1} and ${char2} love hanging out together. Last time, they ${tpl.action}. Afterward, they ${tpl.outcome}.`;
       
-      // Randomize correct answer position
       let isCorrectA = Math.random() < 0.5;
 
       currentStoryObj = {
-        title: `${tpl.title} (${char1} & ${char2})`,
+        title: `Story #${storiesCompleted + 1}`,
         text: storyText,
         question: tpl.question,
         correctValue: isCorrectA ? 'a' : 'b',
@@ -570,14 +567,12 @@
         optB: isCorrectA ? tpl.wrong : tpl.correct
       };
 
-      // Render UI
+      // Render UI (No Story Text displayed!)
       document.getElementById('storyTitle').innerText = currentStoryObj.title;
-      document.getElementById('storyContent').innerText = currentStoryObj.text;
       document.getElementById('storyQuestionText').innerText = "Pertanyaan: " + currentStoryObj.question;
       document.getElementById('optTextA').innerText = currentStoryObj.optA;
       document.getElementById('optTextB').innerText = currentStoryObj.optB;
       
-      // Reset radio buttons & result UI
       document.querySelectorAll('input[name="dynStoryQ"]').forEach(r => r.checked = false);
       let resDiv = document.getElementById('res-dynamic-story');
       resDiv.style.display = 'none';
@@ -601,7 +596,7 @@
 
       if (selected === currentStoryObj.correctValue) {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerText = "✅ Benar Banget! Klik tombol di bawah untuk lanjut ke cerita baru berikutnya.";
+        resDiv.innerText = "✅ Benar Banget! Pendengaranmu mantap. Klik tombol di bawah untuk lanjut ke cerita baru.";
         document.getElementById('nextStoryBtn').style.display = 'block';
         storiesCompleted++;
         document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
