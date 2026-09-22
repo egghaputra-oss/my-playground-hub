@@ -680,14 +680,14 @@
           </div>
         </div>
 
-        <!-- MANDARIN LEVEL 4: STORIES WITH PINYIN LATIN -->
+        <!-- MANDARIN LEVEL 4: UNLIMITED NON-REPEATING STORIES WITH ENGLISH Q&A + LATIN PINYIN -->
         <div id="m_level4" class="mandarin-level-content" style="display: none;">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <h3>📖 Level 4: Mandarin Short Story Challenge</h3>
               <span class="streak-badge" id="mandarinStoryStreakBadge">🔥 Stories Completed: 0</span>
             </div>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan audio cerita Mandarin &rarr; pelajari Pinyin Latin jika perlu &rarr; jawab kuisnya!</p>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the Mandarin story audio &rarr; check the Latin Pinyin guide &rarr; answer the question in English!</p>
 
             <div class="story-box" id="mandarinDynamicStoryBox" style="text-align: center; padding: 25px;">
               <h4 id="mandarinStoryTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Mandarin Story Challenge</h4>
@@ -697,7 +697,7 @@
                 Loading Pinyin Latin...
               </div>
 
-              <button class="audio-btn" id="mandarinStoryAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentMandarinStoryAudio()">🔊 Putar Audio Mandarin Story</button>
+              <button class="audio-btn" id="mandarinStoryAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentMandarinStoryAudio()">🔊 Play Mandarin Story Audio</button>
             </div>
 
             <div class="quiz-group">
@@ -706,7 +706,7 @@
               <label class="quiz-option" id="mOptLabelB"><input type="radio" name="dynMandarinStoryQ" value="b"><span id="mOptTextB">Option B</span></label>
             </div>
 
-            <button class="submit-btn" onclick="checkDynamicMandarinStoryAnswer()">Cek Jawaban Cerita</button>
+            <button class="submit-btn" onclick="checkDynamicMandarinStoryAnswer()">Check Answer</button>
             <div id="res-dynamic-mandarin-story" class="result-box"></div>
 
             <button id="nextMandarinStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomMandarinStory()">Next Story ▶️</button>
@@ -1013,45 +1013,141 @@
     }
 
     // =========================================================================
-    // MANDARIN LEVEL 4: SHORT STORIES WITH PINYIN LATIN
+    // MANDARIN LEVEL 4: 15 NON-REPEATING STORIES (ENGLISH Q&A + PINYIN LATIN)
     // =========================================================================
     const mandarinStoryBank = [
       {
-        title: "Coffee & Morning Run",
         hanzi: "昨天早上，Eggha 喝了一杯冰美式咖啡。然后，他去公园跑步。",
         pinyin: "Zuótiān zǎoshang, Eggha hē le yì bēi bīng měishì kāfēi. Ránhòu, tā qù gōngyuán pǎobù.",
-        question: "Apa yang dilakukan Eggha setelah minum kopi di pagi hari?",
-        correct: "Pergi lari di taman (Gōngyuán pǎobù)",
-        wrong: "Tidur di rumah"
+        question: "What did Eggha do after drinking iced Americano in the morning?",
+        correct: "Went for a morning run in the park (Gōngyuán pǎobù)",
+        wrong: "Went back home to sleep"
       },
       {
-        title: "Buying Fresh Fruits",
-        action: "Rebeca 和 Anita 去超市买水果。她们买了新鲜的苹果和香蕉。",
+        hanzi: "Rebeca 和 Anita 去超市买水果。她们买了新鲜的苹果和香蕉。",
         pinyin: "Rebeca hé Anita qù chāoshì mǎi shuǐguǒ. Tāmen mǎi le xīnxiān de píngguǒ hé xiāngjiāo.",
-        question: "Buah apa yang dibeli Rebeca dan Anita di supermarket?",
-        correct: "Apel dan pisang segar (Píngguǒ hé xiāngjiāo)",
-        wrong: "Semangka dan jeruk"
+        question: "What fresh fruits did Rebeca and Anita buy at the supermarket?",
+        correct: "Fresh apples and bananas (Píngguǒ hé xiāngjiāo)",
+        wrong: "Watermelon and sweet oranges"
       },
       {
-        title: "Delicious Ramen Dinner",
-        action: "星期五晚上，Adam 去吃日本拉面。拉面非常好吃！",
-        pinyin: "Xīngqīwǔ wǎnshang, Adam qù chī Rìběn lāmiàn. Lāmiàn fēicháng hǎochī!",
-        question: "Kapan Adam pergi makan ramen Jepang?",
-        correct: "Malam Jumat (Xīngqīwǔ wǎnshang)",
-        wrong: "Minggu pagi"
+        hanzi: "星期五晚上，Adam 去 Bintaro 吃日本拉面。拉面汤非常美味！",
+        pinyin: "Xīngqīwǔ wǎnshang, Adam qù Bintaro chī Rìběn lāmiàn. Lāmiàn tāng fēicháng měiwèi!",
+        question: "Where did Adam go to eat Japanese ramen on Friday night?",
+        correct: "In Bintaro with rich chicken broth (Lāmiàn tāng)",
+        wrong: "In Bandung city center"
+      },
+      {
+        hanzi: "Zoey 用空气炸锅烤鸡胸肉和红薯。她喜欢吃健康餐。",
+        pinyin: "Zoey yòng kōngqì zhàguō kǎo jīxiōngròu hé hóngshǔ. Tā xǐhuan chī jiànkāng cān.",
+        question: "What appliance did Zoey use to prepare chicken fillet and sweet potatoes?",
+        correct: "An air fryer (Kōngqì zhàguō)",
+        wrong: "A conventional microwave oven"
+      },
+      {
+        hanzi: "Anita 坐早上的火车去由克亚卡他度假。她在路上看风景。",
+        pinyin: "Anita zuò zǎoshang de huǒchē qù Yóukèyàkǎtā dùjià. Tā zài lùshang kàn fēngjǐng.",
+        question: "How did Anita travel for her holiday getaway to Jogja?",
+        correct: "By early morning train (Huǒchē)",
+        wrong: "By private airplane"
+      },
+      {
+        hanzi: "下雨的下午，Rebeca 烤了黑巧克力布朗尼蛋糕。朋友们都觉得很好吃。",
+        pinyin: "Xiàyǔ de xiàwǔ, Rebeca kǎo le hēi qiǎokèlì bùlǎngní dàngāo. Péngyou men dōu juéde hěn hǎochī.",
+        question: "What sweet treat did Rebeca bake on a rainy afternoon?",
+        correct: "Dark chocolate brownies (Hēi qiǎokèlì bùlǎngní)",
+        wrong: "Crispy cheese pizza"
+      },
+      {
+        hanzi: "Eggha 在网上买了一双新的减震跑步鞋。第二天早上他去试跑。",
+        pinyin: "Eggha zài wǎngshang mǎi le yì shuāng xīn de jiǎnzhèn pǎobùxié. Dì-èr tiān zǎoshang tā qù shìpǎo.",
+        question: "What footwear did Eggha order online for running?",
+        correct: "Cushioned running shoes (Pǎobùxié)",
+        wrong: "Heavy leather work boots"
+      },
+      {
+        hanzi: "Zoey 带着相机去雅加达的咖啡节。她拍了很多漂亮的照片。",
+        pinyin: "Zoey dài zhe xiàngjī qù Yǎjiādá de kāfēijié. Tā pāi le hěn duō piàoliang de zhàopiān.",
+        question: "What equipment did Zoey bring to the coffee festival in Jakarta?",
+        correct: "A camera to take photos (Xiàngjī)",
+        wrong: "An acoustic guitar"
+      },
+      {
+        hanzi: "Adam 晚上在房间里听流行音乐。他觉得心情很轻松。",
+        pinyin: "Adam wǎnshang zài fángjiān lǐ tīng liúxíng yīnyuè. Tā juéde xīnqíng hěn qīngsōng.",
+        question: "What genre of music did Adam listen to in his room?",
+        correct: "Pop music (Liúxíng yīnyuè)",
+        wrong: "Heavy metal rock music"
+      },
+      {
+        hanzi: "Anita 准备了燕麦片和可可粉作为早餐。这非常健康。",
+        pinyin: "Anita zhǔnbèi le yànmài piàn hé kěkě fěn zuòwéi zǎocān. Zhè fēicháng jiànkāng.",
+        question: "What healthy dish did Anita prepare for her breakfast?",
+        correct: "Overnight oats with cocoa powder (Yànmài piàn)",
+        wrong: "Fried rice with eggs"
+      },
+      {
+        hanzi: "星期六，Rebeca 去海滩看日落。她一边看日落一边喝新鲜椰汁。",
+        pinyin: "Xīngqīliù, Rebeca qù hǎitān kàn rìluò. Tā yìbiān kàn rìluò yìbiān hē xīnxiān yēzhī.",
+        question: "What drink did Rebeca enjoy while watching the beach sunset?",
+        correct: "Fresh coconut water (Xīnxiān yēzhī)",
+        wrong: "Hot black coffee"
+      },
+      {
+        hanzi: "Zoey 和 Eggha 去图书馆看书。那里非常安静。",
+        pinyin: "Zoey hé Eggha qù túshūguǎn kàn shū. Nàlǐ fēicháng ānjìng.",
+        question: "Where did Zoey and Eggha go to spend a quiet study session?",
+        correct: "At the city library (Túshūguǎn)",
+        wrong: "In a noisy shopping mall"
+      },
+      {
+        hanzi: "Adam 在周末打扫客厅。他摆放了一些绿植和香薰蜡烛。",
+        pinyin: "Adam zài zhōumò dǎsǎo kètīng. Tā bǎifàng le yìxiē lǜzhí hé xiāngxūn làzhú.",
+        question: "How did Adam decorate the living room after cleaning it?",
+        correct: "With indoor plants and candles (Lǜzhí hé làzhú)",
+        wrong: "With colorful party balloons"
+      },
+      {
+        hanzi: "Anita 和 Rebeca 晚上去听户外不插电音乐会。她们一起唱歌。",
+        pinyin: "Anita hé Rebeca wǎnshang qù tīng hùwài bùchādiàn yīnyuèhuì. Tāmen yìqǐ chànggē.",
+        question: "What event did Anita and Rebeca attend in the evening?",
+        correct: "An outdoor acoustic music concert (Hùwài yīnyuèhuì)",
+        wrong: "A baking masterclass"
+      },
+      {
+        hanzi: "Eggha 领养了一只活泼的金毛小狗。他在院子里和狗玩耍。",
+        pinyin: "Eggha lǐngyǎng le yì zhī huópō de jīnmáo xiǎogǒu. Tā zài yuànzi lǐ hé gǒu wánshuǎ.",
+        question: "What pet did Eggha adopt and play with in the garden?",
+        correct: "A lively golden retriever puppy (Jīnmáo xiǎogǒu)",
+        wrong: "A quiet Persian cat"
       }
     ];
 
+    let availableMandarinStoryIndices = [];
     let currentMandarinStoryObj = null;
     let mandarinStoriesCompleted = 0;
 
+    // Non-repeating Fisher-Yates Shuffle Algorithm for Mandarin
+    function getNextMandarinStoryTemplate() {
+      if (availableMandarinStoryIndices.length === 0) {
+        for (let i = 0; i < mandarinStoryBank.length; i++) {
+          availableMandarinStoryIndices.push(i);
+        }
+        for (let i = availableMandarinStoryIndices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [availableMandarinStoryIndices[i], availableMandarinStoryIndices[j]] = [availableMandarinStoryIndices[j], availableMandarinStoryIndices[i]];
+        }
+      }
+      return mandarinStoryBank[availableMandarinStoryIndices.pop()];
+    }
+
     function loadNewRandomMandarinStory() {
-      let tpl = mandarinStoryBank[Math.floor(Math.random() * mandarinStoryBank.length)];
+      let tpl = getNextMandarinStoryTemplate();
       let isCorrectA = Math.random() < 0.5;
 
       currentMandarinStoryObj = {
         title: `Mandarin Story #${mandarinStoriesCompleted + 1}`,
-        hanzi: tpl.hanzi || tpl.action,
+        hanzi: tpl.hanzi,
         pinyin: tpl.pinyin,
         question: tpl.question,
         correctValue: isCorrectA ? 'a' : 'b',
@@ -1061,7 +1157,7 @@
 
       document.getElementById('mandarinStoryTitle').innerText = currentMandarinStoryObj.title;
       document.getElementById('mandarinPinyinTextDisplay').innerText = "Pinyin: " + currentMandarinStoryObj.pinyin;
-      document.getElementById('mandarinStoryQuestionText').innerText = "Pertanyaan: " + currentMandarinStoryObj.question;
+      document.getElementById('mandarinStoryQuestionText').innerText = "Question: " + currentMandarinStoryObj.question;
       document.getElementById('mOptTextA').innerText = currentMandarinStoryObj.optA;
       document.getElementById('mOptTextB').innerText = currentMandarinStoryObj.optB;
 
@@ -1086,7 +1182,7 @@
       document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
       document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
 
-      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Pilih jawaban terlebih dahulu!"; return; }
+      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
 
       const correctVal = currentMandarinStoryObj.correctValue;
       const correctLabel = correctVal === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
@@ -1094,7 +1190,7 @@
 
       if (selectedInput.value === correctVal) {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerText = "✅ Benar sekali! Pendengaran bahasa Mandarin kamu sangat bagus. Klik tombol di bawah untuk cerita selanjutnya.";
+        resDiv.innerText = "✅ That's correct! Great Mandarin listening comprehension. Click below for the next story.";
         document.getElementById('nextMandarinStoryBtn').style.display = 'block';
         mandarinStoriesCompleted++;
         document.getElementById('mandarinStoryStreakBadge').innerText = `🔥 Stories Completed: ${mandarinStoriesCompleted}`;
@@ -1103,7 +1199,7 @@
         wrongLabel.classList.add('wrong-option');
 
         resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Masih kurang tepat. Jawaban yang benar di-highlight hijau, pilihanmu di-highlight merah. Coba lagi!";
+        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green, and your selection in red!";
       }
     }
 
@@ -1121,7 +1217,7 @@
     function generateNextSpeakingPrompt() {
       let c1 = namePool[Math.floor(Math.random() * namePool.length)];
       let c2 = namePool[Math.floor(Math.random() * namePool.length)];
-      while (char1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
+      while (c1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
 
       let tpl = promptPatterns[Math.floor(Math.random() * promptPatterns.length)];
       let promptText = tpl.pattern.replace('{c1}', c1).replace('{c2}', c2);
