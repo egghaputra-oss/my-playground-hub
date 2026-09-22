@@ -328,19 +328,19 @@
           </div>
         </div>
 
-        <!-- ================= LEVEL 4: PURE LISTENING UNLIMITED STORIES ================= -->
+        <!-- ================= LEVEL 4: PURE LISTENING UNLIMITED NON-REPEATING STORIES ================= -->
         <div id="level4" class="level-content" style="display: none;">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <h3>📖 Level 4: Pure Listening Story Challenge</h3>
               <span class="streak-badge" id="storyStreakBadge">🔥 Stories Completed: 0</span>
             </div>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan audio cerita di bawah ini (tanpa teks) $\rightarrow$ jawab kuis pemahaman $\rightarrow$ klik "Next Story" jika benar!</p>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan audio cerita di bawah ini (tanpa teks) &rarr; jawab kuis pemahaman &rarr; klik "Next Story" jika benar!</p>
 
             <div class="story-box" id="dynamicStoryBox" style="text-align: center; padding: 25px;">
               <h4 id="storyTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Story Challenge</h4>
-              <p style="color:#64748b; font-size:14px; margin-bottom:15px;">🎧 Dengarkan cerita secara seksama:</p>
-              <button class="audio-btn" id="storyAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentStoryAudio()">🔊 Putar Audio Cerita</button>
+              <p style="color:#64748b; font-size:14px; margin-bottom:15px;">🎧 Listen to the story carefully:</p>
+              <button class="audio-btn" id="storyAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentStoryAudio()">🔊 Play Story Audio</button>
             </div>
 
             <div class="quiz-group">
@@ -349,7 +349,7 @@
               <label class="quiz-option"><input type="radio" name="dynStoryQ" value="b" id="optLabelB"><span id="optTextB">Option B</span></label>
             </div>
 
-            <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Cek Jawaban Cerita</button>
+            <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Check Answer</button>
             <div id="res-dynamic-story" class="result-box"></div>
 
             <button id="nextStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomStory()">Next Story ▶️</button>
@@ -360,7 +360,7 @@
         <div id="level5" class="level-content" style="display: none;">
           <div class="card">
             <h3>🎙️ Level 5: Dynamic Speaking Simulator (Unlimited)</h3>
-            <p style="color:#64748b; font-size:14px;">Latih refleks bicaramu! Dengarkan pertanyaan acak $\rightarrow$ tunggu timer 5 detik $\rightarrow$ langsung jawab via mikrofon.</p>
+            <p style="color:#64748b; font-size:14px;">Latih refleks bicaramu! Dengarkan pertanyaan acak &rarr; tunggu timer 5 detik &rarr; langsung jawab via mikrofon.</p>
 
             <div class="sim-box">
               <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="simProgress">Prompt #1</div>
@@ -481,78 +481,144 @@
     }
 
     // =========================================================================
-    // LEVEL 4: UNLIMITED DYNAMIC STORY ENGINE (PURE LISTENING - NO STORY TEXT)
+    // LEVEL 4: UNLIMITED NON-REPEATING STORY ENGINE (15 DIVERSE SCENARIOS)
     // =========================================================================
     const namePool = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
     
     const storyTemplates = [
       {
-        title: "Sunday Morning Run",
         action: "met at the park early at 6 AM for a 5K run in Zone 2",
         outcome: "bought iced Americano at a local coffee shop right after",
-        question: "Apa yang dilakukan karakter setelah lari pagi?",
-        correct: "Membeli iced Americano di warung kopi lokal",
-        wrong: "Langsung tidur kembali di rumah"
+        question: "What did the characters do after their morning run?",
+        correct: "Bought iced Americano at a local coffee shop",
+        wrong: "Went straight back home to sleep"
       },
       {
-        title: "Baking Dark Chocolate Brownies",
         action: "decided to bake homemade dark chocolate brownies on a rainy afternoon",
         outcome: "shared the warm brownies with friends who loved every bite",
-        question: "Kue apa yang dibuat di sore hari yang hujan?",
+        question: "What baked treat was prepared on the rainy afternoon?",
         correct: "Dark chocolate brownies",
         wrong: "Cheese pizza"
       },
       {
-        title: "Weekend Trip to Yogyakarta",
         action: "took an early morning train from Jakarta for a weekend getaway to Jogja",
         outcome: "enjoyed scenic green rice fields along the train journey",
-        question: "Transportasi apa yang dipakai untuk pergi liburan?",
-        correct: "Kereta api pagi",
-        wrong: "Mobil pribadi"
+        question: "How did they travel for their weekend getaway?",
+        correct: "By early morning train",
+        wrong: "By private car"
       },
       {
-        title: "Air Fryer Healthy Meal Prep",
         action: "spent Sunday afternoon roasting chicken fillet and sweet potatoes",
         outcome: "used an air fryer to keep the weekly diet clean and healthy",
-        question: "Alat apa yang dipakai untuk membuat meal prep sehat?",
-        correct: "Air fryer",
-        wrong: "Microwave biasa"
+        question: "Which appliance was used for healthy meal prep?",
+        correct: "An air fryer",
+        wrong: "A standard microwave"
       },
       {
-        title: "Ramen Night in Bintaro",
         action: "visited a brand new Japanese ramen restaurant in Bintaro on Friday night",
         outcome: "loved the rich chicken broth and promised to come back next month",
-        question: "Di mana lokasi restoran ramen yang dikunjungi?",
-        correct: "Bintaro",
-        wrong: "Bandung"
+        question: "Where was the new ramen restaurant located?",
+        correct: "In Bintaro",
+        wrong: "In Bandung"
       },
       {
-        title: "New Running Shoes",
         action: "bought a new pair of running shoes with maximum cushioning online",
         outcome: "tested the shoes during a smooth easy run the next morning",
-        question: "Apa keunggulan sepatu lari yang baru dibeli?",
-        correct: "Bantalan empuk (maximum cushioning)",
-        wrong: "Bahan besi tebal"
+        question: "What was the main feature of the new running shoes?",
+        correct: "Maximum cushioning",
+        wrong: "Heavy iron soles"
       },
       {
-        title: "Coffee Festival Photography",
         action: "brought a mobile camera to a vibrant coffee festival in Jakarta",
         outcome: "captured gorgeous aesthetic photos of coffee cups and interior design",
-        question: "Apa objek foto utama yang diambil saat festival?",
-        correct: "Cangkir kopi dan dekorasi interior estetis",
-        wrong: "Hewan liar di hutan"
+        question: "What were the main subjects of the photos taken?",
+        correct: "Coffee cups and aesthetic interior designs",
+        wrong: "Wild animals in the forest"
+      },
+      {
+        action: "adopted an energetic golden retriever puppy and brought him home",
+        outcome: "spent the whole weekend playing fetch in the backyard",
+        question: "What kind of pet was brought home?",
+        correct: "An energetic golden retriever puppy",
+        wrong: "A quiet Persian cat"
+      },
+      {
+        action: "attended an outdoor acoustic music concert under the stars",
+        outcome: "sang along to their favorite pop songs all night long",
+        question: "What type of concert did they attend?",
+        correct: "An outdoor acoustic music concert",
+        wrong: "An indoor heavy metal concert"
+      },
+      {
+        action: "reorganized the bedroom desk and installed a new warm desk lamp",
+        outcome: "created a cozy atmosphere for reading novels every evening",
+        question: "What item was added to make the desk cozy?",
+        correct: "A warm desk lamp",
+        wrong: "A large desktop computer"
+      },
+      {
+        action: "drove down to Pangandaran beach early Saturday morning",
+        outcome: "watched the sunset while drinking fresh coconut water",
+        question: "What did they drink while watching the sunset at the beach?",
+        correct: "Fresh coconut water",
+        wrong: "Hot chocolate milk"
+      },
+      {
+        action: "spent Saturday morning cleaning and decluttering the living room",
+        outcome: "decorated the space with green indoor plants and candles",
+        question: "How was the living room decorated after cleaning?",
+        correct: "With green indoor plants and candles",
+        wrong: "With colorful balloons"
+      },
+      {
+        action: "tried a new overnight oats recipe using cocoa powder and FiberCreme",
+        outcome: "found it super delicious and decided to make it every weekday",
+        question: "What healthy breakfast recipe was prepared?",
+        correct: "Overnight oats with cocoa powder and FiberCreme",
+        wrong: "Fried rice with eggs"
+      },
+      {
+        action: "went to the local city library to study and prepare for upcoming goals",
+        outcome: "spent three quiet hours reading in the peaceful study corner",
+        question: "Where did they spend three quiet hours studying?",
+        correct: "In the peaceful study corner at the library",
+        wrong: "In a crowded shopping mall"
+      },
+      {
+        action: "joined a community photography walk around historic old town buildings",
+        outcome: "uploaded their favorite urban photos directly to microstock platforms",
+        question: "What did they photograph during the community walk?",
+        correct: "Historic old town buildings and urban architecture",
+        wrong: "Underwater marine life"
       }
     ];
 
+    let availableStoryIndices = [];
     let currentStoryObj = null;
     let storiesCompleted = 0;
+
+    // Shuffle & Non-Repeating Pick Algorithm
+    function getNextStoryTemplate() {
+      if (availableStoryIndices.length === 0) {
+        for (let i = 0; i < storyTemplates.length; i++) {
+          availableStoryIndices.push(i);
+        }
+        // Fisher-Yates Shuffle
+        for (let i = availableStoryIndices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [availableStoryIndices[i], availableStoryIndices[j]] = [availableStoryIndices[j], availableStoryIndices[i]];
+        }
+      }
+      const nextIndex = availableStoryIndices.pop();
+      return storyTemplates[nextIndex];
+    }
 
     function loadNewRandomStory() {
       let char1 = namePool[Math.floor(Math.random() * namePool.length)];
       let char2 = namePool[Math.floor(Math.random() * namePool.length)];
       while (char1 === char2) char2 = namePool[Math.floor(Math.random() * namePool.length)];
 
-      let tpl = storyTemplates[Math.floor(Math.random() * storyTemplates.length)];
+      let tpl = getNextStoryTemplate();
 
       let storyText = `Every weekend, ${char1} and ${char2} love hanging out together. Last time, they ${tpl.action}. Afterward, they ${tpl.outcome}.`;
       
@@ -569,7 +635,7 @@
 
       // Render UI (No Story Text displayed!)
       document.getElementById('storyTitle').innerText = currentStoryObj.title;
-      document.getElementById('storyQuestionText').innerText = "Pertanyaan: " + currentStoryObj.question;
+      document.getElementById('storyQuestionText').innerText = "Question: " + currentStoryObj.question;
       document.getElementById('optTextA').innerText = currentStoryObj.optA;
       document.getElementById('optTextB').innerText = currentStoryObj.optB;
       
@@ -590,19 +656,19 @@
 
       if (!selected) {
         resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e';
-        resDiv.innerText = "⚠️ Pilih salah satu jawaban dulu ya!";
+        resDiv.innerText = "⚠️ Please select an answer first!";
         return;
       }
 
       if (selected === currentStoryObj.correctValue) {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerText = "✅ Benar Banget! Pendengaranmu mantap. Klik tombol di bawah untuk lanjut ke cerita baru.";
+        resDiv.innerText = "✅ That's correct! Great listening skills. Click the button below for the next story.";
         document.getElementById('nextStoryBtn').style.display = 'block';
         storiesCompleted++;
         document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
       } else {
         resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Kurang tepat. Coba putar audio cerita sekali lagi!";
+        resDiv.innerText = "❌ Not quite right. Try listening to the story audio once more!";
       }
     }
 
