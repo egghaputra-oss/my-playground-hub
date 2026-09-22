@@ -59,6 +59,20 @@
     .quiz-title { font-weight: 600; color: #1e293b; margin-bottom: 8px; }
     .quiz-option { display: block; margin: 6px 0; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
     .quiz-option:hover { background-color: #f8fafc; }
+
+    /* Dynamic Correct/Wrong Highlights */
+    .quiz-option.correct-option {
+      background-color: #d1fae5 !important;
+      border-color: #10b981 !important;
+      color: #065f46 !important;
+      font-weight: 600;
+    }
+    .quiz-option.wrong-option {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+      font-weight: 600;
+    }
     
     button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
     button.submit-btn:hover { background-color: #059669; }
@@ -343,8 +357,8 @@
 
             <div class="quiz-group">
               <p class="quiz-title" id="storyQuestionText">Loading Question...</p>
-              <label class="quiz-option"><input type="radio" name="dynStoryQ" value="a" id="optLabelA"><span id="optTextA">Option A</span></label>
-              <label class="quiz-option"><input type="radio" name="dynStoryQ" value="b" id="optLabelB"><span id="optTextB">Option B</span></label>
+              <label class="quiz-option" id="optLabelA"><input type="radio" name="dynStoryQ" value="a"><span id="optTextA">Option A</span></label>
+              <label class="quiz-option" id="optLabelB"><input type="radio" name="dynStoryQ" value="b"><span id="optTextB">Option B</span></label>
             </div>
 
             <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Check Answer</button>
@@ -484,7 +498,7 @@
           </div>
         </div>
 
-        <!-- MANDARIN LEVEL 2: GRAMMAR & SENTENCE STRUCTURE -->
+        <!-- MANDARIN LEVEL 2: GRAMMAR -->
         <div id="m_level2" class="mandarin-level-content" style="display: none;">
           <div class="card">
             <h3>📌 Level 2: Mandarin Basic Grammar (10 Soal)</h3>
@@ -555,7 +569,7 @@
           </div>
         </div>
 
-        <!-- MANDARIN LEVEL 3: DAILY PHRASES GRID (WITH LATIN PINYIN) -->
+        <!-- MANDARIN LEVEL 3: DAILY PHRASES GRID -->
         <div id="m_level3" class="mandarin-level-content" style="display: none;">
           <div class="card">
             <h3>👋 1. Greetings & Everyday Expressions (Salam & Pengungkapan)</h3>
@@ -688,8 +702,8 @@
 
             <div class="quiz-group">
               <p class="quiz-title" id="mandarinStoryQuestionText">Loading Question...</p>
-              <label class="quiz-option"><input type="radio" name="dynMandarinStoryQ" value="a" id="mOptLabelA"><span id="mOptTextA">Option A</span></label>
-              <label class="quiz-option"><input type="radio" name="dynMandarinStoryQ" value="b" id="mOptLabelB"><span id="mOptTextB">Option B</span></label>
+              <label class="quiz-option" id="mOptLabelA"><input type="radio" name="dynMandarinStoryQ" value="a"><span id="mOptTextA">Option A</span></label>
+              <label class="quiz-option" id="mOptLabelB"><input type="radio" name="dynMandarinStoryQ" value="b"><span id="mOptTextB">Option B</span></label>
             </div>
 
             <button class="submit-btn" onclick="checkDynamicMandarinStoryAnswer()">Cek Jawaban Cerita</button>
@@ -796,13 +810,26 @@
       }
     }
 
-    // English Level 1 Quiz Checker
+    // English Level 1 Quiz Checker with Highlighting
     function checkLevel1Quiz() {
       const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
       let score = 0;
       for (let i = 1; i <= 10; i++) {
-        let selected = document.querySelector(`input[name="l1q${i}"]:checked`)?.value;
-        if (selected === keys[i - 1]) score++;
+        const radios = document.querySelectorAll(`input[name="l1q${i}"]`);
+        const key = keys[i - 1];
+        radios.forEach(radio => {
+          const label = radio.closest('.quiz-option');
+          label.classList.remove('correct-option', 'wrong-option');
+          if (radio.value === key) {
+            label.classList.add('correct-option');
+          }
+          if (radio.checked && radio.value !== key) {
+            label.classList.add('wrong-option');
+          }
+          if (radio.checked && radio.value === key) {
+            score++;
+          }
+        });
       }
       const resDiv = document.getElementById('res-l1');
       resDiv.style.display = 'block';
@@ -811,14 +838,29 @@
       resDiv.innerHTML = `Skor Level 1 Lu: ${score} / 10 (${score * 10}%)`;
     }
 
-    // English Level 2 Grammar Checker
+    // English Level 2 Grammar Checker with Highlighting
     function checkQuiz(tabPrefix, answers) {
       let score = 0;
       let total = answers.length;
+      let prefixMap = { 'past': 'p', 'present': 'pr', 'continuous': 'c', 'perfect': 'pf' };
+      let prefix = prefixMap[tabPrefix];
+
       for (let i = 1; i <= total; i++) {
-        let prefixMap = { 'past': 'p', 'present': 'pr', 'continuous': 'c', 'perfect': 'pf' };
-        let selected = document.querySelector(`input[name="${prefixMap[tabPrefix]}${i}"]:checked`)?.value;
-        if (selected === answers[i - 1]) score++;
+        const radios = document.querySelectorAll(`input[name="${prefix}${i}"]`);
+        const key = answers[i - 1];
+        radios.forEach(radio => {
+          const label = radio.closest('.quiz-option');
+          label.classList.remove('correct-option', 'wrong-option');
+          if (radio.value === key) {
+            label.classList.add('correct-option');
+          }
+          if (radio.checked && radio.value !== key) {
+            label.classList.add('wrong-option');
+          }
+          if (radio.checked && radio.value === key) {
+            score++;
+          }
+        });
       }
       let resDiv = document.getElementById(`res-${tabPrefix}`);
       resDiv.style.display = 'block';
@@ -828,13 +870,26 @@
       resDiv.innerHTML = `Skor Lu: ${score} / ${total} (${percentage}%)`;
     }
 
-    // Mandarin Level 1 Checker
+    // Mandarin Level 1 Checker with Highlighting
     function checkMandarinL1Quiz() {
       const keys = ['a', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'];
       let score = 0;
       for (let i = 1; i <= 10; i++) {
-        let selected = document.querySelector(`input[name="ml1q${i}"]:checked`)?.value;
-        if (selected === keys[i - 1]) score++;
+        const radios = document.querySelectorAll(`input[name="ml1q${i}"]`);
+        const key = keys[i - 1];
+        radios.forEach(radio => {
+          const label = radio.closest('.quiz-option');
+          label.classList.remove('correct-option', 'wrong-option');
+          if (radio.value === key) {
+            label.classList.add('correct-option');
+          }
+          if (radio.checked && radio.value !== key) {
+            label.classList.add('wrong-option');
+          }
+          if (radio.checked && radio.value === key) {
+            score++;
+          }
+        });
       }
       const resDiv = document.getElementById('res-m-l1');
       resDiv.style.display = 'block';
@@ -843,13 +898,26 @@
       resDiv.innerHTML = `Skor Mandarin Level 1: ${score} / 10 (${score * 10}%)`;
     }
 
-    // Mandarin Level 2 Checker
+    // Mandarin Level 2 Checker with Highlighting
     function checkMandarinL2Quiz() {
       const keys = ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'];
       let score = 0;
       for (let i = 1; i <= 10; i++) {
-        let selected = document.querySelector(`input[name="mp${i}"]:checked`)?.value;
-        if (selected === keys[i - 1]) score++;
+        const radios = document.querySelectorAll(`input[name="mp${i}"]`);
+        const key = keys[i - 1];
+        radios.forEach(radio => {
+          const label = radio.closest('.quiz-option');
+          label.classList.remove('correct-option', 'wrong-option');
+          if (radio.value === key) {
+            label.classList.add('correct-option');
+          }
+          if (radio.checked && radio.value !== key) {
+            label.classList.add('wrong-option');
+          }
+          if (radio.checked && radio.value === key) {
+            score++;
+          }
+        });
       }
       const resDiv = document.getElementById('res-m-l2');
       resDiv.style.display = 'block';
@@ -905,6 +973,10 @@
       document.getElementById('optTextA').innerText = currentStoryObj.optA;
       document.getElementById('optTextB').innerText = currentStoryObj.optB;
       document.querySelectorAll('input[name="dynStoryQ"]').forEach(r => r.checked = false);
+
+      document.getElementById('optLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('optLabelB').classList.remove('correct-option', 'wrong-option');
+
       document.getElementById('res-dynamic-story').style.display = 'none';
       document.getElementById('nextStoryBtn').style.display = 'none';
     }
@@ -912,21 +984,31 @@
     function playCurrentStoryAudio() { if (currentStoryObj) playAudio(currentStoryObj.text); }
 
     function checkDynamicStoryAnswer() {
-      let selected = document.querySelector('input[name="dynStoryQ"]:checked')?.value;
+      let selectedInput = document.querySelector('input[name="dynStoryQ"]:checked');
       let resDiv = document.getElementById('res-dynamic-story');
       resDiv.style.display = 'block';
 
-      if (!selected) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
+      document.getElementById('optLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('optLabelB').classList.remove('correct-option', 'wrong-option');
 
-      if (selected === currentStoryObj.correctValue) {
+      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
+
+      const correctVal = currentStoryObj.correctValue;
+      const correctLabel = correctVal === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
+      correctLabel.classList.add('correct-option');
+
+      if (selectedInput.value === correctVal) {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
         resDiv.innerText = "✅ That's correct! Great listening skills. Click the button below for the next story.";
         document.getElementById('nextStoryBtn').style.display = 'block';
         storiesCompleted++;
         document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
       } else {
+        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
+        wrongLabel.classList.add('wrong-option');
+
         resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Not quite right. Try listening to the story audio once more!";
+        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green, and your pick is in red!";
       }
     }
 
@@ -984,6 +1066,10 @@
       document.getElementById('mOptTextB').innerText = currentMandarinStoryObj.optB;
 
       document.querySelectorAll('input[name="dynMandarinStoryQ"]').forEach(r => r.checked = false);
+
+      document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
+
       document.getElementById('res-dynamic-mandarin-story').style.display = 'none';
       document.getElementById('nextMandarinStoryBtn').style.display = 'none';
     }
@@ -993,21 +1079,31 @@
     }
 
     function checkDynamicMandarinStoryAnswer() {
-      let selected = document.querySelector('input[name="dynMandarinStoryQ"]:checked')?.value;
+      let selectedInput = document.querySelector('input[name="dynMandarinStoryQ"]:checked');
       let resDiv = document.getElementById('res-dynamic-mandarin-story');
       resDiv.style.display = 'block';
 
-      if (!selected) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Pilih jawaban terlebih dahulu!"; return; }
+      document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
+      document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
 
-      if (selected === currentMandarinStoryObj.correctValue) {
+      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Pilih jawaban terlebih dahulu!"; return; }
+
+      const correctVal = currentMandarinStoryObj.correctValue;
+      const correctLabel = correctVal === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
+      correctLabel.classList.add('correct-option');
+
+      if (selectedInput.value === correctVal) {
         resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
         resDiv.innerText = "✅ Benar sekali! Pendengaran bahasa Mandarin kamu sangat bagus. Klik tombol di bawah untuk cerita selanjutnya.";
         document.getElementById('nextMandarinStoryBtn').style.display = 'block';
         mandarinStoriesCompleted++;
         document.getElementById('mandarinStoryStreakBadge').innerText = `🔥 Stories Completed: ${mandarinStoriesCompleted}`;
       } else {
+        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
+        wrongLabel.classList.add('wrong-option');
+
         resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Masih kurang tepat. Coba dengarkan audio cerita Mandarin sekali lagi!";
+        resDiv.innerText = "❌ Masih kurang tepat. Jawaban yang benar di-highlight hijau, pilihanmu di-highlight merah. Coba lagi!";
       }
     }
 
@@ -1025,7 +1121,7 @@
     function generateNextSpeakingPrompt() {
       let c1 = namePool[Math.floor(Math.random() * namePool.length)];
       let c2 = namePool[Math.floor(Math.random() * namePool.length)];
-      while (c1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
+      while (char1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
 
       let tpl = promptPatterns[Math.floor(Math.random() * promptPatterns.length)];
       let promptText = tpl.pattern.replace('{c1}', c1).replace('{c2}', c2);
