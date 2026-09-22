@@ -32,24 +32,25 @@
     .subtitle { color: #64748b; margin-bottom: 24px; font-size: 15px; }
 
     /* Inner Level Tabs */
-    .level-tab-container { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-    .level-btn { padding: 10px 18px; border: none; background: none; color: #64748b; font-weight: 700; cursor: pointer; font-size: 15px; border-radius: 6px; }
+    .level-tab-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
+    .level-btn { padding: 8px 14px; border: none; background: none; color: #64748b; font-weight: 700; cursor: pointer; font-size: 14px; border-radius: 6px; }
     .level-btn.active { background: #0284c7; color: white; }
 
-    /* Sub Tabs for Tenses & Categories */
+    /* Sub Tabs */
     .sub-tab-container { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-    .sub-tab-btn { padding: 8px 14px; border: none; background: #e2e8f0; color: #475569; font-weight: 600; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .sub-tab-btn { padding: 8px 14px; border: none; background: #e2e8f0; color: #475569; font-weight: 600; border-radius: 6px; cursor: pointer; font-size: 13px; }
     .sub-tab-btn.active { background: #38bdf8; color: #0f172a; }
 
     .formula { background: #f0f9ff; padding: 12px; border-left: 4px solid #0284c7; margin: 12px 0; font-weight: bold; }
-    .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 6px; line-height: 1.6; }
+    .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 16px; margin: 15px 0; border-radius: 6px; line-height: 1.6; }
 
-    /* Phrase Grid Layout */
+    /* Phrase & Cards Grid */
     .phrase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px; }
     .phrase-card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 8px; background: #fafafa; position: relative; }
     .phrase-title { font-weight: 700; color: #0284c7; margin-bottom: 4px; font-size: 15px; }
     .phrase-desc { font-size: 13px; color: #64748b; margin-bottom: 10px; }
-    .audio-btn { background: #0284c7; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+
+    .audio-btn { background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; margin: 6px 0; display: inline-flex; align-items: center; gap: 6px; }
     .audio-btn:hover { background: #0369a1; }
 
     /* Quiz Styling */
@@ -61,6 +62,11 @@
     button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
     button.submit-btn:hover { background-color: #059669; }
     .result-box { margin-top: 20px; font-weight: bold; padding: 14px; border-radius: 6px; display: none; text-align: center; }
+
+    /* Speaking Simulator UI */
+    .sim-box { text-align: center; padding: 25px; border: 2px dashed #0284c7; border-radius: 12px; background: #f0f9ff; margin-top: 15px; }
+    .sim-timer { font-size: 32px; font-weight: bold; color: #e11d48; margin: 15px 0; }
+    .sim-transcript { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 15px; min-height: 60px; font-style: italic; }
 
     /* Responsive Mobile Navigation */
     @media (max-width: 768px) {
@@ -93,16 +99,75 @@
       <!-- ================= MODUL 1: ENGLISH EXERCISE ================= -->
       <section id="english" class="module-section active">
         <h1>🎙️ English Exercise Hub</h1>
-        <p class="subtitle">Platform Latihan Komunikasi Kerja Praktis</p>
+        <p class="subtitle">Program Pelatihan Bahasa Inggris Kerja Lengkap (Level 1–5)</p>
 
         <!-- Level Selector Tabs -->
         <div class="level-tab-container">
-          <button class="level-btn active" onclick="openLevel('level1')">Level 1: Basic Grammar</button>
-          <button class="level-btn" onclick="openLevel('level2')">Level 2: Work Conversation</button>
+          <button class="level-btn active" onclick="openLevel('level1')">Lvl 1: Basic Listening</button>
+          <button class="level-btn" onclick="openLevel('level2')">Lvl 2: Core Grammar</button>
+          <button class="level-btn" onclick="openLevel('level3')">Lvl 3: Work Phrases</button>
+          <button class="level-btn" onclick="openLevel('level4')">Lvl 4: Story Listening</button>
+          <button class="level-btn" onclick="openLevel('level5')">Lvl 5: Speaking Sim</button>
         </div>
 
-        <!-- LEVEL 1 CONTENT -->
+        <!-- ================= LEVEL 1: BASIC LISTENING & CONVERSATION ================= -->
         <div id="level1" class="level-content">
+          <div class="card">
+            <h3>🎧 Level 1: Basic Conversation Listening</h3>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan pertanyaan audio, lalu pilih balasan yang paling tepat.</p>
+
+            <!-- Q1 -->
+            <div class="quiz-group">
+              <p class="quiz-title">Soal 1: Klik tombol untuk mendengarkan audio:</p>
+              <button class="audio-btn" onclick="playAudio('What are you doing right now?')">🔊 Putar Audio Pertanyaan 1</button>
+              <label class="quiz-option"><input type="radio" name="l1q1" value="a"> "I'm working on the monthly tax report."</label>
+              <label class="quiz-option"><input type="radio" name="l1q1" value="b"> "I do accounting every day."</label>
+              <label class="quiz-option"><input type="radio" name="l1q1" value="c"> "Yes, I am doing."</label>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-group">
+              <p class="quiz-title">Soal 2: Klik tombol untuk mendengarkan audio:</p>
+              <button class="audio-btn" onclick="playAudio('What do you do for a living?')">🔊 Putar Audio Pertanyaan 2</button>
+              <label class="quiz-option"><input type="radio" name="l1q2" value="a"> "I am fine, thank you."</label>
+              <label class="quiz-option"><input type="radio" name="l1q2" value="b"> "I work as a finance executive at a regional firm."</label>
+              <label class="quiz-option"><input type="radio" name="l1q2" value="c"> "I'm eating lunch now."</label>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-group">
+              <p class="quiz-title">Soal 3: Klik tombol untuk mendengarkan audio:</p>
+              <button class="audio-btn" onclick="playAudio('How is everything going with the audit?')">🔊 Putar Audio Pertanyaan 3</button>
+              <label class="quiz-option"><input type="radio" name="l1q3" value="a"> "Everything is on track so far."</label>
+              <label class="quiz-option"><input type="radio" name="l1q3" value="b"> "I go to audit yesterday."</label>
+              <label class="quiz-option"><input type="radio" name="l1q3" value="c"> "No, I am not."</label>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-group">
+              <p class="quiz-title">Soal 4: Klik tombol untuk mendengarkan audio:</p>
+              <button class="audio-btn" onclick="playAudio('Do you have a minute to talk?')">🔊 Putar Audio Pertanyaan 4</button>
+              <label class="quiz-option"><input type="radio" name="l1q4" value="a"> "Sure, what's on your mind?"</label>
+              <label class="quiz-option"><input type="radio" name="l1q4" value="b"> "Yes, I have one clock."</label>
+              <label class="quiz-option"><input type="radio" name="l1q4" value="c"> "It is 10 AM now."</label>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-group">
+              <p class="quiz-title">Soal 5: Klik tombol untuk mendengarkan audio:</p>
+              <button class="audio-btn" onclick="playAudio('Could you pass me the invoice file?')">🔊 Putar Audio Pertanyaan 5</button>
+              <label class="quiz-option"><input type="radio" name="l1q5" value="a"> "Here you go. I've sent it to your email."</label>
+              <label class="quiz-option"><input type="radio" name="l1q5" value="b"> "I am passing the street."</label>
+              <label class="quiz-option"><input type="radio" name="l1q5" value="c"> "No, invoice is money."</label>
+            </div>
+
+            <button class="submit-btn" onclick="checkLevel1Quiz()">Cek Hasil Level 1</button>
+            <div id="res-l1" class="result-box"></div>
+          </div>
+        </div>
+
+        <!-- ================= LEVEL 2: CORE GRAMMAR ================= -->
+        <div id="level2" class="level-content" style="display: none;">
           <div class="sub-tab-container">
             <button class="sub-tab-btn active" onclick="openGrammarTab('past')">Simple Past</button>
             <button class="sub-tab-btn" onclick="openGrammarTab('present')">Simple Present</button>
@@ -152,99 +217,101 @@
           </div>
         </div>
 
-        <!-- LEVEL 2 CONTENT -->
-        <div id="level2" class="level-content" style="display: none;">
+        <!-- ================= LEVEL 3: WORK CONVERSATION ================= -->
+        <div id="level3" class="level-content" style="display: none;">
           
-          <!-- Category 1: Asking & Giving Updates -->
+          <!-- Category 1 -->
           <div class="card">
-            <h3>💬 1. Asking & Giving Updates</h3>
-            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Frasa efektif saat meeting atau chat Slack/Teams buat menanyakan status pekerjaan.</p>
-            
+            <h3>💬 1. Asking & Giving Updates (5 Phrases)</h3>
             <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">"Where do we stand on [project]?"</div>
-                <div class="phrase-desc">Menanyakan posisi terakhir suatu proyek secara profesional.</div>
-                <button class="audio-btn" onclick="playAudio('Where do we stand on the tax audit project?')">🔊 Dengarkan Audio</button>
-              </div>
-
-              <div class="phrase-card">
-                <div class="phrase-title">"We are currently on track to meet the deadline."</div>
-                <div class="phrase-desc">Jawaban jika pekerjaan berjalan sesuai jadwal target.</div>
-                <button class="audio-btn" onclick="playAudio('We are currently on track to meet the deadline.')">🔊 Dengarkan Audio</button>
-              </div>
-
-              <div class="phrase-card">
-                <div class="phrase-title">"We ran into a minor bottleneck with..."</div>
-                <div class="phrase-desc">Menjelaskan adanya sedikit kendala teknis atau hambatan.</div>
-                <button class="audio-btn" onclick="playAudio('We ran into a minor bottleneck with the supplier data.')">🔊 Dengarkan Audio</button>
-              </div>
+              <div class="phrase-card"><div class="phrase-title">1. "Where do we stand on [project]?"</div><button class="audio-btn" onclick="playAudio('Where do we stand on the tax audit project?')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">2. "We are currently on track to meet the deadline."</div><button class="audio-btn" onclick="playAudio('We are currently on track to meet the deadline.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">3. "We ran into a minor bottleneck with..."</div><button class="audio-btn" onclick="playAudio('We ran into a minor bottleneck with vendor data.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">4. "I'll keep you posted as soon as I get an update."</div><button class="audio-btn" onclick="playAudio('Ill keep you posted as soon as I get an update.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">5. "Could you give us a high-level overview?"</div><button class="audio-btn" onclick="playAudio('Could you give us a high level overview?')">🔊 Audio</button></div>
             </div>
           </div>
 
-          <!-- Category 2: Disagreeing & Interrupting -->
+          <!-- Category 2 -->
           <div class="card">
-            <h3>🛡️ 2. Interrupting & Disagreeing Politely</h3>
-            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Cara menyela saat rapat atau menyampaikan opini berbeda tanpa menyinggung perasaan.</p>
-            
+            <h3>🛡️ 2. Interrupting & Disagreeing Politely (5 Phrases)</h3>
             <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">"Sorry to interrupt, but may I add a quick point here?"</div>
-                <div class="phrase-desc">Menyela rapat secara sopan untuk menambahkan poin penting.</div>
-                <button class="audio-btn" onclick="playAudio('Sorry to interrupt, but may I add a quick point here?')">🔊 Dengarkan Audio</button>
-              </div>
-
-              <div class="phrase-card">
-                <div class="phrase-title">"I see your point, but from a cost perspective..."</div>
-                <div class="phrase-desc">Menolak opsi lawan bicara dari sudut pandang finansial/operasional.</div>
-                <button class="audio-btn" onclick="playAudio('I see your point, but from a cost perspective, this option might be too high.')">🔊 Dengarkan Audio</button>
-              </div>
+              <div class="phrase-card"><div class="phrase-title">1. "Sorry to interrupt, but may I add a quick point?"</div><button class="audio-btn" onclick="playAudio('Sorry to interrupt, but may I add a quick point?')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">2. "I see your point, but from a cost perspective..."</div><button class="audio-btn" onclick="playAudio('I see your point, but from a cost perspective...')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">3. "I respectfully have a slightly different view."</div><button class="audio-btn" onclick="playAudio('I respectfully have a slightly different view.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">4. "Before we move on, can I clarify one detail?"</div><button class="audio-btn" onclick="playAudio('Before we move on, can I clarify one detail?')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">5. "I agree in principle, but we need to consider..."</div><button class="audio-btn" onclick="playAudio('I agree in principle, but we need to consider the timeline.')">🔊 Audio</button></div>
             </div>
           </div>
 
-          <!-- Category 3: Buying Time -->
+          <!-- Category 3 -->
           <div class="card">
-            <h3>⏳ 3. Buying Time & Clarifying</h3>
-            <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Gunakan frasa ini jika lu butuh waktu berpikir atau memastikan pertanyaan lawan bicara.</p>
-            
+            <h3>⏳ 3. Buying Time & Clarifying (5 Phrases)</h3>
             <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">"That's a good question. Let me double-check and get back to you."</div>
-                <div class="phrase-desc">Jawaban terbaik jika lu belum punya data pasti saat ditanya boss.</div>
-                <button class="audio-btn" onclick="playAudio('Thats a good question. Let me double check and get back to you by 3 PM.')">🔊 Dengarkan Audio</button>
-              </div>
-
-              <div class="phrase-card">
-                <div class="phrase-title">"Just to clarify, do you mean...?"</div>
-                <div class="phrase-desc">Memastikan kembali maksud pertanyaan lawan bicara agar tidak salah tangkap.</div>
-                <button class="audio-btn" onclick="playAudio('Just to clarify, do you mean we need to freeze the hiring budget?')">🔊 Dengarkan Audio</button>
-              </div>
+              <div class="phrase-card"><div class="phrase-title">1. "That's a good question. Let me double-check..."</div><button class="audio-btn" onclick="playAudio('Thats a good question. Let me double check and get back to you.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">2. "Just to clarify, do you mean...?"</div><button class="audio-btn" onclick="playAudio('Just to clarify, do you mean we freeze the hiring?')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">3. "If I understand correctly, you want us to..."</div><button class="audio-btn" onclick="playAudio('If I understand correctly, you want us to revise the budget.')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">4. "I'm a bit tied up right now. Can I get back to you?"</div><button class="audio-btn" onclick="playAudio('Im a bit tied up right now. Can I get back to you in 10 minutes?')">🔊 Audio</button></div>
+              <div class="phrase-card"><div class="phrase-title">5. "Could you walk me through that step again?"</div><button class="audio-btn" onclick="playAudio('Could you walk me through that step again?')">🔊 Audio</button></div>
             </div>
           </div>
-
-          <!-- Scenario Quiz -->
-          <div class="card">
-            <h3>✏️ Work Conversation Quiz</h3>
-            <p style="color:#64748b; font-size:14px;">Pilih tanggapan terbaik untuk situasi rapat di bawah ini:</p>
-
-            <div class="quiz-group">
-              <p class="quiz-title">1. Atasan bertanya saat meeting: "Do you have the exact Q3 tax figures right now?" (Padahal lu belum buka datanya). Jawaban paling profesional?</p>
-              <label class="quiz-option"><input type="radio" name="l2q1" value="a"> "I don't know."</label>
-              <label class="quiz-option"><input type="radio" name="l2q1" value="b"> "Let me double-check the system and get back to you right after this meeting."</label>
-              <label class="quiz-option"><input type="radio" name="l2q1" value="c"> "Ask the accounting manager."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">2. Lu mau menyela rekan kerja yang sedang presentasi karena ada data angka yang salah ketik. Frasa mana yang tepat?</p>
-              <label class="quiz-option"><input type="radio" name="l2q2" value="a"> "You made a mistake in that row."</label>
-              <label class="quiz-option"><input type="radio" name="l2q2" value="b"> "Sorry to interrupt, but may I point out a small detail on slide 3?"</label>
-              <label class="quiz-option"><input type="radio" name="l2q2" value="c"> "Stop talking, look at slide 3."</label>
-            </div>
-
-            <button class="submit-btn" onclick="checkLevel2Quiz()">Cek Jawaban Level 2</button>
-            <div id="res-l2" class="result-box"></div>
-          </div>
-
         </div>
+
+        <!-- ================= LEVEL 4: LISTENING & STORY SUMMARIZING ================= -->
+        <div id="level4" class="level-content" style="display: none;">
+          <div class="card">
+            <h3>📖 Level 4: Work Scenario Stories (10 Stories)</h3>
+            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Dengarkan cerita singkat bisnis di bawah ini, lalu jawab kuis pemahamannya.</p>
+
+            <!-- Story 1 -->
+            <div class="story-box">
+              <h4>Story 1: The Regional Audit Deadline</h4>
+              <button class="audio-btn" onclick="playAudio('Our regional finance team had three days to finalize the audit for the Malaysia office. Cynthia managed the inventory reconciliation while I verified the tax withholding certificates. Thanks to clear teamwork, we submitted all files 2 hours before the deadline.')">🔊 Putar Audio Cerita 1</button>
+            </div>
+            <div class="quiz-group">
+              <p class="quiz-title">Pertanyaan Story 1: Mengapa audit Malaysia selesai tepat waktu?</p>
+              <label class="quiz-option"><input type="radio" name="l4q1" value="a"> Karena ada perpanjangan waktu dari auditor.</label>
+              <label class="quiz-option"><input type="radio" name="l4q1" value="b"> Karena pembagian tugas tim yang jelas antara inventaris dan sertifikat pajak.</label>
+            </div>
+
+            <!-- Story 2 -->
+            <div class="story-box">
+              <h4>Story 2: Unexpected Tax Portal Glitch</h4>
+              <button class="audio-btn" onclick="playAudio('On Friday afternoon, the online tax filing system experienced an unexpected outage. Our team immediately documented the error screens and notified the tax consultant. By Saturday morning, the server was restored and we completed the submission.')">🔊 Putar Audio Cerita 2</button>
+            </div>
+            <div class="quiz-group">
+              <p class="quiz-title">Pertanyaan Story 2: Langkah pertama apa yang dilakukan tim saat server pajak error?</p>
+              <label class="quiz-option"><input type="radio" name="l4q2" value="a"> Menutup kantor dan pulang lebih awal.</label>
+              <label class="quiz-option"><input type="radio" name="l4q2" value="b"> Mengambil tangkapan layar error dan menghubungi konsultan pajak.</label>
+            </div>
+
+            <button class="submit-btn" onclick="checkLevel4Quiz()">Cek Hasil Story Listening</button>
+            <div id="res-l4" class="result-box"></div>
+          </div>
+        </div>
+
+        <!-- ================= LEVEL 5: SPONTANEOUS SPEAKING SIMULATOR ================= -->
+        <div id="level5" class="level-content" style="display: none;">
+          <div class="card">
+            <h3>🎙️ Level 5: Spontaneous Speaking Simulator</h3>
+            <p style="color:#64748b; font-size:14px;">Latih refleks bicaramu! Dengarkan pertanyaan acak $\rightarrow$ tunggu timer 5 detik $\rightarrow$ langsung jawab via mikrofon.</p>
+
+            <div class="sim-box">
+              <button class="audio-btn" style="padding:12px 20px; font-size:16px;" onclick="startSpeakingSim()">▶️ Start Random Meeting Prompt</button>
+              
+              <div style="margin-top:20px;">
+                <h4 id="simPrompt" style="color:#0284c7;">Klik "Start" untuk memulai simulasi...</h4>
+              </div>
+
+              <div class="sim-timer" id="simTimer">--</div>
+
+              <button id="simMicBtn" class="submit-btn" style="width:auto; padding:10px 20px; background:#e11d48;" onclick="startListeningSim()" disabled>🎙️ Jawab Sekarang (Bicara di Mic)</button>
+
+              <div class="sim-transcript" id="simTranscript">Transkrip jawabanmu bakal muncul di sini...</div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- MODUL LAIN (PLACEHOLDER) -->
@@ -294,17 +361,39 @@
     // Text-to-Speech Engine
     function playAudio(text) {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Stop audio sebelumnya jika ada
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
-        utterance.rate = 0.9; // Kecepatan sedikit natural
+        utterance.rate = 0.9;
         window.speechSynthesis.speak(utterance);
       } else {
         alert('Fitur audio tidak didukung di browser ini.');
       }
     }
 
-    // Quiz Checkers
+    // Level 1 Quiz Checker
+    function checkLevel1Quiz() {
+      const q1 = document.querySelector('input[name="l1q1"]:checked')?.value;
+      const q2 = document.querySelector('input[name="l1q2"]:checked')?.value;
+      const q3 = document.querySelector('input[name="l1q3"]:checked')?.value;
+      const q4 = document.querySelector('input[name="l1q4"]:checked')?.value;
+      const q5 = document.querySelector('input[name="l1q5"]:checked')?.value;
+      
+      let score = 0;
+      if (q1 === 'a') score++;
+      if (q2 === 'b') score++;
+      if (q3 === 'a') score++;
+      if (q4 === 'a') score++;
+      if (q5 === 'a') score++;
+
+      const resDiv = document.getElementById('res-l1');
+      resDiv.style.display = 'block';
+      resDiv.style.background = score >= 4 ? '#d1fae5' : '#fee2e2';
+      resDiv.style.color = score >= 4 ? '#065f46' : '#991b1b';
+      resDiv.innerHTML = `Skor Level 1 Lu: ${score} / 5 (${score * 20}%)`;
+    }
+
+    // Level 2 Grammar Checker
     function checkQuiz(tabPrefix, answers) {
       let score = 0;
       let total = answers.length;
@@ -321,19 +410,75 @@
       resDiv.innerHTML = `Skor Lu: ${score} / ${total} (${percentage}%)`;
     }
 
-    function checkLevel2Quiz() {
-      const q1 = document.querySelector('input[name="l2q1"]:checked')?.value;
-      const q2 = document.querySelector('input[name="l2q2"]:checked')?.value;
-      const resDiv = document.getElementById('res-l2');
-      resDiv.style.display = 'block';
+    // Level 4 Story Quiz Checker
+    function checkLevel4Quiz() {
+      const q1 = document.querySelector('input[name="l4q1"]:checked')?.value;
+      const q2 = document.querySelector('input[name="l4q2"]:checked')?.value;
+      let score = 0;
+      if (q1 === 'b') score++;
+      if (q2 === 'b') score++;
 
-      if (q1 === 'b' && q2 === 'b') {
-        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerHTML = '🎉 Jawaban Lu 100% Benar! Frasa-frasa tersebut sangat profesional untuk situasi kerja.';
-      } else {
-        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerHTML = '💪 Masih ada yang keliru. Pilih jawaban yang mengulur waktu dengan sopan atau menyela secara santun ya!';
+      const resDiv = document.getElementById('res-l4');
+      resDiv.style.display = 'block';
+      resDiv.style.background = score === 2 ? '#d1fae5' : '#fee2e2';
+      resDiv.style.color = score === 2 ? '#065f46' : '#991b1b';
+      resDiv.innerHTML = `Skor Pemahaman Cerita: ${score} / 2 (${score * 50}%)`;
+    }
+
+    // Level 5 Speaking Simulator Engine
+    const simPrompts = [
+      "Could you give us a quick update on your progress for this week?",
+      "What do you think is the main bottleneck in this project?",
+      "How are we handling the upcoming tax audit deadline?",
+      "Could you walk us through the main figures in the monthly report?",
+      "What is your opinion on freezing the hiring budget for Q3?"
+    ];
+
+    function startSpeakingSim() {
+      const prompt = simPrompts[Math.floor(Math.random() * simPrompts.length)];
+      document.getElementById('simPrompt').innerText = '"' + prompt + '"';
+      document.getElementById('simTranscript').innerText = "Mendengarkan pertanyaan...";
+      document.getElementById('simMicBtn').disabled = true;
+
+      const utterance = new SpeechSynthesisUtterance(prompt);
+      utterance.lang = 'en-US';
+      
+      utterance.onend = function() {
+        let seconds = 5;
+        const timerDisplay = document.getElementById('simTimer');
+        timerDisplay.innerText = seconds + "s";
+        
+        const countdown = setInterval(() => {
+          seconds--;
+          timerDisplay.innerText = seconds + "s";
+          if (seconds <= 0) {
+            clearInterval(countdown);
+            timerDisplay.innerText = "Waktunya Bicara!";
+            document.getElementById('simMicBtn').disabled = false;
+          }
+        }, 1000);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startListeningSim() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Browser lu belum mendukung Speech-to-Text. Gunakan Google Chrome!");
+        return;
       }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      document.getElementById("simTranscript").innerText = "🎙️ Silakan bicara sekarang...";
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("simTranscript").innerText = '"' + transcript + '"';
+      };
+
+      recognition.start();
     }
   </script>
 
