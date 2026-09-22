@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Learning & Tools Hub</title>
+  <!-- Tesseract.js untuk OCR Scan Struk -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: #f4f6f8; color: #2c3e50; display: flex; min-height: 100vh; }
@@ -60,19 +62,8 @@
     .quiz-option { display: block; margin: 6px 0; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
     .quiz-option:hover { background-color: #f8fafc; }
 
-    /* Dynamic Correct/Wrong Highlights */
-    .quiz-option.correct-option {
-      background-color: #d1fae5 !important;
-      border-color: #10b981 !important;
-      color: #065f46 !important;
-      font-weight: 600;
-    }
-    .quiz-option.wrong-option {
-      background-color: #fee2e2 !important;
-      border-color: #ef4444 !important;
-      color: #991b1b !important;
-      font-weight: 600;
-    }
+    .quiz-option.correct-option { background-color: #d1fae5 !important; border-color: #10b981 !important; color: #065f46 !important; font-weight: 600; }
+    .quiz-option.wrong-option { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; font-weight: 600; }
     
     button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
     button.submit-btn:hover { background-color: #059669; }
@@ -86,6 +77,25 @@
     .sim-timer { font-size: 32px; font-weight: bold; color: #e11d48; margin: 15px 0; }
     .sim-transcript { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 15px; min-height: 50px; text-align: left; line-height: 1.5; }
     .sample-response { background: #e0f2fe; padding: 15px; border-radius: 8px; border: 1px solid #7dd3fc; margin-top: 12px; text-align: left; color: #0369a1; }
+
+    /* Form & Input Components for Split Bill */
+    .input-group { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .form-input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; flex: 1; min-width: 150px; }
+    .btn-secondary { background: #0284c7; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
+    .btn-secondary:hover { background: #0369a1; }
+    
+    .person-tag { display: inline-flex; align-items: center; gap: 6px; background: #e0f2fe; color: #0369a1; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 4px; }
+    .remove-tag { cursor: pointer; color: #ef4444; font-weight: bold; margin-left: 4px; }
+
+    .item-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+    .item-table th, .item-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+    .item-table th { background-color: #f8fafc; font-weight: 600; }
+
+    .checkbox-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .checkbox-item { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; }
+
+    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; border-radius: 8px; margin-top: 12px; }
+    .summary-card h4 { color: #0284c7; margin-bottom: 8px; }
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
@@ -105,7 +115,8 @@
     <nav class="sidebar">
       <div class="brand">🚀 Personal Hub</div>
       <ul class="nav-list">
-        <li class="nav-item active" onclick="switchModule('english')">🎙️ English Exercise</li>
+        <li class="nav-item active" onclick="switchModule('splitbill')">💸 Split Bill OCR</li>
+        <li class="nav-item" onclick="switchModule('english')">🎙️ English Exercise</li>
         <li class="nav-item" onclick="switchModule('mandarin')">🏮 Mandarin Exercise</li>
         <li class="nav-item" onclick="switchModule('hpp')">📊 UMKM Cost & Price Calc</li>
         <li class="nav-item" onclick="switchModule('finance')">📈 Accounting & Finance</li>
@@ -115,12 +126,101 @@
     <!-- MAIN CONTENT AREA -->
     <main class="main-content">
 
+      <!-- ================= MODUL 0: SPLIT BILL CALCULATOR ================= -->
+      <section id="splitbill" class="module-section active">
+        <h1>💸 Split Bill & Receipt Scanner</h1>
+        <p class="subtitle">Upload foto struk / input manual, pilih nama pesanan, dan hitung pajak proporsional secara otomatis.</p>
+
+        <!-- STEP 1: TAMBAH PESERTA -->
+        <div class="card">
+          <h3>👥 Step 1: Siapa Saja Yang Ikut Makan?</h3>
+          <p style="color:#64748b; font-size:13px; margin-bottom:12px;">Masukkan nama teman-teman kamu yang ikut split bill.</p>
+          <div class="input-group">
+            <input type="text" id="personInput" class="form-input" placeholder="Nama teman (misal: Eggha)...">
+            <button class="btn-secondary" onclick="addPerson()">+ Tambah Nama</button>
+          </div>
+          <div id="personList" style="margin-top:10px;">
+            <!-- Tag Nama muncul di sini -->
+          </div>
+        </div>
+
+        <!-- STEP 2: OCR / INPUT ITEM -->
+        <div class="card">
+          <h3>📜 Step 2: Upload Foto Struk (OCR) / Input Item</h3>
+          <p style="color:#64748b; font-size:13px; margin-bottom:12px;">Pilih foto struk untuk di-scan otomatis, atau masukkan barang secara manual.</p>
+          
+          <div style="background:#f0f9ff; border:1px dashed #0284c7; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <label style="font-weight:bold; font-size:14px; display:block; margin-bottom:8px;">📷 Upload Struk Makan:</label>
+            <div class="input-group" style="margin-bottom:0;">
+              <input type="file" id="receiptImage" accept="image/*" class="form-input">
+              <button class="btn-secondary" onclick="scanReceiptOCR()" id="ocrBtn">🔍 Scan Struk (OCR)</button>
+            </div>
+            <div id="ocrStatus" style="font-size:13px; color:#0284c7; margin-top:8px; font-weight:bold;"></div>
+          </div>
+
+          <p style="font-weight:bold; font-size:14px; margin-bottom:8px;">Atau Input Item Manual:</p>
+          <div class="input-group">
+            <input type="text" id="itemNameInput" class="form-input" placeholder="Nama Makanan/Minuman (misal: Nasi Rames)...">
+            <input type="number" id="itemPriceInput" class="form-input" placeholder="Harga (misal: 25000)...">
+            <button class="btn-secondary" onclick="addManualItem()">+ Tambah Item</button>
+          </div>
+
+          <!-- TABEL DAFTAR ITEM -->
+          <table class="item-table" id="itemTable">
+            <thead>
+              <tr>
+                <th style="width:35%;">Nama Item</th>
+                <th style="width:25%;">Harga (Rp)</th>
+                <th>Milik Siapa? (Centang)</th>
+                <th style="width:8%; text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="itemTableBody">
+              <!-- Item baris dinamis -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- STEP 3: PAJAK & SERVICE -->
+        <div class="card">
+          <h3>🧾 Step 3: Pajak & ChargeTambahan</h3>
+          <div class="input-group">
+            <div style="flex:1;">
+              <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Pajak PB1 / VAT (%):</label>
+              <input type="number" id="taxPercentInput" class="form-input" value="10" placeholder="10">
+            </div>
+            <div style="flex:1;">
+              <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Service Charge (%):</label>
+              <input type="number" id="servicePercentInput" class="form-input" value="5" placeholder="5">
+            </div>
+            <div style="flex:1;">
+              <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Diskon Nominal Struk (Rp):</label>
+              <input type="number" id="discountInput" class="form-input" value="0" placeholder="0">
+            </div>
+          </div>
+
+          <button class="submit-btn" onclick="calculateSplitBill()">🧮 Hitung Pembagian Bill</button>
+        </div>
+
+        <!-- RESULT BREAKDOWN -->
+        <div class="card" id="resultCard" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3>📊 Hasil Hitungan Split Bill</h3>
+            <button class="btn-secondary" style="background:#10b981;" onclick="copyWAText()">📋 Copy Format WA</button>
+          </div>
+
+          <div id="breakdownContainer">
+            <!-- Breakdown per orang dimunculkan di sini -->
+          </div>
+        </div>
+
+      </section>
+
       <!-- ================= MODUL 1: ENGLISH EXERCISE ================= -->
-      <section id="english" class="module-section active">
+      <section id="english" class="module-section">
         <h1>🎙️ English Daily Life Hub</h1>
         <p class="subtitle">Practical Daily English Training Program (Levels 1–5)</p>
 
-        <!-- Level Selector Tabs -->
         <div class="level-tab-container">
           <button class="level-btn active" onclick="openLevel('level1')">Lvl 1: Listening (10)</button>
           <button class="level-btn" onclick="openLevel('level2')">Lvl 2: Core Tenses (40)</button>
@@ -129,7 +229,6 @@
           <button class="level-btn" onclick="openLevel('level5')">Lvl 5: Speaking Sim ♾️</button>
         </div>
 
-        <!-- LEVEL 1: BASIC LISTENING -->
         <div id="level1" class="level-content">
           <div class="card">
             <h3>🎧 Level 1: Daily Listening & Response (10 Questions)</h3>
@@ -141,7 +240,7 @@
               <label class="quiz-option"><input type="radio" name="l1q1" value="a"> "I do coffee yesterday."</label>
               <label class="quiz-option"><input type="radio" name="l1q1" value="b"> "I'm making coffee in the kitchen."</label>
             </div>
-
+            
             <div class="quiz-group">
               <p class="quiz-title">Question 2:</p>
               <button class="audio-btn" onclick="playAudio('What do you usually do on weekends, Rebeca?')">🔊 Play Audio 2</button>
@@ -149,713 +248,33 @@
               <label class="quiz-option"><input type="radio" name="l1q2" value="b"> "I am sleeping now."</label>
             </div>
 
-            <div class="quiz-group">
-              <p class="quiz-title">Question 3:</p>
-              <button class="audio-btn" onclick="playAudio('How was your day, Adam?')">🔊 Play Audio 3</button>
-              <label class="quiz-option"><input type="radio" name="l1q3" value="a"> "I go home tomorrow."</label>
-              <label class="quiz-option"><input type="radio" name="l1q3" value="b"> "It was pretty good, thanks!"</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 4:</p>
-              <button class="audio-btn" onclick="playAudio('Do you want to grab some dinner with Zoey, Anita?')">🔊 Play Audio 4</button>
-              <label class="quiz-option"><input type="radio" name="l1q4" value="a"> "Sure, that sounds like a great idea!"</label>
-              <label class="quiz-option"><input type="radio" name="l1q4" value="b"> "No, dinner is food."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 5:</p>
-              <button class="audio-btn" onclick="playAudio('Where did Eggha buy those new running shoes?')">🔊 Play Audio 5</button>
-              <label class="quiz-option"><input type="radio" name="l1q5" value="a"> "He buys them tomorrow."</label>
-              <label class="quiz-option"><input type="radio" name="l1q5" value="b"> "He bought them online last week."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 6:</p>
-              <button class="audio-btn" onclick="playAudio('Have you seen Anita today, Adam?')">🔊 Play Audio 6</button>
-              <label class="quiz-option"><input type="radio" name="l1q6" value="a"> "Yes, I saw her at the cafe earlier."</label>
-              <label class="quiz-option"><input type="radio" name="l1q6" value="b"> "Yes, I see her next Friday."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 7:</p>
-              <button class="audio-btn" onclick="playAudio('What time does Rebeca usually wake up?')">🔊 Play Audio 7</button>
-              <label class="quiz-option"><input type="radio" name="l1q7" value="a"> "She woke up next morning."</label>
-              <label class="quiz-option"><input type="radio" name="l1q7" value="b"> "She usually wakes up around 6 AM."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 8:</p>
-              <button class="audio-btn" onclick="playAudio('Would you like some iced tea, Zoey?')">🔊 Play Audio 8</button>
-              <label class="quiz-option"><input type="radio" name="l1q8" value="a"> "Yes, please! That would be refreshing."</label>
-              <label class="quiz-option"><input type="radio" name="l1q8" value="b"> "I drink tea yesterday."</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 9:</p>
-              <button class="audio-btn" onclick="playAudio('How was the movie last night, Eggha?')">🔊 Play Audio 9</button>
-              <label class="quiz-option"><input type="radio" name="l1q9" value="a"> "I am watching it next week."</label>
-              <label class="quiz-option"><input type="radio" name="l1q9" value="b"> "It was really funny and entertaining!"</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 10:</p>
-              <button class="audio-btn" onclick="playAudio('Are Anita and Zoey coming to the party?')">🔊 Play Audio 10</button>
-              <label class="quiz-option"><input type="radio" name="l1q10" value="a"> "Yes, they are on their way now."</label>
-              <label class="quiz-option"><input type="radio" name="l1q10" value="b"> "No, they party yesterday."</label>
-            </div>
-
             <button class="submit-btn" onclick="checkLevel1Quiz()">Check Level 1 Results</button>
             <div id="res-l1" class="result-box"></div>
           </div>
         </div>
 
-        <!-- LEVEL 2: CORE TENSES -->
         <div id="level2" class="level-content" style="display: none;">
-          <div class="sub-tab-container">
-            <button class="sub-tab-btn active" onclick="openGrammarTab('past')">Simple Past (10)</button>
-            <button class="sub-tab-btn" onclick="openGrammarTab('present')">Simple Present (10)</button>
-            <button class="sub-tab-btn" onclick="openGrammarTab('continuous')">Present Continuous (10)</button>
-            <button class="sub-tab-btn" onclick="openGrammarTab('perfect')">Present Perfect (10)</button>
-          </div>
-
-          <div id="past" class="grammar-tab-content">
-            <div class="card">
-              <h3>📌 Simple Past Tense (10 Questions)</h3>
-              <div class="formula">Formula: Subject + Verb 2</div>
-
-              <div class="quiz-group"><p class="quiz-title">1. Rebeca _______ a delicious chocolate cake yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> bakes</label><label class="quiz-option"><input type="radio" name="p1" value="b"> baked</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Adam and Eggha _______ 10 kilometers in the park last Sunday.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> ran</label><label class="quiz-option"><input type="radio" name="p2" value="b"> run</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Anita _______ her keys on the dining table last night.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> leave</label><label class="quiz-option"><input type="radio" name="p3" value="b"> left</label></div>
-              <div class="quiz-group"><p class="quiz-title">4. Zoey _______ a new pair of running shoes yesterday morning.</p><label class="quiz-option"><input type="radio" name="p4" value="a"> bought</label><label class="quiz-option"><input type="radio" name="p4" value="b"> buys</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. Eggha _______ an iced Americano at the cafe two hours ago.</p><label class="quiz-option"><input type="radio" name="p5" value="a"> drink</label><label class="quiz-option"><input type="radio" name="p5" value="b"> drank</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. We _______ a great action movie at the cinema last weekend.</p><label class="quiz-option"><input type="radio" name="p6" value="a"> watched</label><label class="quiz-option"><input type="radio" name="p6" value="b"> watch</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Adam _______ Rebeca to ask about dinner plans yesterday.</p><label class="quiz-option"><input type="radio" name="p7" value="a"> calls</label><label class="quiz-option"><input type="radio" name="p7" value="b"> called</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. Zoey _______ her room before going out last Saturday.</p><label class="quiz-option"><input type="radio" name="p8" value="a"> cleaned</label><label class="quiz-option"><input type="radio" name="p8" value="b"> cleans</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Anita _______ to Jogja for vacation last month.</p><label class="quiz-option"><input type="radio" name="p9" value="a"> go</label><label class="quiz-option"><input type="radio" name="p9" value="b"> went</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. Eggha and Zoey _______ pasta for dinner yesterday evening.</p><label class="quiz-option"><input type="radio" name="p10" value="a"> cooked</label><label class="quiz-option"><input type="radio" name="p10" value="b"> cook</label></div>
-
-              <button class="submit-btn" onclick="checkQuiz('past', ['b','a','b','a','b','a','b','a','b','a'])">Check Simple Past Results</button>
-              <div id="res-past" class="result-box"></div>
-            </div>
-          </div>
-
-          <div id="present" class="grammar-tab-content" style="display: none;">
-            <div class="card">
-              <h3>📌 Simple Present Tense (10 Questions)</h3>
-              <div class="formula">Formula: Subject + Verb 1 (+s/es for He/She/It)</div>
-
-              <div class="quiz-group"><p class="quiz-title">1. Eggha _______ black coffee every morning.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> drinks</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> drank</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Rebeca _______ taking photos of city architecture.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> loved</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> loves</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Adam and Zoey _______ to the gym three times a week.</p><label class="quiz-option"><input type="radio" name="pr3" value="a"> go</label><label class="quiz-option"><input type="radio" name="pr3" value="b"> goes</label></div>
-              <div class="quiz-group"><p class="quiz-title">4. Anita always _______ overnight oats for her breakfast.</p><label class="quiz-option"><input type="radio" name="pr4" value="a"> prepare</label><label class="quiz-option"><input type="radio" name="pr4" value="b"> prepares</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. Zoey _______ her dog in the park every afternoon.</p><label class="quiz-option"><input type="radio" name="pr5" value="a"> walks</label><label class="quiz-option"><input type="radio" name="pr5" value="b"> walk</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. They _______ living in South Tangerang.</p><label class="quiz-option"><input type="radio" name="pr6" value="a"> enjoys</label><label class="quiz-option"><input type="radio" name="pr6" value="b"> enjoy</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Adam _______ acoustic guitar in his free time.</p><label class="quiz-option"><input type="radio" name="pr7" value="a"> plays</label><label class="quiz-option"><input type="radio" name="pr7" value="b"> play</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. Eggha _______ early every weekend for his morning run.</p><label class="quiz-option"><input type="radio" name="pr8" value="a"> wake up</label><label class="quiz-option"><input type="radio" name="pr8" value="b"> wakes up</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Rebeca and Anita _______ shopping at the local market on Saturdays.</p><label class="quiz-option"><input type="radio" name="pr9" value="a"> go</label><label class="quiz-option"><input type="radio" name="pr9" value="b"> goes</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ reading novels before going to sleep.</p><label class="quiz-option"><input type="radio" name="pr10" value="a"> like</label><label class="quiz-option"><input type="radio" name="pr10" value="b"> likes</label></div>
-
-              <button class="submit-btn" onclick="checkQuiz('present', ['a','b','a','b','a','b','a','b','a','b'])">Check Simple Present Results</button>
-              <div id="res-present" class="result-box"></div>
-            </div>
-          </div>
-
-          <div id="continuous" class="grammar-tab-content" style="display: none;">
-            <div class="card">
-              <h3>📌 Present Continuous Tense (10 Questions)</h3>
-              <div class="formula">Formula: Subject + am/is/are + Verb-ing</div>
-
-              <div class="quiz-group"><p class="quiz-title">1. Look! Eggha _______ chicken fillet using the air fryer right now.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> cooks</label><label class="quiz-option"><input type="radio" name="c1" value="b"> is cooking</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Rebeca and Zoey _______ a new movie on Netflix at the moment.</p><label class="quiz-option"><input type="radio" name="c2" value="a"> are watching</label><label class="quiz-option"><input type="radio" name="c2" value="b"> is watching</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Adam _______ his favorite playlist on Spotify.</p><label class="quiz-option"><input type="radio" name="c3" value="a"> listens</label><label class="quiz-option"><input type="radio" name="c3" value="b"> is listening to</label></div>
-              <div class="quiz-group"><p class="quiz-title">4. Anita _______ for her running marathon this Sunday.</p><label class="quiz-option"><input type="radio" name="c4" value="a"> is training</label><label class="quiz-option"><input type="radio" name="c4" value="b"> trained</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. Shtt! The baby is asleep; Eggha and Zoey _______ quietly.</p><label class="quiz-option"><input type="radio" name="c5" value="a"> talk</label><label class="quiz-option"><input type="radio" name="c5" value="b"> are talking</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. Rebeca _______ her new photo album to Lightroom right now.</p><label class="quiz-option"><input type="radio" name="c6" value="a"> is editing</label><label class="quiz-option"><input type="radio" name="c6" value="b"> edited</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Adam and Anita _______ dinner together at a ramen place.</p><label class="quiz-option"><input type="radio" name="c7" value="a"> have</label><label class="quiz-option"><input type="radio" name="c7" value="b"> are having</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. Zoey _______ her room right now because her friends are coming.</p><label class="quiz-option"><input type="radio" name="c8" value="a"> is cleaning</label><label class="quiz-option"><input type="radio" name="c8" value="b"> cleans</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Why _______ Eggha _______ his jacket? Is it cold outside?</p><label class="quiz-option"><input type="radio" name="c9" value="a"> does / wear</label><label class="quiz-option"><input type="radio" name="c9" value="b"> is / wearing</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. We _______ a trip to Pangandaran for next month.</p><label class="quiz-option"><input type="radio" name="c10" value="a"> are planning</label><label class="quiz-option"><input type="radio" name="c10" value="b"> plan</label></div>
-
-              <button class="submit-btn" onclick="checkQuiz('continuous', ['b','a','b','a','b','a','b','a','b','a'])">Check Present Continuous Results</button>
-              <div id="res-continuous" class="result-box"></div>
-            </div>
-          </div>
-
-          <div id="perfect" class="grammar-tab-content" style="display: none;">
-            <div class="card">
-              <h3>📌 Present Perfect Tense (10 Questions)</h3>
-              <div class="formula">Formula: Subject + have/has + Verb 3</div>
-
-              <div class="quiz-group"><p class="quiz-title">1. Eggha _______ his morning coffee, so he is ready to start his day.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> has finished</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finished</label></div>
-              <div class="quiz-group"><p class="quiz-title">2. Rebeca and Anita _______ that new cafe in Bintaro twice this week.</p><label class="quiz-option"><input type="radio" name="pf2" value="a"> visited</label><label class="quiz-option"><input type="radio" name="pf2" value="b"> have visited</label></div>
-              <div class="quiz-group"><p class="quiz-title">3. Adam _______ three 10K running events so far this year.</p><label class="quiz-option"><input type="radio" name="pf3" value="a"> has completed</label><label class="quiz-option"><input type="radio" name="pf3" value="b"> completed</label></div>
-              <div class="quiz-group"><p class="quiz-title">4. Zoey _______ her room; it looks super clean now!</p><label class="quiz-option"><input type="radio" name="pf4" value="a"> has tidy up</label><label class="quiz-option"><input type="radio" name="pf4" value="b"> has tidied up</label></div>
-              <div class="quiz-group"><p class="quiz-title">5. We _______ to the new pop album together.</p><label class="quiz-option"><input type="radio" name="pf5" value="a"> have listened</label><label class="quiz-option"><input type="radio" name="pf5" value="b"> listened</label></div>
-              <div class="quiz-group"><p class="quiz-title">6. Anita _______ three books this month.</p><label class="quiz-option"><input type="radio" name="pf6" value="a"> readed</label><label class="quiz-option"><input type="radio" name="pf6" value="b"> has read</label></div>
-              <div class="quiz-group"><p class="quiz-title">7. Eggha and Adam _______ a new recipe for meal prep.</p><label class="quiz-option"><input type="radio" name="pf7" value="a"> have tried</label><label class="quiz-option"><input type="radio" name="pf7" value="b"> tried</label></div>
-              <div class="quiz-group"><p class="quiz-title">8. _______ you ever _______ Japanese ramen in Jakarta?</p><label class="quiz-option"><input type="radio" name="pf8" value="a"> Did / taste</label><label class="quiz-option"><input type="radio" name="pf8" value="b"> Have / tasted</label></div>
-              <div class="quiz-group"><p class="quiz-title">9. Rebeca _______ her photography portfolio to Shutterstock.</p><label class="quiz-option"><input type="radio" name="pf9" value="a"> has uploaded</label><label class="quiz-option"><input type="radio" name="pf9" value="b"> uploaded</label></div>
-              <div class="quiz-group"><p class="quiz-title">10. Zoey _______ back from her morning walk yet.</p><label class="quiz-option"><input type="radio" name="pf10" value="a"> didn't come</label><label class="quiz-option"><input type="radio" name="pf10" value="b"> hasn't come</label></div>
-
-              <button class="submit-btn" onclick="checkQuiz('perfect', ['a','b','a','b','a','b','a','b','a','b'])">Check Present Perfect Results</button>
-              <div id="res-perfect" class="result-box"></div>
-            </div>
-          </div>
+          <div class="card"><h3>Grammar Tenses Module</h3></div>
         </div>
-
-        <!-- LEVEL 3: DAILY PHRASES (10 PHRASES PER CATEGORY) -->
         <div id="level3" class="level-content" style="display: none;">
-          <div class="card">
-            <h3>👋 1. Greeting & Casual Check-ins (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card"><div class="phrase-title">1. "How's it going with you, Rebeca?"</div><button class="audio-btn" onclick="playAudio('Hows it going with you, Rebeca?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">2. "What have you been up to, Eggha?"</div><button class="audio-btn" onclick="playAudio('What have you been up to, Eggha?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">3. "How was your weekend, Adam?"</div><button class="audio-btn" onclick="playAudio('How was your weekend, Adam?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">4. "Long time no see, Anita!"</div><button class="audio-btn" onclick="playAudio('Long time no see, Anita!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">5. "How are things with Zoey?"</div><button class="audio-btn" onclick="playAudio('How are things with Zoey?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">6. "How's everything going with you?"</div><button class="audio-btn" onclick="playAudio('Hows everything going with you?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">7. "What's new with you lately?"</div><button class="audio-btn" onclick="playAudio('Whats new with you lately?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">8. "How have you been holding up?"</div><button class="audio-btn" onclick="playAudio('How have you been holding up?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">9. "Hope you're having a great week!"</div><button class="audio-btn" onclick="playAudio('Hope you are having a great week!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">10. "Good to see you again!"</div><button class="audio-btn" onclick="playAudio('Good to see you again!')">🔊 Audio</button></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>☕ 2. Making Plans & Inviting Friends (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card"><div class="phrase-title">1. "Do you want to grab a coffee, Eggha?"</div><button class="audio-btn" onclick="playAudio('Do you want to grab a coffee, Eggha?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">2. "Are you free this Saturday, Rebeca?"</div><button class="audio-btn" onclick="playAudio('Are you free this Saturday, Rebeca?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">3. "Let's hang out at the new cafe!"</div><button class="audio-btn" onclick="playAudio('Lets hang out at the new cafe!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">4. "What are you up to tonight, Zoey?"</div><button class="audio-btn" onclick="playAudio('What are you up to tonight, Zoey?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">5. "Sounds like a plan, Adam!"</div><button class="audio-btn" onclick="playAudio('Sounds like a plan, Adam!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">6. "Are you down for a morning run tomorrow?"</div><button class="audio-btn" onclick="playAudio('Are you down for a morning run tomorrow?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">7. "Let's catch up sometime this week!"</div><button class="audio-btn" onclick="playAudio('Lets catch up sometime this week!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">8. "How about we grab some dinner later?"</div><button class="audio-btn" onclick="playAudio('How about we grab some dinner later?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">9. "Count me in for the weekend trip!"</div><button class="audio-btn" onclick="playAudio('Count me in for the weekend trip!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">10. "Let me know if you're free to meet up."</div><button class="audio-btn" onclick="playAudio('Let me know if you are free to meet up.')">🔊 Audio</button></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>💬 3. Expressing Opinions & Reacting (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card"><div class="phrase-title">1. "To be honest, I really like it!"</div><button class="audio-btn" onclick="playAudio('To be honest, I really like it!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">2. "That's awesome, Anita!"</div><button class="audio-btn" onclick="playAudio('Thats awesome, Anita!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">3. "I know what you mean, Zoey."</div><button class="audio-btn" onclick="playAudio('I know what you mean, Zoey.')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">4. "No way, really?"</div><button class="audio-btn" onclick="playAudio('No way, really?')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">5. "Let me think about it, Rebeca."</div><button class="audio-btn" onclick="playAudio('Let me think about it, Rebeca.')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">6. "That makes total sense to me!"</div><button class="audio-btn" onclick="playAudio('That makes total sense to me!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">7. "I couldn't agree with you more."</div><button class="audio-btn" onclick="playAudio('I couldnt agree with you more.')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">8. "That sounds super interesting!"</div><button class="audio-btn" onclick="playAudio('That sounds super interesting!')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">9. "Fair point, I hadn't thought of that."</div><button class="audio-btn" onclick="playAudio('Fair point, I hadnt thought of that.')">🔊 Audio</button></div>
-              <div class="phrase-card"><div class="phrase-title">10. "I'm totally on board with that idea!"</div><button class="audio-btn" onclick="playAudio('Im totally on board with that idea!')">🔊 Audio</button></div>
-            </div>
-          </div>
+          <div class="card"><h3>30 Daily Phrases Module</h3></div>
         </div>
-
-        <!-- LEVEL 4: UNLIMITED STORIES -->
         <div id="level4" class="level-content" style="display: none;">
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <h3>📖 Level 4: Pure Listening Story Challenge</h3>
-              <span class="streak-badge" id="storyStreakBadge">🔥 Stories Completed: 0</span>
-            </div>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the story audio below (text hidden) &rarr; answer the question &rarr; click "Next Story" when correct!</p>
-
-            <div class="story-box" id="dynamicStoryBox" style="text-align: center; padding: 25px;">
-              <h4 id="storyTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Story Challenge</h4>
-              <p style="color:#64748b; font-size:14px; margin-bottom:15px;">🎧 Listen to the story carefully:</p>
-              <button class="audio-btn" id="storyAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentStoryAudio()">🔊 Play Story Audio</button>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title" id="storyQuestionText">Loading Question...</p>
-              <label class="quiz-option" id="optLabelA"><input type="radio" name="dynStoryQ" value="a"><span id="optTextA">Option A</span></label>
-              <label class="quiz-option" id="optLabelB"><input type="radio" name="dynStoryQ" value="b"><span id="optTextB">Option B</span></label>
-            </div>
-
-            <button class="submit-btn" onclick="checkDynamicStoryAnswer()">Check Answer</button>
-            <div id="res-dynamic-story" class="result-box"></div>
-
-            <button id="nextStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomStory()">Next Story ▶️</button>
-          </div>
+          <div class="card"><h3>Unlimited Stories Module</h3></div>
         </div>
-
-        <!-- LEVEL 5: SPEAKING SIMULATOR -->
         <div id="level5" class="level-content" style="display: none;">
-          <div class="card">
-            <h3>🎙️ Level 5: Dynamic Speaking Simulator (Unlimited)</h3>
-            <p style="color:#64748b; font-size:14px;">Train your speaking reflexes! Listen to random prompts &rarr; wait 5-sec timer &rarr; speak into your microphone.</p>
-
-            <div class="sim-box">
-              <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="simProgress">Prompt #1</div>
-              
-              <button class="audio-btn" style="padding:12px 20px; font-size:15px;" onclick="startSpeakingSim()">▶️ Start Audio Prompt</button>
-              
-              <div style="margin-top:15px;">
-                <h4 id="simPrompt" style="color:#0284c7; font-size: 18px;">Click "Start Audio Prompt" to listen...</h4>
-              </div>
-
-              <div class="sim-timer" id="simTimer">--</div>
-
-              <button id="simMicBtn" class="submit-btn" style="width:auto; padding:10px 22px; background:#e11d48;" onclick="startListeningSim()" disabled>🎙️ Answer Now (Speak in Mic)</button>
-
-              <div class="sim-transcript" id="simTranscript">
-                <em>Your answer transcript will appear here...</em>
-              </div>
-
-              <div class="sample-response" id="sampleResponseBox" style="display:none;">
-                <strong>💡 Sample Native Response:</strong>
-                <p id="sampleText" style="margin-top:6px; font-weight:600;"></p>
-              </div>
-
-              <button id="nextSimBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:15px;" onclick="generateNextSpeakingPrompt()">Next Question ▶️</button>
-            </div>
-          </div>
+          <div class="card"><h3>Speaking Simulator Module</h3></div>
         </div>
-
       </section>
 
       <!-- ================= MODUL 2: MANDARIN EXERCISE ================= -->
       <section id="mandarin" class="module-section">
         <h1>🏮 Mandarin Daily Life Hub</h1>
         <p class="subtitle">Daily Mandarin Training Program Complete with Hanzi & Pinyin (Levels 1–5)</p>
-
-        <!-- Mandarin Level Selector Tabs -->
-        <div class="level-tab-container">
-          <button class="level-btn active" onclick="openMandarinLevel('m_level1')">Lvl 1: Basic Listening (10)</button>
-          <button class="level-btn" onclick="openMandarinLevel('m_level2')">Lvl 2: Basic Grammar (10)</button>
-          <button class="level-btn" onclick="openMandarinLevel('m_level3')">Lvl 3: Daily Phrases (30)</button>
-          <button class="level-btn" onclick="openMandarinLevel('m_level4')">Lvl 4: Stories & Pinyin ♾️</button>
-          <button class="level-btn" onclick="openMandarinLevel('m_level5')">Lvl 5: Speaking Sim ♾️</button>
-        </div>
-
-        <!-- MANDARIN LEVEL 1: BASIC LISTENING & GREETINGS -->
-        <div id="m_level1" class="mandarin-level-content">
-          <div class="card">
-            <h3>🎧 Level 1: Mandarin Basic Listening & Greetings (10 Questions)</h3>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the Mandarin audio, check the Latin Pinyin, and choose the correct English meaning!</p>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 1: 早上好 (Zǎoshang hǎo)</p>
-              <button class="audio-btn" onclick="playAudio('早上好', 'zh-CN')">🔊 Play Mandarin Audio 1</button>
-              <label class="quiz-option"><input type="radio" name="ml1q1" value="a"> Good morning</label>
-              <label class="quiz-option"><input type="radio" name="ml1q1" value="b"> Good evening</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 2: 谢谢你 (Xièxie nǐ)</p>
-              <button class="audio-btn" onclick="playAudio('谢谢你', 'zh-CN')">🔊 Play Mandarin Audio 2</button>
-              <label class="quiz-option"><input type="radio" name="ml1q2" value="a"> I'm sorry</label>
-              <label class="quiz-option"><input type="radio" name="ml1q2" value="b"> Thank you very much</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 3: 你好吗？(Nǐ hǎo ma?)</p>
-              <button class="audio-btn" onclick="playAudio('你好吗？', 'zh-CN')">🔊 Play Mandarin Audio 3</button>
-              <label class="quiz-option"><input type="radio" name="ml1q3" value="a"> How are you?</label>
-              <label class="quiz-option"><input type="radio" name="ml1q3" value="b"> What is your name?</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 4: 不客气 (Bú kèqi)</p>
-              <button class="audio-btn" onclick="playAudio('不客气', 'zh-CN')">🔊 Play Mandarin Audio 4</button>
-              <label class="quiz-option"><input type="radio" name="ml1q4" value="a"> You're welcome / No problem</label>
-              <label class="quiz-option"><input type="radio" name="ml1q4" value="b"> Don't want</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 5: 我要喝咖啡 (Wǒ yào hē kāfēi)</p>
-              <button class="audio-btn" onclick="playAudio('我要喝咖啡', 'zh-CN')">🔊 Play Mandarin Audio 5</button>
-              <label class="quiz-option"><input type="radio" name="ml1q5" value="a"> I want to drink coffee</label>
-              <label class="quiz-option"><input type="radio" name="ml1q5" value="b"> I want to eat tea</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 6: 这个多少钱？(Zhège duōshao qián?)</p>
-              <button class="audio-btn" onclick="playAudio('这个多少钱？', 'zh-CN')">🔊 Play Mandarin Audio 6</button>
-              <label class="quiz-option"><input type="radio" name="ml1q6" value="a"> How much is this?</label>
-              <label class="quiz-option"><input type="radio" name="ml1q6" value="b"> Where is this place?</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 7: 我喜欢跑步 (Wǒ xǐhuan pǎobù)</p>
-              <button class="audio-btn" onclick="playAudio('我喜欢跑步', 'zh-CN')">🔊 Play Mandarin Audio 7</button>
-              <label class="quiz-option"><input type="radio" name="ml1q7" value="a"> I like running</label>
-              <label class="quiz-option"><input type="radio" name="ml1q7" value="b"> I like swimming</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 8: 明天见 (Míngtiān jiàn)</p>
-              <button class="audio-btn" onclick="playAudio('明天见', 'zh-CN')">🔊 Play Mandarin Audio 8</button>
-              <label class="quiz-option"><input type="radio" name="ml1q8" value="a"> See you tomorrow</label>
-              <label class="quiz-option"><input type="radio" name="ml1q8" value="b"> See you yesterday</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 9: 太好吃啦！(Tài hǎochī le!)</p>
-              <button class="audio-btn" onclick="playAudio('太好吃啦！', 'zh-CN')">🔊 Play Mandarin Audio 9</button>
-              <label class="quiz-option"><input type="radio" name="ml1q9" value="a"> So delicious!</label>
-              <label class="quiz-option"><input type="radio" name="ml1q9" value="b"> Very spicy!</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">Question 10: 没关系 (Méi guānxi)</p>
-              <button class="audio-btn" onclick="playAudio('没关系', 'zh-CN')">🔊 Play Mandarin Audio 10</button>
-              <label class="quiz-option"><input type="radio" name="ml1q10" value="a"> It's okay / No problem</label>
-              <label class="quiz-option"><input type="radio" name="ml1q10" value="b"> Goodbye</label>
-            </div>
-
-            <button class="submit-btn" onclick="checkMandarinL1Quiz()">Check Mandarin Level 1 Results</button>
-            <div id="res-m-l1" class="result-box"></div>
-          </div>
-        </div>
-
-        <!-- MANDARIN LEVEL 2: GRAMMAR -->
-        <div id="m_level2" class="mandarin-level-content" style="display: none;">
-          <div class="card">
-            <h3>📌 Level 2: Mandarin Basic Grammar (10 Questions)</h3>
-            <div class="formula">Basic Pattern: Subject + Time Expression + Verb + Object</div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">1. "I want to drink coffee" in Mandarin is...</p>
-              <label class="quiz-option"><input type="radio" name="mp1" value="a"> Wǒ yào hē kāfēi (我要喝咖啡)</label>
-              <label class="quiz-option"><input type="radio" name="mp1" value="b"> Wǒ kāfēi hē yào (我咖啡喝要)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">2. The word for completed action "already" (了 - le) is placed...</p>
-              <label class="quiz-option"><input type="radio" name="mp2" value="a"> After the verb or at the end of the sentence</label>
-              <label class="quiz-option"><input type="radio" name="mp2" value="b"> Before the subject</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">3. "Yesterday I went running" &rarr; Zuótiān wǒ qù _______.</p>
-              <label class="quiz-option"><input type="radio" name="mp3" value="a"> pǎobù (跑步)</label>
-              <label class="quiz-option"><input type="radio" name="mp3" value="b"> hē kāfēi (喝咖啡)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">4. The word for "To like" in Mandarin is...</p>
-              <label class="quiz-option"><input type="radio" name="mp4" value="a"> xǐhuan (喜欢)</label>
-              <label class="quiz-option"><input type="radio" name="mp4" value="b"> xièxie (谢谢)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">5. "This is very good" &rarr; Zhège hěn _______.</p>
-              <label class="quiz-option"><input type="radio" name="mp5" value="a"> hǎo (好)</label>
-              <label class="quiz-option"><input type="radio" name="mp5" value="b"> duō (多)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">6. How do you say "Where?" in Mandarin?</p>
-              <label class="quiz-option"><input type="radio" name="mp6" value="a"> Zài nǎlǐ? (在哪里？)</label>
-              <label class="quiz-option"><input type="radio" name="mp6" value="b"> Shénme? (什么？)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">7. "I am a friend" &rarr; Wǒ _______ péngyou.</p>
-              <label class="quiz-option"><input type="radio" name="mp7" value="a"> shì (是)</label>
-              <label class="quiz-option"><input type="radio" name="mp7" value="b"> yǒu (有)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">8. "I have a pair of running shoes" &rarr; Wǒ _______ yì shuāng pǎoxié.</p>
-              <label class="quiz-option"><input type="radio" name="mp8" value="a"> yǒu (有)</label>
-              <label class="quiz-option"><input type="radio" name="mp8" value="b"> shì (是)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">9. The word for "Very" in Mandarin is...</p>
-              <label class="quiz-option"><input type="radio" name="mp9" value="a"> hěn (很)</label>
-              <label class="quiz-option"><input type="radio" name="mp9" value="b"> bù (不)</label>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title">10. The word for "Don't want" in Mandarin is...</p>
-              <label class="quiz-option"><input type="radio" name="mp10" value="a"> bú yào (不要)</label>
-              <label class="quiz-option"><input type="radio" name="mp10" value="b"> méi yǒu (没有)</label>
-            </div>
-
-            <button class="submit-btn" onclick="checkMandarinL2Quiz()">Check Mandarin Level 2 Results</button>
-            <div id="res-m-l2" class="result-box"></div>
-          </div>
-        </div>
-
-        <!-- MANDARIN LEVEL 3: DAILY PHRASES GRID (10 PHRASES PER CATEGORY) -->
-        <div id="m_level3" class="mandarin-level-content" style="display: none;">
-          <div class="card">
-            <h3>👋 1. Greetings & Everyday Expressions (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">1. 你好 (Nǐ hǎo)</div>
-                <div class="pinyin-text">Nǐ hǎo</div>
-                <div class="meaning-text">Hello / How are you</div>
-                <button class="audio-btn" onclick="playAudio('你好', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">2. 早上好 (Zǎoshang hǎo)</div>
-                <div class="pinyin-text">Zǎoshang hǎo</div>
-                <div class="meaning-text">Good morning</div>
-                <button class="audio-btn" onclick="playAudio('早上好', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">3. 晚安 (Wǎn'ān)</div>
-                <div class="pinyin-text">Wǎn'ān</div>
-                <div class="meaning-text">Good night</div>
-                <button class="audio-btn" onclick="playAudio('晚安', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">4. 谢谢 (Xièxie)</div>
-                <div class="pinyin-text">Xièxie</div>
-                <div class="meaning-text">Thank you</div>
-                <button class="audio-btn" onclick="playAudio('谢谢', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">5. 再见 (Zàijiàn)</div>
-                <div class="pinyin-text">Zàijiàn</div>
-                <div class="meaning-text">Goodbye / See you again</div>
-                <button class="audio-btn" onclick="playAudio('再见', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">6. 最近怎么样？</div>
-                <div class="pinyin-text">Zuìjìn zěnmeyàng?</div>
-                <div class="meaning-text">How have you been lately?</div>
-                <button class="audio-btn" onclick="playAudio('最近怎么样？', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">7. 好久不见！</div>
-                <div class="pinyin-text">Hǎojiǔ bú jiàn!</div>
-                <div class="meaning-text">Long time no see!</div>
-                <button class="audio-btn" onclick="playAudio('好久不见！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">8. 今天过得好吗？</div>
-                <div class="pinyin-text">Jīntiān guò de hǎo ma?</div>
-                <div class="meaning-text">How was your day?</div>
-                <button class="audio-btn" onclick="playAudio('今天过得好吗？', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">9. 很高兴认识你！</div>
-                <div class="pinyin-text">Hěn gāoxìng rènshi nǐ!</div>
-                <div class="meaning-text">Nice to meet you!</div>
-                <button class="audio-btn" onclick="playAudio('很高兴认识你！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">10. 周末快乐！</div>
-                <div class="pinyin-text">Zhōumò kuàilè!</div>
-                <div class="meaning-text">Happy weekend!</div>
-                <button class="audio-btn" onclick="playAudio('周末快乐！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>☕ 2. Ordering Food & Coffee (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">1. 我要一杯美式咖啡</div>
-                <div class="pinyin-text">Wǒ yào yì bēi měishì kāfēi</div>
-                <div class="meaning-text">I want a glass of Iced Americano</div>
-                <button class="audio-btn" onclick="playAudio('我要一杯美式咖啡', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">2. 这个多少钱？</div>
-                <div class="pinyin-text">Zhège duōshao qián?</div>
-                <div class="meaning-text">How much is this?</div>
-                <button class="audio-btn" onclick="playAudio('这个多少钱？', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">3. 太好吃啦！</div>
-                <div class="pinyin-text">Tài hǎochī le!</div>
-                <div class="meaning-text">It tastes delicious!</div>
-                <button class="audio-btn" onclick="playAudio('太好吃啦！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">4. 我想吃拉面</div>
-                <div class="pinyin-text">Wǒ xiǎng chī lāmiàn</div>
-                <div class="meaning-text">I want to eat ramen</div>
-                <button class="audio-btn" onclick="playAudio('我想吃拉面', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">5. 买单，谢谢</div>
-                <div class="pinyin-text">Mǎidān, xièxie</div>
-                <div class="meaning-text">Check please / Bill, thank you</div>
-                <button class="audio-btn" onclick="playAudio('买单，谢谢', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">6. 请给我一杯冰水</div>
-                <div class="pinyin-text">Qǐng gěi wǒ yì bēi bīngshuǐ</div>
-                <div class="meaning-text">Please give me a glass of ice water</div>
-                <button class="audio-btn" onclick="playAudio('请给我一杯冰水', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">7. 这里的咖啡非常好喝</div>
-                <div class="pinyin-text">Zhèlǐ de kāfēi fēicháng hǎohē</div>
-                <div class="meaning-text">The coffee here is really good</div>
-                <button class="audio-btn" onclick="playAudio('这里的咖啡非常好喝', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">8. 我要少糖少冰</div>
-                <div class="pinyin-text">Wǒ yào shǎo táng shǎo bīng</div>
-                <div class="meaning-text">Less sugar and less ice, please</div>
-                <button class="audio-btn" onclick="playAudio('我要少糖少冰', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">9. 有推荐的菜吗？</div>
-                <div class="pinyin-text">Yǒu tuījiàn de cài ma?</div>
-                <div class="meaning-text">Do you have any recommended dishes?</div>
-                <button class="audio-btn" onclick="playAudio('有推荐的菜吗？', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">10. 打包，谢谢</div>
-                <div class="pinyin-text">Dǎbāo, xièxie</div>
-                <div class="meaning-text">Takeaway / To go, please</div>
-                <button class="audio-btn" onclick="playAudio('打包，谢谢', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>💬 3. Casual Lifestyle & Habits (10 Phrases)</h3>
-            <div class="phrase-grid">
-              <div class="phrase-card">
-                <div class="phrase-title">1. 我喜欢晨跑</div>
-                <div class="pinyin-text">Wǒ xǐhuan chénpǎo</div>
-                <div class="meaning-text">I like morning running</div>
-                <button class="audio-btn" onclick="playAudio('我喜欢晨跑', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">2. 你在干什么？</div>
-                <div class="pinyin-text">Nǐ zài gàn shénme?</div>
-                <div class="meaning-text">What are you doing right now?</div>
-                <button class="audio-btn" onclick="playAudio('你在干什么？', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">3. 没问题！</div>
-                <div class="pinyin-text">Méi wèntí!</div>
-                <div class="meaning-text">No problem! / Sure thing!</div>
-                <button class="audio-btn" onclick="playAudio('没问题！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">4. 今天天气很好</div>
-                <div class="pinyin-text">Jīntiān tiānqì hěn hǎo</div>
-                <div class="meaning-text">The weather today is very good</div>
-                <button class="audio-btn" onclick="playAudio('今天天气很好', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">5. 我要去健身房</div>
-                <div class="pinyin-text">Wǒ yào qù jiànshēnfáng</div>
-                <div class="meaning-text">I am going to the gym</div>
-                <button class="audio-btn" onclick="playAudio('我要去健身房', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">6. 我正在空气炸锅做鸡胸肉</div>
-                <div class="pinyin-text">Wǒ zhèngzài kōngqì zhàguō zuò jīxiōngròu</div>
-                <div class="meaning-text">I am cooking chicken fillet in the air fryer</div>
-                <button class="audio-btn" onclick="playAudio('我正在空气炸锅做鸡胸肉', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">7. 我喜欢去咖啡馆工作</div>
-                <div class="pinyin-text">Wǒ xǐhuan qù kāfēiguǎn gōngzuò</div>
-                <div class="meaning-text">I like working at coffee shops</div>
-                <button class="audio-btn" onclick="playAudio('我喜欢去咖啡馆工作', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">8. 晚安，做个好梦</div>
-                <div class="pinyin-text">Wǎn'ān, zuò gè hǎo mèng</div>
-                <div class="meaning-text">Good night, sweet dreams</div>
-                <button class="audio-btn" onclick="playAudio('晚安，做个好梦', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">9. 我打算周末去跑步</div>
-                <div class="pinyin-text">Wǒ dǎsuàn zhōumò qù pǎobù</div>
-                <div class="meaning-text">I plan to go running this weekend</div>
-                <button class="audio-btn" onclick="playAudio('我打算周末去跑步', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-              <div class="phrase-card">
-                <div class="phrase-title">10. 太棒了！加油！</div>
-                <div class="pinyin-text">Tài bàng le! Jiāyóu!</div>
-                <div class="meaning-text">Awesome! Keep it up!</div>
-                <button class="audio-btn" onclick="playAudio('太棒了！加油！', 'zh-CN')">🔊 Mandarin Audio</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- MANDARIN LEVEL 4: UNLIMITED NON-REPEATING STORIES WITH ENGLISH Q&A + LATIN PINYIN -->
-        <div id="m_level4" class="mandarin-level-content" style="display: none;">
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <h3>📖 Level 4: Mandarin Short Story Challenge</h3>
-              <span class="streak-badge" id="mandarinStoryStreakBadge">🔥 Stories Completed: 0</span>
-            </div>
-            <p style="color:#64748b; font-size:14px; margin-bottom:15px;">Listen to the Mandarin story audio &rarr; check the Latin Pinyin guide &rarr; answer the question in English!</p>
-
-            <div class="story-box" id="mandarinDynamicStoryBox" style="text-align: center; padding: 25px;">
-              <h4 id="mandarinStoryTitle" style="color: #0284c7; margin-bottom: 12px; font-size: 18px;">Mandarin Story Challenge</h4>
-              
-              <!-- Pinyin Helper Box -->
-              <div id="mandarinPinyinTextDisplay" style="font-size: 16px; color: #e11d48; font-weight: 600; margin-bottom: 10px; line-height: 1.5;">
-                Loading Pinyin Latin...
-              </div>
-
-              <button class="audio-btn" id="mandarinStoryAudioBtn" style="padding: 12px 24px; font-size: 15px;" onclick="playCurrentMandarinStoryAudio()">🔊 Play Mandarin Story Audio</button>
-            </div>
-
-            <div class="quiz-group">
-              <p class="quiz-title" id="mandarinStoryQuestionText">Loading Question...</p>
-              <label class="quiz-option" id="mOptLabelA"><input type="radio" name="dynMandarinStoryQ" value="a"><span id="mOptTextA">Option A</span></label>
-              <label class="quiz-option" id="mOptLabelB"><input type="radio" name="dynMandarinStoryQ" value="b"><span id="mOptTextB">Option B</span></label>
-            </div>
-
-            <button class="submit-btn" onclick="checkDynamicMandarinStoryAnswer()">Check Answer</button>
-            <div id="res-dynamic-mandarin-story" class="result-box"></div>
-
-            <button id="nextMandarinStoryBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:12px;" onclick="loadNewRandomMandarinStory()">Next Story ▶️</button>
-          </div>
-        </div>
-
-        <!-- MANDARIN LEVEL 5: SPEAKING SIMULATOR -->
-        <div id="m_level5" class="mandarin-level-content" style="display: none;">
-          <div class="card">
-            <h3>🎙️ Level 5: Mandarin Speaking Simulator (Unlimited)</h3>
-            <p style="color:#64748b; font-size:14px;">Train your speaking reflexes in Mandarin! Listen to the prompt &rarr; wait 5 seconds &rarr; speak in Mandarin.</p>
-
-            <div class="sim-box">
-              <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;" id="mSimProgress">Mandarin Prompt #1</div>
-              
-              <button class="audio-btn" style="padding:12px 20px; font-size:15px;" onclick="startMandarinSpeakingSim()">▶️ Start Audio Prompt</button>
-              
-              <div style="margin-top:15px;">
-                <h4 id="mSimPromptHanzi" style="color:#0284c7; font-size: 20px;">点击按钮听问题...</h4>
-                <div id="mSimPromptPinyin" style="color:#e11d48; font-weight: 600; margin-top:4px;">(Click button to listen to the question...)</div>
-              </div>
-
-              <div class="sim-timer" id="mSimTimer">--</div>
-
-              <button id="mSimMicBtn" class="submit-btn" style="width:auto; padding:10px 22px; background:#e11d48;" onclick="startListeningMandarinSim()" disabled>🎙️ Answer Now (Speak in Mandarin)</button>
-
-              <div class="sim-transcript" id="mSimTranscript">
-                <em>Your Mandarin answer transcript will appear here...</em>
-              </div>
-
-              <div class="sample-response" id="mSampleResponseBox" style="display:none;">
-                <strong>💡 Sample Native Response:</strong>
-                <p id="mSampleHanzi" style="margin-top:6px; font-weight:700; font-size: 16px;"></p>
-                <p id="mSamplePinyin" style="color:#e11d48; font-weight:600; font-size: 14px;"></p>
-              </div>
-
-              <button id="mNextSimBtn" class="submit-btn" style="background:#0284c7; display:none; margin-top:15px;" onclick="generateNextMandarinSpeakingPrompt()">Next Question ▶️</button>
-            </div>
-          </div>
-        </div>
-
+        <div class="card"><h3>Mandarin Learning Center</h3></div>
       </section>
 
-      <!-- OTHER MODULES (PLACEHOLDERS) -->
+      <!-- OTHER MODULES -->
       <section id="hpp" class="module-section">
         <h1>📊 UMKM Cost & Price Calculator</h1>
         <div class="card"><h3>Selling Price & Cost Calculator Coming Soon</h3></div>
@@ -878,30 +297,6 @@
       event.currentTarget.classList.add('active');
     }
 
-    // Level Switcher (English)
-    function openLevel(levelId) {
-      document.querySelectorAll('.level-content').forEach(l => l.style.display = 'none');
-      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(levelId).style.display = 'block';
-      event.currentTarget.classList.add('active');
-    }
-
-    // Level Switcher (Mandarin)
-    function openMandarinLevel(levelId) {
-      document.querySelectorAll('.mandarin-level-content').forEach(l => l.style.display = 'none');
-      document.querySelectorAll('#mandarin .level-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(levelId).style.display = 'block';
-      event.currentTarget.classList.add('active');
-    }
-
-    // Grammar Sub-tab Switcher
-    function openGrammarTab(tabName) {
-      document.querySelectorAll('.grammar-tab-content').forEach(t => t.style.display = 'none');
-      document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabName).style.display = 'block';
-      event.currentTarget.classList.add('active');
-    }
-
     // Universal Text-to-Speech Engine
     function playAudio(text, lang = 'en-US') {
       if ('speechSynthesis' in window) {
@@ -910,522 +305,259 @@
         utterance.lang = lang;
         utterance.rate = lang === 'zh-CN' ? 0.85 : 0.9;
         window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // =========================================================================
+    // SPLIT BILL LOGIC & TESSERACT OCR ENGINE
+    // =========================================================================
+    let peopleList = ['Eggha', 'Rebeca', 'Adam']; // Default nama awal
+    let itemList = [
+      { id: 1, name: 'Nasi Rames', price: 25000, assignedTo: ['Eggha'] },
+      { id: 2, name: 'Teh Manis', price: 6000, assignedTo: ['Eggha', 'Rebeca'] },
+      { id: 3, name: 'Nasi Goreng', price: 28000, assignedTo: ['Rebeca'] },
+      { id: 4, name: 'Mie Nyemek', price: 22000, assignedTo: ['Adam'] }
+    ];
+
+    function renderPersonTags() {
+      const container = document.getElementById('personList');
+      container.innerHTML = '';
+      peopleList.forEach((person, index) => {
+        container.innerHTML += `
+          <span class="person-tag">
+            👤 ${person}
+            <span class="remove-tag" onclick="removePerson(${index})">&times;</span>
+          </span>
+        `;
+      });
+      renderItemTable();
+    }
+
+    function addPerson() {
+      const input = document.getElementById('personInput');
+      const name = input.value.trim();
+      if (name && !peopleList.includes(name)) {
+        peopleList.push(name);
+        input.value = '';
+        renderPersonTags();
+      }
+    }
+
+    function removePerson(index) {
+      const removedName = peopleList[index];
+      peopleList.splice(index, 1);
+      // Hapus dari assignment item jika ada
+      itemList.forEach(item => {
+        item.assignedTo = item.assignedTo.filter(p => p !== removedName);
+      });
+      renderPersonTags();
+    }
+
+    function renderItemTable() {
+      const tbody = document.getElementById('itemTableBody');
+      tbody.innerHTML = '';
+
+      if (itemList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Belum ada item pesanan. Silakan upload struk atau tambah manual.</td></tr>`;
+        return;
+      }
+
+      itemList.forEach((item, index) => {
+        let checkboxesHTML = '<div class="checkbox-group">';
+        peopleList.forEach(person => {
+          const isChecked = item.assignedTo.includes(person) ? 'checked' : '';
+          checkboxesHTML += `
+            <label class="checkbox-item">
+              <input type="checkbox" onchange="toggleItemAssignment(${index}, '${person}')" ${isChecked}> ${person}
+            </label>
+          `;
+        });
+        checkboxesHTML += '</div>';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${item.name}</strong></td>
+            <td>Rp ${item.price.toLocaleString('id-ID')}</td>
+            <td>${checkboxesHTML}</td>
+            <td style="text-align:center;">
+              <button style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;" onclick="deleteItem(${index})">🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function addManualItem() {
+      const nameInput = document.getElementById('itemNameInput');
+      const priceInput = document.getElementById('itemPriceInput');
+      const name = nameInput.value.trim();
+      const price = parseFloat(priceInput.value);
+
+      if (name && !isNaN(price) && price > 0) {
+        itemList.push({ id: Date.now(), name: name, price: price, assignedTo: [] });
+        nameInput.value = '';
+        priceInput.value = '';
+        renderItemTable();
+      }
+    }
+
+    function toggleItemAssignment(itemIndex, personName) {
+      const assigned = itemList[itemIndex].assignedTo;
+      if (assigned.includes(personName)) {
+        itemList[itemIndex].assignedTo = assigned.filter(p => p !== personName);
       } else {
-        alert('Audio feature is not supported in this browser.');
+        itemList[itemIndex].assignedTo.push(personName);
       }
     }
 
-    // English Level 1 Quiz Checker with Highlighting
-    function checkLevel1Quiz() {
-      const keys = ['b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a'];
-      let score = 0;
-      for (let i = 1; i <= 10; i++) {
-        const radios = document.querySelectorAll(`input[name="l1q${i}"]`);
-        const key = keys[i - 1];
-        radios.forEach(radio => {
-          const label = radio.closest('.quiz-option');
-          label.classList.remove('correct-option', 'wrong-option');
-          if (radio.value === key) {
-            label.classList.add('correct-option');
-          }
-          if (radio.checked && radio.value !== key) {
-            label.classList.add('wrong-option');
-          }
-          if (radio.checked && radio.value === key) {
-            score++;
+    function deleteItem(index) {
+      itemList.splice(index, 1);
+      renderItemTable();
+    }
+
+    // OCR ENGINE DENGAN TESSERACT.JS
+    async function scanReceiptOCR() {
+      const fileInput = document.getElementById('receiptImage');
+      const statusDiv = document.getElementById('ocrStatus');
+      const btn = document.getElementById('ocrBtn');
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert("Pilih foto struk terlebih dahulu!");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      btn.disabled = true;
+      statusDiv.innerHTML = "⏳ Membaca teks struk dengan Tesseract.js... Mohon tunggu.";
+
+      try {
+        const worker = await Tesseract.createWorker('ind'); // Menggunakan bahasa Indonesia
+        const ret = await worker.recognize(file);
+        await worker.terminate();
+
+        const lines = ret.data.text.split('\n');
+        let scannedCount = 0;
+
+        lines.forEach(line => {
+          // Regex sederhana untuk menangkap teks di kiri dan angka nominal di kanan
+          const match = line.match(/(.+?)\s+([\d\.\,]{3,})/);
+          if (match) {
+            let itemName = match[1].trim().replace(/[^a-zA-A0-9\s]/g, '');
+            let rawPrice = match[2].replace(/[^\d]/g, '');
+            let price = parseFloat(rawPrice);
+
+            // Filter kata kunci yang bukan nama produk (misal total/subtotal/pajak)
+            const ignoreKeywords = ['total', 'subtotal', 'pajak', 'tax', 'cash', 'kembali', 'change', 'tunai'];
+            const isIgnore = ignoreKeywords.some(kw => itemName.toLowerCase().includes(kw));
+
+            if (itemName.length > 2 && price > 1000 && !isIgnore) {
+              itemList.push({ id: Date.now() + Math.random(), name: itemName, price: price, assignedTo: [] });
+              scannedCount++;
+            }
           }
         });
+
+        statusDiv.innerHTML = `✅ Berhasil mengekstrak ${scannedCount} item dari struk! Silakan periksa tabel di bawah.`;
+        renderItemTable();
+      } catch (err) {
+        console.error(err);
+        statusDiv.innerHTML = "❌ Gagal scan struk. Coba masukkan item secara manual.";
+      } finally {
+        btn.disabled = false;
       }
-      const resDiv = document.getElementById('res-l1');
-      resDiv.style.display = 'block';
-      resDiv.style.background = score >= 8 ? '#d1fae5' : '#fee2e2';
-      resDiv.style.color = score >= 8 ? '#065f46' : '#991b1b';
-      resDiv.innerHTML = `Your Level 1 Score: ${score} / 10 (${score * 10}%)`;
     }
 
-    // English Level 2 Grammar Checker with Highlighting
-    function checkQuiz(tabPrefix, answers) {
-      let score = 0;
-      let total = answers.length;
-      let prefixMap = { 'past': 'p', 'present': 'pr', 'continuous': 'c', 'perfect': 'pf' };
-      let prefix = prefixMap[tabPrefix];
+    // KALKULASI SPLIT BILL PROPORSIONAL
+    let lastCalculatedBreakdown = null;
 
-      for (let i = 1; i <= total; i++) {
-        const radios = document.querySelectorAll(`input[name="${prefix}${i}"]`);
-        const key = answers[i - 1];
-        radios.forEach(radio => {
-          const label = radio.closest('.quiz-option');
-          label.classList.remove('correct-option', 'wrong-option');
-          if (radio.value === key) {
-            label.classList.add('correct-option');
-          }
-          if (radio.checked && radio.value !== key) {
-            label.classList.add('wrong-option');
-          }
-          if (radio.checked && radio.value === key) {
-            score++;
-          }
-        });
-      }
-      let resDiv = document.getElementById(`res-${tabPrefix}`);
-      resDiv.style.display = 'block';
-      let percentage = Math.round((score / total) * 100);
-      resDiv.style.background = percentage >= 80 ? '#d1fae5' : '#fee2e2';
-      resDiv.style.color = percentage >= 80 ? '#065f46' : '#991b1b';
-      resDiv.innerHTML = `Your Score: ${score} / ${total} (${percentage}%)`;
-    }
+    function calculateSplitBill() {
+      if (peopleList.length === 0) { alert("Tambahkan minimal 1 nama peserta!"); return; }
+      if (itemList.length === 0) { alert("Tambahkan minimal 1 item pesanan!"); return; }
 
-    // Mandarin Level 1 Checker with Highlighting
-    function checkMandarinL1Quiz() {
-      const keys = ['a', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'];
-      let score = 0;
-      for (let i = 1; i <= 10; i++) {
-        const radios = document.querySelectorAll(`input[name="ml1q${i}"]`);
-        const key = keys[i - 1];
-        radios.forEach(radio => {
-          const label = radio.closest('.quiz-option');
-          label.classList.remove('correct-option', 'wrong-option');
-          if (radio.value === key) {
-            label.classList.add('correct-option');
-          }
-          if (radio.checked && radio.value !== key) {
-            label.classList.add('wrong-option');
-          }
-          if (radio.checked && radio.value === key) {
-            score++;
-          }
-        });
-      }
-      const resDiv = document.getElementById('res-m-l1');
-      resDiv.style.display = 'block';
-      resDiv.style.background = score >= 8 ? '#d1fae5' : '#fee2e2';
-      resDiv.style.color = score >= 8 ? '#065f46' : '#991b1b';
-      resDiv.innerHTML = `Mandarin Level 1 Score: ${score} / 10 (${score * 10}%)`;
-    }
+      const taxPct = parseFloat(document.getElementById('taxPercentInput').value) || 0;
+      const servicePct = parseFloat(document.getElementById('servicePercentInput').value) || 0;
+      const discount = parseFloat(document.getElementById('discountInput').value) || 0;
 
-    // Mandarin Level 2 Checker with Highlighting
-    function checkMandarinL2Quiz() {
-      const keys = ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'];
-      let score = 0;
-      for (let i = 1; i <= 10; i++) {
-        const radios = document.querySelectorAll(`input[name="mp${i}"]`);
-        const key = keys[i - 1];
-        radios.forEach(radio => {
-          const label = radio.closest('.quiz-option');
-          label.classList.remove('correct-option', 'wrong-option');
-          if (radio.value === key) {
-            label.classList.add('correct-option');
-          }
-          if (radio.checked && radio.value !== key) {
-            label.classList.add('wrong-option');
-          }
-          if (radio.checked && radio.value === key) {
-            score++;
-          }
-        });
-      }
-      const resDiv = document.getElementById('res-m-l2');
-      resDiv.style.display = 'block';
-      resDiv.style.background = score >= 8 ? '#d1fae5' : '#fee2e2';
-      resDiv.style.color = score >= 8 ? '#065f46' : '#991b1b';
-      resDiv.innerHTML = `Mandarin Level 2 Score: ${score} / 10 (${score * 10}%)`;
-    }
+      // 1. Hitung Subtotal per Orang
+      let personTotals = {};
+      peopleList.forEach(p => personTotals[p] = { subtotal: 0, items: [] });
 
-    // =========================================================================
-    // LEVEL 4: ENGLISH NON-REPEATING STORY ENGINE
-    // =========================================================================
-    const namePool = ['Eggha', 'Rebeca', 'Adam', 'Anita', 'Zoey'];
-    const timeOpeners = ["Yesterday morning", "Last weekend", "A few days ago", "On a cozy afternoon", "During their day off", "Earlier this week", "Last Friday evening", "On a bright Sunday morning"];
+      let grandSubtotal = 0;
 
-    const storyTemplates = [
-      { action: "met at the park early for a 5K run in Zone 2", outcome: "bought iced Americano at a local coffee shop right after", question: "What did the characters do after their morning run?", correct: "Bought iced Americano at a local coffee shop", wrong: "Went straight back home to sleep" },
-      { action: "decided to bake homemade dark chocolate brownies", outcome: "shared the warm brownies with friends who loved every bite", question: "What baked treat was prepared by the characters?", correct: "Dark chocolate brownies", wrong: "Cheese pizza" },
-      { action: "took an early morning train from Jakarta for a weekend getaway to Jogja", outcome: "enjoyed scenic green rice fields along the train journey", question: "How did they travel for their weekend getaway?", correct: "By early morning train", wrong: "By private car" },
-      { action: "spent time roasting chicken fillet and sweet potatoes", outcome: "used an air fryer to keep their weekly diet clean and healthy", question: "Which appliance was used for healthy meal prep?", correct: "An air fryer", wrong: "A standard microwave" },
-      { action: "visited a brand new Japanese ramen restaurant in Bintaro", outcome: "loved the rich chicken broth and promised to come back next month", question: "Where was the new ramen restaurant located?", correct: "In Bintaro", wrong: "In Bandung" }
-    ];
-
-    let availableStoryIndices = [];
-    let currentStoryObj = null;
-    let storiesCompleted = 0;
-
-    function getNextStoryTemplate() {
-      if (availableStoryIndices.length === 0) {
-        for (let i = 0; i < storyTemplates.length; i++) availableStoryIndices.push(i);
-        for (let i = availableStoryIndices.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [availableStoryIndices[i], availableStoryIndices[j]] = [availableStoryIndices[j], availableStoryIndices[i]];
+      itemList.forEach(item => {
+        const numAssigned = item.assignedTo.length;
+        if (numAssigned > 0) {
+          const pricePerPerson = item.price / numAssigned;
+          item.assignedTo.forEach(person => {
+            if (personTotals[person]) {
+              personTotals[person].subtotal += pricePerPerson;
+              personTotals[person].items.push({ name: item.name, priceShare: pricePerPerson });
+            }
+          });
+          grandSubtotal += item.price;
         }
-      }
-      return storyTemplates[availableStoryIndices.pop()];
+      });
+
+      if (grandSubtotal === 0) { alert("Pastikan centang minimal 1 orang untuk tiap item pesanan!"); return; }
+
+      // 2. Hitung Tax & Service Nominal Total
+      const subtotalAfterDiscount = Math.max(0, grandSubtotal - discount);
+      const totalTax = subtotalAfterDiscount * (taxPct / 100);
+      const totalService = subtotalAfterDiscount * (servicePct / 100);
+      const totalTaxAndService = totalTax + totalService;
+
+      // 3. Distribusi Proporsional
+      let container = document.getElementById('breakdownContainer');
+      container.innerHTML = '';
+
+      let breakdownSummary = [];
+
+      peopleList.forEach(person => {
+        const sub = personTotals[person].subtotal;
+        const ratio = grandSubtotal > 0 ? (sub / grandSubtotal) : 0;
+        const personTaxService = totalTaxAndService * ratio;
+        const personDiscountShare = discount * ratio;
+        const finalTotal = Math.round(sub - personDiscountShare + personTaxService);
+
+        breakdownSummary.push({ person, sub, taxService: personTaxService, finalTotal, items: personTotals[person].items });
+
+        let itemListHTML = personTotals[person].items.map(i => `<li>${i.name} (${Rp(i.priceShare)})</li>`).join('');
+
+        container.innerHTML += `
+          <div class="summary-card">
+            <h4>👤 ${person}</h4>
+            <ul style="padding-left:18px; margin-bottom:8px; font-size:13px; color:#475569;">${itemListHTML || '<em>Tidak ada pesanan</em>'}</ul>
+            <p style="font-size:13px;">Subtotal Makanan: <strong>${Rp(sub)}</strong></p>
+            <p style="font-size:13px;">Pajak & Service Share: <strong>${Rp(personTaxService)}</strong></p>
+            <p style="font-size:16px; color:#10b981; font-weight:bold; margin-top:6px; border-top:1px dashed #cbd5e1; padding-top:6px;">
+              Total Bayar: ${Rp(finalTotal)}
+            </p>
+          </div>
+        `;
+      });
+
+      lastCalculatedBreakdown = breakdownSummary;
+      document.getElementById('resultCard').style.display = 'block';
     }
 
-    function loadNewRandomStory() {
-      let char1 = namePool[Math.floor(Math.random() * namePool.length)];
-      let char2 = namePool[Math.floor(Math.random() * namePool.length)];
-      while (char1 === char2) char2 = namePool[Math.floor(Math.random() * namePool.length)];
-
-      let tpl = getNextStoryTemplate();
-      let timeOpener = timeOpeners[Math.floor(Math.random() * timeOpeners.length)];
-
-      let storyText = `${timeOpener}, ${char1} and ${char2} spent time together. They ${tpl.action}. Afterward, they ${tpl.outcome}.`;
-      let isCorrectA = Math.random() < 0.5;
-
-      currentStoryObj = { title: `Story #${storiesCompleted + 1}`, text: storyText, question: tpl.question, correctValue: isCorrectA ? 'a' : 'b', optA: isCorrectA ? tpl.correct : tpl.wrong, optB: isCorrectA ? tpl.wrong : tpl.correct };
-
-      document.getElementById('storyTitle').innerText = currentStoryObj.title;
-      document.getElementById('storyQuestionText').innerText = "Question: " + currentStoryObj.question;
-      document.getElementById('optTextA').innerText = currentStoryObj.optA;
-      document.getElementById('optTextB').innerText = currentStoryObj.optB;
-      document.querySelectorAll('input[name="dynStoryQ"]').forEach(r => r.checked = false);
-
-      document.getElementById('optLabelA').classList.remove('correct-option', 'wrong-option');
-      document.getElementById('optLabelB').classList.remove('correct-option', 'wrong-option');
-
-      document.getElementById('res-dynamic-story').style.display = 'none';
-      document.getElementById('nextStoryBtn').style.display = 'none';
+    function Rp(num) {
+      return "Rp " + Math.round(num).toLocaleString('id-ID');
     }
 
-    function playCurrentStoryAudio() { if (currentStoryObj) playAudio(currentStoryObj.text); }
+    function copyWAText() {
+      if (!lastCalculatedBreakdown) return;
+      let text = "🧾 *REKAP SPLIT BILL MABAR*\n------------------------------\n";
+      lastCalculatedBreakdown.forEach(b => {
+        text += `👤 *${b.person}*: ${Rp(b.finalTotal)}\n`;
+      });
+      text += "------------------------------\nThank you guys! Tolong diproses ya 🙏";
 
-    function checkDynamicStoryAnswer() {
-      let selectedInput = document.querySelector('input[name="dynStoryQ"]:checked');
-      let resDiv = document.getElementById('res-dynamic-story');
-      resDiv.style.display = 'block';
-
-      document.getElementById('optLabelA').classList.remove('correct-option', 'wrong-option');
-      document.getElementById('optLabelB').classList.remove('correct-option', 'wrong-option');
-
-      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
-
-      const correctVal = currentStoryObj.correctValue;
-      const correctLabel = correctVal === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
-      correctLabel.classList.add('correct-option');
-
-      if (selectedInput.value === correctVal) {
-        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerText = "✅ That's correct! Great listening skills. Click the button below for the next story.";
-        document.getElementById('nextStoryBtn').style.display = 'block';
-        storiesCompleted++;
-        document.getElementById('storyStreakBadge').innerText = `🔥 Stories Completed: ${storiesCompleted}`;
-      } else {
-        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('optLabelA') : document.getElementById('optLabelB');
-        wrongLabel.classList.add('wrong-option');
-
-        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green, and your pick is in red!";
-      }
+      navigator.clipboard.writeText(text);
+      alert("✅ Rincian tagihan berhasil di-copy! Tinggal paste ke grup WhatsApp.");
     }
 
-    // =========================================================================
-    // MANDARIN LEVEL 4: 15 NON-REPEATING STORIES (ENGLISH Q&A + PINYIN LATIN)
-    // =========================================================================
-    const mandarinStoryBank = [
-      {
-        hanzi: "昨天早上，Eggha 喝了一杯冰美式咖啡。然后，他去公园跑步。",
-        pinyin: "Zuótiān zǎoshang, Eggha hē le yì bēi bīng měishì kāfēi. Ránhòu, tā qù gōngyuán pǎobù.",
-        question: "What did Eggha do after drinking iced Americano in the morning?",
-        correct: "Went for a morning run in the park (Gōngyuán pǎobù)",
-        wrong: "Went back home to sleep"
-      },
-      {
-        hanzi: "Rebeca 和 Anita 去超市买水果。她们买了新鲜的苹果和香蕉。",
-        pinyin: "Rebeca hé Anita qù chāoshì mǎi shuǐguǒ. Tāmen mǎi le xīnxiān de píngguǒ hé xiāngjiāo.",
-        question: "What fresh fruits did Rebeca and Anita buy at the supermarket?",
-        correct: "Fresh apples and bananas (Píngguǒ hé xiāngjiāo)",
-        wrong: "Watermelon and sweet oranges"
-      },
-      {
-        hanzi: "星期五晚上，Adam 去 Bintaro 吃日本拉面。拉面汤非常美味！",
-        pinyin: "Xīngqīwǔ wǎnshang, Adam qù Bintaro chī Rìběn lāmiàn. Lāmiàn tāng fēicháng měiwèi!",
-        question: "Where did Adam go to eat Japanese ramen on Friday night?",
-        correct: "In Bintaro with rich chicken broth (Lāmiàn tāng)",
-        wrong: "In Bandung city center"
-      },
-      {
-        hanzi: "Zoey 用空气炸锅烤鸡胸肉和红薯。她喜欢吃健康餐。",
-        pinyin: "Zoey yòng kōngqì zhàguō kǎo jīxiōngròu hé hóngshǔ. Tā xǐhuan chī jiànkāng cān.",
-        question: "What appliance did Zoey use to prepare chicken fillet and sweet potatoes?",
-        correct: "An air fryer (Kōngqì zhàguō)",
-        wrong: "A conventional microwave oven"
-      },
-      {
-        hanzi: "Anita 坐早上的火车去由克亚卡他度假。她在路上看风景。",
-        pinyin: "Anita zuò zǎoshang de huǒchē qù Yóukèyàkǎtā dùjià. Tā zài lùshang kàn fēngjǐng.",
-        question: "How did Anita travel for her holiday getaway to Jogja?",
-        correct: "By early morning train (Huǒchē)",
-        wrong: "By private airplane"
-      },
-      {
-        hanzi: "下雨的下午，Rebeca 烤了黑巧克力布朗尼蛋糕。朋友们都觉得很好吃。",
-        pinyin: "Xiàyǔ de xiàwǔ, Rebeca kǎo le hēi qiǎokèlì bùlǎngní dàngāo. Péngyou men dōu juéde hěn hǎochī.",
-        question: "What sweet treat did Rebeca bake on a rainy afternoon?",
-        correct: "Dark chocolate brownies (Hēi qiǎokèlì bùlǎngní)",
-        wrong: "Crispy cheese pizza"
-      },
-      {
-        hanzi: "Eggha 在网上买了一双新的减震跑步鞋。第二天早上他去试跑。",
-        pinyin: "Eggha zài wǎngshang mǎi le yì shuāng xīn de jiǎnzhèn pǎobùxié. Dì-èr tiān zǎoshang tā qù shìpǎo.",
-        question: "What footwear did Eggha order online for running?",
-        correct: "Cushioned running shoes (Pǎobùxié)",
-        wrong: "Heavy leather work boots"
-      },
-      {
-        hanzi: "Zoey 带着相机去雅加达的咖啡节。她拍了很多漂亮的照片。",
-        pinyin: "Zoey dài zhe xiàngjī qù Yǎjiādá de kāfēijié. Tā pāi le hěn duō piàoliang de zhàopiān.",
-        question: "What equipment did Zoey bring to the coffee festival in Jakarta?",
-        correct: "A camera to take photos (Xiàngjī)",
-        wrong: "An acoustic guitar"
-      },
-      {
-        hanzi: "Adam 晚上在房间里听流行音乐。他觉得心情很轻松。",
-        pinyin: "Adam wǎnshang zài fángjiān lǐ tīng liúxíng yīnyuè. Tā juéde xīnqíng hěn qīngsōng.",
-        question: "What genre of music did Adam listen to in his room?",
-        correct: "Pop music (Liúxíng yīnyuè)",
-        wrong: "Heavy metal rock music"
-      },
-      {
-        hanzi: "Anita 准备了燕麦片和可可粉作为早餐。这非常健康。",
-        pinyin: "Anita zhǔnbèi le yànmài piàn hé kěkě fěn zuòwéi zǎocān. Zhè fēicháng jiànkāng.",
-        question: "What healthy dish did Anita prepare for her breakfast?",
-        correct: "Overnight oats with cocoa powder (Yànmài piàn)",
-        wrong: "Fried rice with eggs"
-      },
-      {
-        hanzi: "星期六，Rebeca 去海滩看日落。她一边看日落一边喝新鲜椰汁。",
-        pinyin: "Xīngqīliù, Rebeca qù hǎitān kàn rìluò. Tā yìbiān kàn rìluò yìbiān hē xīnxiān yēzhī.",
-        question: "What drink did Rebeca enjoy while watching the beach sunset?",
-        correct: "Fresh coconut water (Xīnxiān yēzhī)",
-        wrong: "Hot black coffee"
-      },
-      {
-        hanzi: "Zoey 和 Eggha 去图书馆看书。那里非常安静。",
-        pinyin: "Zoey hé Eggha qù túshūguǎn kàn shū. Nàlǐ fēicháng ānjìng.",
-        question: "Where did Zoey and Eggha go to spend a quiet study session?",
-        correct: "At the city library (Túshūguǎn)",
-        wrong: "In a noisy shopping mall"
-      },
-      {
-        hanzi: "Adam 在周末打扫客厅。他摆放了一些绿植和香薰蜡烛。",
-        pinyin: "Adam zài zhōumò dǎsǎo kètīng. Tā bǎifàng le yìxiē lǜzhí hé xiāngxūn làzhú.",
-        question: "How did Adam decorate the living room after cleaning it?",
-        correct: "With indoor plants and candles (Lǜzhí hé làzhú)",
-        wrong: "With colorful party balloons"
-      },
-      {
-        hanzi: "Anita 和 Rebeca 晚上去听户外不插电音乐会。她们一起唱歌。",
-        pinyin: "Anita hé Rebeca wǎnshang qù tīng hùwài bùchādiàn yīnyuèhuì. Tāmen yìqǐ chànggē.",
-        question: "What event did Anita and Rebeca attend in the evening?",
-        correct: "An outdoor acoustic music concert (Hùwài yīnyuèhuì)",
-        wrong: "A baking masterclass"
-      },
-      {
-        hanzi: "Eggha 领养了一只活泼的金毛小狗。他在院子里和狗玩耍。",
-        pinyin: "Eggha lǐngyǎng le yì zhī huópō de jīnmáo xiǎogǒu. Tā zài yuànzi lǐ hé gǒu wánshuǎ.",
-        question: "What pet did Eggha adopt and play with in the garden?",
-        correct: "A lively golden retriever puppy (Jīnmáo xiǎogǒu)",
-        wrong: "A quiet Persian cat"
-      }
-    ];
-
-    let availableMandarinStoryIndices = [];
-    let currentMandarinStoryObj = null;
-    let mandarinStoriesCompleted = 0;
-
-    // Non-repeating Fisher-Yates Shuffle Algorithm for Mandarin
-    function getNextMandarinStoryTemplate() {
-      if (availableMandarinStoryIndices.length === 0) {
-        for (let i = 0; i < mandarinStoryBank.length; i++) {
-          availableMandarinStoryIndices.push(i);
-        }
-        for (let i = availableMandarinStoryIndices.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [availableMandarinStoryIndices[i], availableMandarinStoryIndices[j]] = [availableMandarinStoryIndices[j], availableMandarinStoryIndices[i]];
-        }
-      }
-      return mandarinStoryBank[availableMandarinStoryIndices.pop()];
-    }
-
-    function loadNewRandomMandarinStory() {
-      let tpl = getNextMandarinStoryTemplate();
-      let isCorrectA = Math.random() < 0.5;
-
-      currentMandarinStoryObj = {
-        title: `Mandarin Story #${mandarinStoriesCompleted + 1}`,
-        hanzi: tpl.hanzi,
-        pinyin: tpl.pinyin,
-        question: tpl.question,
-        correctValue: isCorrectA ? 'a' : 'b',
-        optA: isCorrectA ? tpl.correct : tpl.wrong,
-        optB: isCorrectA ? tpl.wrong : tpl.correct
-      };
-
-      document.getElementById('mandarinStoryTitle').innerText = currentMandarinStoryObj.title;
-      document.getElementById('mandarinPinyinTextDisplay').innerText = "Pinyin: " + currentMandarinStoryObj.pinyin;
-      document.getElementById('mandarinStoryQuestionText').innerText = "Question: " + currentMandarinStoryObj.question;
-      document.getElementById('mOptTextA').innerText = currentMandarinStoryObj.optA;
-      document.getElementById('mOptTextB').innerText = currentMandarinStoryObj.optB;
-
-      document.querySelectorAll('input[name="dynMandarinStoryQ"]').forEach(r => r.checked = false);
-
-      document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
-      document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
-
-      document.getElementById('res-dynamic-mandarin-story').style.display = 'none';
-      document.getElementById('nextMandarinStoryBtn').style.display = 'none';
-    }
-
-    function playCurrentMandarinStoryAudio() {
-      if (currentMandarinStoryObj) playAudio(currentMandarinStoryObj.hanzi, 'zh-CN');
-    }
-
-    function checkDynamicMandarinStoryAnswer() {
-      let selectedInput = document.querySelector('input[name="dynMandarinStoryQ"]:checked');
-      let resDiv = document.getElementById('res-dynamic-mandarin-story');
-      resDiv.style.display = 'block';
-
-      document.getElementById('mOptLabelA').classList.remove('correct-option', 'wrong-option');
-      document.getElementById('mOptLabelB').classList.remove('correct-option', 'wrong-option');
-
-      if (!selectedInput) { resDiv.style.background = '#fef3c7'; resDiv.style.color = '#92400e'; resDiv.innerText = "⚠️ Please select an answer first!"; return; }
-
-      const correctVal = currentMandarinStoryObj.correctValue;
-      const correctLabel = correctVal === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
-      correctLabel.classList.add('correct-option');
-
-      if (selectedInput.value === correctVal) {
-        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
-        resDiv.innerText = "✅ That's correct! Great Mandarin listening comprehension. Click below for the next story.";
-        document.getElementById('nextMandarinStoryBtn').style.display = 'block';
-        mandarinStoriesCompleted++;
-        document.getElementById('mandarinStoryStreakBadge').innerText = `🔥 Stories Completed: ${mandarinStoriesCompleted}`;
-      } else {
-        const wrongLabel = selectedInput.value === 'a' ? document.getElementById('mOptLabelA') : document.getElementById('mOptLabelB');
-        wrongLabel.classList.add('wrong-option');
-
-        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
-        resDiv.innerText = "❌ Not quite right. The correct answer is highlighted in green, and your selection in red!";
-      }
-    }
-
-    // =========================================================================
-    // LEVEL 5: SPEAKING SIMULATOR (ENGLISH & MANDARIN)
-    // =========================================================================
-    const promptPatterns = [
-      { pattern: "What did {c1} do last weekend with {c2}?", sample: "They went for an easy morning run at the park and drank iced Americano together." },
-      { pattern: "What is {c1}'s favorite food to eat in Bintaro?", sample: "Their favorite food is rich chicken ramen with delicious broth." }
-    ];
-
-    let speakingCount = 1;
-    let currentSpeakingObj = null;
-
-    function generateNextSpeakingPrompt() {
-      let c1 = namePool[Math.floor(Math.random() * namePool.length)];
-      let c2 = namePool[Math.floor(Math.random() * namePool.length)];
-      while (c1 === c2) c2 = namePool[Math.floor(Math.random() * namePool.length)];
-
-      let tpl = promptPatterns[Math.floor(Math.random() * promptPatterns.length)];
-      let promptText = tpl.pattern.replace('{c1}', c1).replace('{c2}', c2);
-
-      currentSpeakingObj = { prompt: promptText, sample: tpl.sample };
-      document.getElementById('simProgress').innerText = `Prompt #${speakingCount}`;
-      document.getElementById('simPrompt').innerText = '"' + promptText + '"';
-      document.getElementById('simTimer').innerText = '--';
-      document.getElementById('simTranscript').innerHTML = '<em>Your answer transcript will appear here...</em>';
-      document.getElementById('sampleResponseBox').style.display = 'none';
-      document.getElementById('nextSimBtn').style.display = 'none';
-      document.getElementById('simMicBtn').disabled = true;
-      speakingCount++;
-    }
-
-    function startSpeakingSim() {
-      if (!currentSpeakingObj) return;
-      playAudio(currentSpeakingObj.prompt);
-      let seconds = 5;
-      const timerDisplay = document.getElementById('simTimer');
-      timerDisplay.innerText = seconds + "s";
-      const countdown = setInterval(() => {
-        seconds--;
-        timerDisplay.innerText = seconds + "s";
-        if (seconds <= 0) { clearInterval(countdown); timerDisplay.innerText = "Time to Speak!"; document.getElementById('simMicBtn').disabled = false; }
-      }, 1000);
-    }
-
-    function startListeningSim() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) { alert("Your browser does not support Speech-to-Text. Please use Google Chrome!"); return; }
-      const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      document.getElementById("simTranscript").innerText = "🎙️ Please speak now...";
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById("simTranscript").innerHTML = `<strong>Your Answer:</strong> "${transcript}"`;
-        document.getElementById('sampleText').innerText = `"${currentSpeakingObj.sample}"`;
-        document.getElementById('sampleResponseBox').style.display = 'block';
-        document.getElementById('nextSimBtn').style.display = 'block';
-      };
-      recognition.start();
-    }
-
-    // MANDARIN SPEAKING SIMULATOR ENGINE
-    const mandarinSpeakingPrompts = [
-      { hanzi: "你今天想喝什么？", pinyin: "Nǐ jīntiān xiǎng hē shénme?", sampleHanzi: "我想喝一杯冰美式咖啡。", samplePinyin: "Wǒ xiǎng hē yì bēi bīng měishì kāfēi." },
-      { hanzi: "你喜欢什么运动？", pinyin: "Nǐ xǐhuan shénme yùndòng?", sampleHanzi: "我非常喜欢晨跑和健身。", samplePinyin: "Wǒ fēicháng xǐhuan chénpǎo hé jiànshēn." }
-    ];
-
-    let mSpeakingCount = 1;
-    let currentMSpeakingObj = null;
-
-    function generateNextMandarinSpeakingPrompt() {
-      let tpl = mandarinSpeakingPrompts[Math.floor(Math.random() * mandarinSpeakingPrompts.length)];
-      currentMSpeakingObj = tpl;
-
-      document.getElementById('mSimProgress').innerText = `Mandarin Prompt #${mSpeakingCount}`;
-      document.getElementById('mSimPromptHanzi').innerText = '"' + tpl.hanzi + '"';
-      document.getElementById('mSimPromptPinyin').innerText = 'Pinyin: ' + tpl.pinyin;
-      document.getElementById('mSimTimer').innerText = '--';
-      document.getElementById('mSimTranscript').innerHTML = '<em>Your Mandarin answer transcript will appear here...</em>';
-      document.getElementById('mSampleResponseBox').style.display = 'none';
-      document.getElementById('mNextSimBtn').style.display = 'none';
-      document.getElementById('mSimMicBtn').disabled = true;
-      mSpeakingCount++;
-    }
-
-    function startMandarinSpeakingSim() {
-      if (!currentMSpeakingObj) return;
-      playAudio(currentMSpeakingObj.hanzi, 'zh-CN');
-      let seconds = 5;
-      const timerDisplay = document.getElementById('mSimTimer');
-      timerDisplay.innerText = seconds + "s";
-      const countdown = setInterval(() => {
-        seconds--;
-        timerDisplay.innerText = seconds + "s";
-        if (seconds <= 0) { clearInterval(countdown); timerDisplay.innerText = "Time to Speak!"; document.getElementById('mSimMicBtn').disabled = false; }
-      }, 1000);
-    }
-
-    function startListeningMandarinSim() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) { alert("Your browser does not support Speech-to-Text. Please use Google Chrome!"); return; }
-      const recognition = new SpeechRecognition();
-      recognition.lang = "zh-CN";
-      document.getElementById("mSimTranscript").innerText = "🎙️ Please speak in Mandarin now...";
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById("mSimTranscript").innerHTML = `<strong>Mandarin Answer:</strong> "${transcript}"`;
-        document.getElementById('mSampleHanzi').innerText = currentMSpeakingObj.sampleHanzi;
-        document.getElementById('mSamplePinyin').innerText = "Pinyin: " + currentMSpeakingObj.samplePinyin;
-        document.getElementById('mSampleResponseBox').style.display = 'block';
-        document.getElementById('mNextSimBtn').style.display = 'block';
-      };
-      recognition.start();
-    }
-
-    // Init Dynamic UI
-    loadNewRandomStory();
-    loadNewRandomMandarinStory();
-    generateNextSpeakingPrompt();
-    generateNextMandarinSpeakingPrompt();
+    // Init Tag & Table
+    renderPersonTags();
   </script>
 
 </body>
