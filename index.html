@@ -3,206 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Exercise - Core Work Tenses</title>
+  <title>Personal Learning & Tools Hub</title>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 30px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
-    h1 { color: #2c3e50; font-size: 26px; margin-bottom: 5px; }
-    .subtitle { color: #7f8c8d; margin-bottom: 20px; }
-    
-    /* Navigation Tabs */
-    .tab-container { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tab-btn { padding: 10px 16px; border: none; background: #e0e6ed; color: #333; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-    .tab-btn.active { background: #3498db; color: white; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: #f4f6f8; color: #2c3e50; display: flex; min-height: 100vh; }
 
-    /* Content Cards */
-    .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    /* Layout Wrapper */
+    .app-container { display: flex; width: 100%; }
 
-    .formula { background: #eef6fc; padding: 12px; border-left: 4px solid #3498db; margin: 12px 0; font-weight: bold; }
+    /* Sidebar Navigation */
+    .sidebar { width: 260px; background-color: #1e293b; color: #f8fafc; padding: 24px 16px; flex-shrink: 0; display: flex; flex-direction: column; }
+    .brand { font-size: 20px; font-weight: bold; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; color: #38bdf8; }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 500; color: #94a3b8; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+    .nav-item:hover { background-color: #334155; color: #f8fafc; }
+    .nav-item.active { background-color: #0284c7; color: #ffffff; font-weight: 600; }
+
+    /* Main Content Area */
+    .main-content { flex: 1; padding: 30px 40px; overflow-y: auto; max-width: 1000px; }
     
-    /* Story Box */
-    .story-box { background: #fff8e7; border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; border-radius: 4px; line-height: 1.6; }
+    /* Module Sections */
+    .module-section { display: none; }
+    .module-section.active { display: block; }
+
+    /* Shared Card & Component Styling */
+    .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    .subtitle { color: #64748b; margin-bottom: 24px; font-size: 15px; }
+
+    /* Inner Tabs for English Module */
+    .sub-tab-container { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .sub-tab-btn { padding: 8px 14px; border: none; background: #e2e8f0; color: #475569; font-weight: 600; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .sub-tab-btn.active { background: #0284c7; color: white; }
+
+    .formula { background: #f0f9ff; padding: 12px; border-left: 4px solid #0284c7; margin: 12px 0; font-weight: bold; }
+    .story-box { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 6px; line-height: 1.6; }
 
     /* Quiz Styling */
-    .quiz-group { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd; }
-    .quiz-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
-    .quiz-option { display: block; margin: 6px 0; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-    .quiz-option:hover { background-color: #f8f9fa; }
+    .quiz-group { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; }
+    .quiz-title { font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+    .quiz-option { display: block; margin: 6px 0; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+    .quiz-option:hover { background-color: #f8fafc; }
     
-    button.submit-btn { background-color: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px; width: 100%; }
-    button.submit-btn:hover { background-color: #27ae60; }
-    
-    .result-box { margin-top: 20px; font-weight: bold; padding: 15px; border-radius: 6px; display: none; text-align: center; font-size: 18px; }
+    button.submit-btn { background-color: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; margin-top: 20px; width: 100%; }
+    button.submit-btn:hover { background-color: #059669; }
+    .result-box { margin-top: 20px; font-weight: bold; padding: 14px; border-radius: 6px; display: none; text-align: center; }
+
+    /* Placeholder Badge */
+    .badge-dev { display: inline-block; background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 12px; }
+
+    /* Responsive Mobile Navigation */
+    @media (max-width: 768px) {
+      .app-container { flex-direction: column; }
+      .sidebar { width: 100%; padding: 16px; }
+      .main-content { padding: 20px 16px; }
+      .nav-list { flex-direction: row; overflow-x: auto; }
+      .nav-item { white-space: nowrap; font-size: 13px; padding: 8px 12px; }
+    }
   </style>
 </head>
 <body>
 
-  <h1>📘 English Exercise Hub</h1>
-  <p class="subtitle">Latihan Tenses Komprehensif untuk Dunia Kerja</p>
+  <div class="app-container">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="sidebar">
+      <div class="brand">🚀 Personal Hub</div>
+      <ul class="nav-list">
+        <li class="nav-item active" onclick="switchModule('english')">🎙️ English Exercise</li>
+        <li class="nav-item" onclick="switchModule('mandarin')">🏮 Mandarin Exercise</li>
+        <li class="nav-item" onclick="switchModule('hpp')">📊 HPP Simulator UMKM</li>
+        <li class="nav-item" onclick="switchModule('finance')">📈 Accounting & Finance</li>
+      </ul>
+    </nav>
 
-  <!-- Navigation Tabs -->
-  <div class="tab-container">
-    <button class="tab-btn active" onclick="openTab('past')">1. Simple Past</button>
-    <button class="tab-btn" onclick="openTab('present')">2. Simple Present</button>
-    <button class="tab-btn" onclick="openTab('continuous')">3. Present Continuous</button>
-    <button class="tab-btn" onclick="openTab('perfect')">4. Present Perfect</button>
-  </div>
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
 
-  <!-- TAB 1: SIMPLE PAST -->
-  <div id="past" class="tab-content active">
-    <div class="card">
-      <h3>📌 Simple Past Tense (Kejadian Masa Lalu)</h3>
-      <div class="formula">Rumus: Subject + Verb 2</div>
-      <p>Dipakai untuk kejadian yang sudah selesai di masa lalu (yesterday, last week, 2 hours ago).</p>
+      <!-- ================= MODUL 1: ENGLISH EXERCISE ================= -->
+      <section id="english" class="module-section active">
+        <h1>🎙️ English Exercise Hub</h1>
+        <p class="subtitle">Modul Latihan Tenses Esensial untuk Komunikasi Kerja</p>
 
-      <!-- 10 Soal Isian -->
-      <div class="quiz-group"><p class="quiz-title">1. The manager _______ the financial audit report yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> approved</label><label class="quiz-option"><input type="radio" name="p1" value="b"> approves</label><label class="quiz-option"><input type="radio" name="p1" value="c"> approving</label></div>
-      <div class="quiz-group"><p class="quiz-title">2. We _______ our regional partners in Kuala Lumpur last month.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> meet</label><label class="quiz-option"><input type="radio" name="p2" value="b"> met</label><label class="quiz-option"><input type="radio" name="p2" value="c"> meeting</label></div>
-      <div class="quiz-group"><p class="quiz-title">3. They _______ the tax server maintenance during the weekend.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> completed</label><label class="quiz-option"><input type="radio" name="p3" value="b"> complete</label><label class="quiz-option"><input type="radio" name="p3" value="c"> completes</label></div>
-      <div class="quiz-group"><p class="quiz-title">4. She _______ the client's invoice on Monday morning.</p><label class="quiz-option"><input type="radio" name="p4" value="a"> pay</label><label class="quiz-option"><input type="radio" name="p4" value="b"> paid</label><label class="quiz-option"><input type="radio" name="p4" value="c"> paying</label></div>
-      <div class="quiz-group"><p class="quiz-title">5. I _______ the updated journal entries two hours ago.</p><label class="quiz-option"><input type="radio" name="p5" value="a"> sent</label><label class="quiz-option"><input type="radio" name="p5" value="b"> send</label><label class="quiz-option"><input type="radio" name="p5" value="c"> sending</label></div>
-      <div class="quiz-group"><p class="quiz-title">6. The company _______ its new operational policy last year.</p><label class="quiz-option"><input type="radio" name="p6" value="a"> launches</label><label class="quiz-option"><input type="radio" name="p6" value="b"> launched</label><label class="quiz-option"><input type="radio" name="p6" value="c"> launching</label></div>
-      <div class="quiz-group"><p class="quiz-title">7. Who _______ the presentation during Friday's meeting?</p><label class="quiz-option"><input type="radio" name="p7" value="a"> led</label><label class="quiz-option"><input type="radio" name="p7" value="b"> lead</label><label class="quiz-option"><input type="radio" name="p7" value="c"> leading</label></div>
-      <div class="quiz-group"><p class="quiz-title">8. We _______ any critical errors in yesterday's filing.</p><label class="quiz-option"><input type="radio" name="p8" value="a"> didn't find</label><label class="quiz-option"><input type="radio" name="p8" value="b"> don't find</label><label class="quiz-option"><input type="radio" name="p8" value="c"> not found</label></div>
-      <div class="quiz-group"><p class="quiz-title">9. He _______ his work laptop at the office last night.</p><label class="quiz-option"><input type="radio" name="p9" value="a"> leaves</label><label class="quiz-option"><input type="radio" name="p9" value="b"> left</label><label class="quiz-option"><input type="radio" name="p9" value="c"> leaved</label></div>
-      <div class="quiz-group"><p class="quiz-title">10. The finance team _______ the Q2 budget on time.</p><label class="quiz-option"><input type="radio" name="p10" value="a"> submitted</label><label class="quiz-option"><input type="radio" name="p10" value="b"> submits</label><label class="quiz-option"><input type="radio" name="p10" value="c"> submitting</label></div>
+        <!-- Sub Tabs for English Tenses -->
+        <div class="sub-tab-container">
+          <button class="sub-tab-btn active" onclick="openGrammarTab('past')">1. Simple Past</button>
+          <button class="sub-tab-btn" onclick="openGrammarTab('present')">2. Simple Present</button>
+          <button class="sub-tab-btn" onclick="openGrammarTab('continuous')">3. Present Continuous</button>
+          <button class="sub-tab-btn" onclick="openGrammarTab('perfect')">4. Present Perfect</button>
+        </div>
 
-      <!-- Soal Cerita -->
-      <div class="story-box">
-        <h4>📖 Soal Cerita / Case Study:</h4>
-        <p>"Yesterday was a challenging day for the finance department. At 9 AM, our team <strong>(A. gathered / B. gathers)</strong> in the main room to discuss the annual tax audit. The auditor <strong>(C. points out / D. pointed out)</strong> three major discrepancies in our ledger. However, we <strong>(E. resolved / F. resolve)</strong> all issues before 5 PM."</p>
-      </div>
-      <div class="quiz-group">
-        <p class="quiz-title">11. Pilih kombinasi kata kerja yang tepat untuk melengkapi cerita di atas:</p>
-        <label class="quiz-option"><input type="radio" name="p11" value="a"> A - D - E (gathered, pointed out, resolved)</label>
-        <label class="quiz-option"><input type="radio" name="p11" value="b"> B - C - F (gathers, points out, resolve)</label>
-        <label class="quiz-option"><input type="radio" name="p11" value="c"> A - C - E (gathered, points out, resolved)</label>
-      </div>
+        <!-- TAB: SIMPLE PAST -->
+        <div id="past" class="grammar-tab-content">
+          <div class="card">
+            <h3>📌 Simple Past Tense (Kejadian Masa Lalu)</h3>
+            <div class="formula">Rumus: Subject + Verb 2</div>
+            <p>Dipakai untuk kejadian yang sudah selesai di masa lalu (yesterday, last week, 2 hours ago).</p>
 
-      <button class="submit-btn" onclick="checkQuiz('past', pastAnswers)">Cek Hasil Simple Past</button>
-      <div id="res-past" class="result-box"></div>
-    </div>
-  </div>
+            <div class="quiz-group"><p class="quiz-title">1. The manager _______ the financial audit report yesterday.</p><label class="quiz-option"><input type="radio" name="p1" value="a"> approved</label><label class="quiz-option"><input type="radio" name="p1" value="b"> approves</label><label class="quiz-option"><input type="radio" name="p1" value="c"> approving</label></div>
+            <div class="quiz-group"><p class="quiz-title">2. We _______ our regional partners in Kuala Lumpur last month.</p><label class="quiz-option"><input type="radio" name="p2" value="a"> meet</label><label class="quiz-option"><input type="radio" name="p2" value="b"> met</label><label class="quiz-option"><input type="radio" name="p2" value="c"> meeting</label></div>
+            <div class="quiz-group"><p class="quiz-title">3. She _______ the client's invoice on Monday morning.</p><label class="quiz-option"><input type="radio" name="p3" value="a"> pay</label><label class="quiz-option"><input type="radio" name="p3" value="b"> paid</label><label class="quiz-option"><input type="radio" name="p3" value="c"> paying</label></div>
+            
+            <div class="story-box">
+              <h4>📖 Case Study:</h4>
+              <p>"Yesterday, our team <strong>(A. gathered / B. gathers)</strong> to discuss the tax audit. The auditor <strong>(C. pointed out / D. points out)</strong> three main errors, but we <strong>(E. resolved / F. resolve)</strong> them before 5 PM."</p>
+            </div>
+            <div class="quiz-group">
+              <p class="quiz-title">4. Pilih kombinasi kata kerja yang tepat:</p>
+              <label class="quiz-option"><input type="radio" name="p4" value="a"> A - C - E (gathered, pointed out, resolved)</label>
+              <label class="quiz-option"><input type="radio" name="p4" value="b"> B - D - F (gathers, points out, resolve)</label>
+            </div>
 
-  <!-- TAB 2: SIMPLE PRESENT -->
-  <div id="present" class="tab-content">
-    <div class="card">
-      <h3>📌 Simple Present Tense (Rutinitas & Fakta)</h3>
-      <div class="formula">Rumus: Subject + Verb 1 (+s/es untuk He/She/It)</div>
-      <p>Dipakai untuk rutinitas kerja harian, regulasi, atau jadwal tetap.</p>
+            <button class="submit-btn" onclick="checkQuiz('past', ['a','b','b','a'])">Cek Hasil Simple Past</button>
+            <div id="res-past" class="result-box"></div>
+          </div>
+        </div>
 
-      <div class="quiz-group"><p class="quiz-title">1. Our department _______ weekly progress reports every Monday.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> holds</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> held</label><label class="quiz-option"><input type="radio" name="pr1" value="c"> holding</label></div>
-      <div class="quiz-group"><p class="quiz-title">2. Senior accountants _______ complex tax reconciliation tasks.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> manages</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> manage</label><label class="quiz-option"><input type="radio" name="pr2" value="c"> managed</label></div>
-      <div class="quiz-group"><p class="quiz-title">3. The HR team always _______ new employees on their first day.</p><label class="quiz-option"><input type="radio" name="pr3" value="a"> welcomes</label><label class="quiz-option"><input type="radio" name="pr3" value="b"> welcomed</label><label class="quiz-option"><input type="radio" name="pr3" value="c"> welcoming</label></div>
-      <div class="quiz-group"><p class="quiz-title">4. She _______ work at 8 AM every morning without fail.</p><label class="quiz-option"><input type="radio" name="pr4" value="a"> start</label><label class="quiz-option"><input type="radio" name="pr4" value="b"> starts</label><label class="quiz-option"><input type="radio" name="pr4" value="c"> started</label></div>
-      <div class="quiz-group"><p class="quiz-title">5. We _______ third-party software for payroll management.</p><label class="quiz-option"><input type="radio" name="pr5" value="a"> use</label><label class="quiz-option"><input type="radio" name="pr5" value="b"> uses</label><label class="quiz-option"><input type="radio" name="pr5" value="c"> using</label></div>
-      <div class="quiz-group"><p class="quiz-title">6. The tax portal _______ maintenance every Sunday midnight.</p><label class="quiz-option"><input type="radio" name="pr6" value="a"> undergoes</label><label class="quiz-option"><input type="radio" name="pr6" value="b"> undergo</label><label class="quiz-option"><input type="radio" name="pr6" value="c"> underwent</label></div>
-      <div class="quiz-group"><p class="quiz-title">7. My supervisor usually _______ emails within one hour.</p><label class="quiz-option"><input type="radio" name="pr7" value="a"> answers</label><label class="quiz-option"><input type="radio" name="pr7" value="b"> answer</label><label class="quiz-option"><input type="radio" name="pr7" value="c"> answered</label></div>
-      <div class="quiz-group"><p class="quiz-title">8. Small businesses _______ clear inventory tracking to calculate COGS.</p><label class="quiz-option"><input type="radio" name="pr8" value="a"> needs</label><label class="quiz-option"><input type="radio" name="pr8" value="b"> need</label><label class="quiz-option"><input type="radio" name="pr8" value="c"> needed</label></div>
-      <div class="quiz-group"><p class="quiz-title">9. He rarely _______ lunch at his desk.</p><label class="quiz-option"><input type="radio" name="pr9" value="a"> eat</label><label class="quiz-option"><input type="radio" name="pr9" value="b"> eats</label><label class="quiz-option"><input type="radio" name="pr9" value="c"> ate</label></div>
-      <div class="quiz-group"><p class="quiz-title">10. Local regulations _______ companies to keep records for 5 years.</p><label class="quiz-option"><input type="radio" name="pr10" value="a"> require</label><label class="quiz-option"><input type="radio" name="pr10" value="b"> requires</label><label class="quiz-option"><input type="radio" name="pr10" value="c"> required</label></div>
+        <!-- TAB: SIMPLE PRESENT -->
+        <div id="present" class="grammar-tab-content" style="display: none;">
+          <div class="card">
+            <h3>📌 Simple Present Tense (Rutinitas & Fakta)</h3>
+            <div class="formula">Rumus: Subject + Verb 1 (+s/es untuk He/She/It)</div>
+            <p>Dipakai untuk rutinitas kerja harian, regulasi, atau jadwal tetap.</p>
 
-      <div class="story-box">
-        <h4>📖 Soal Cerita / Case Study:</h4>
-        <p>"Sarah is a finance executive. Every morning, she <strong>(A. check / B. checks)</strong> all outstanding invoices. Her colleague, David, <strong>(C. prepare / D. prepares)</strong> the daily cash flow summary. Together, they <strong>(E. ensure / F. ensures)</strong> that all vendor payments are scheduled accurately."</p>
-      </div>
-      <div class="quiz-group">
-        <p class="quiz-title">11. Pilih kombinasi kata kerja yang tepat:</p>
-        <label class="quiz-option"><input type="radio" name="pr11" value="a"> B - D - E (checks, prepares, ensure)</label>
-        <label class="quiz-option"><input type="radio" name="pr11" value="b"> A - C - F (check, prepare, ensures)</label>
-        <label class="quiz-option"><input type="radio" name="pr11" value="c"> B - D - F (checks, prepares, ensures)</label>
-      </div>
+            <div class="quiz-group"><p class="quiz-title">1. Our department _______ weekly progress reports every Monday.</p><label class="quiz-option"><input type="radio" name="pr1" value="a"> holds</label><label class="quiz-option"><input type="radio" name="pr1" value="b"> held</label></div>
+            <div class="quiz-group"><p class="quiz-title">2. Senior accountants _______ complex tax reconciliation tasks.</p><label class="quiz-option"><input type="radio" name="pr2" value="a"> manages</label><label class="quiz-option"><input type="radio" name="pr2" value="b"> manage</label></div>
 
-      <button class="submit-btn" onclick="checkQuiz('present', presentAnswers)">Cek Hasil Simple Present</button>
-      <div id="res-present" class="result-box"></div>
-    </div>
-  </div>
+            <button class="submit-btn" onclick="checkQuiz('present', ['a','b'])">Cek Hasil Simple Present</button>
+            <div id="res-present" class="result-box"></div>
+          </div>
+        </div>
 
-  <!-- TAB 3: PRESENT CONTINUOUS -->
-  <div id="continuous" class="tab-content">
-    <div class="card">
-      <h3>📌 Present Continuous Tense (Sedang Berlangsung)</h3>
-      <div class="formula">Rumus: Subject + am/is/are + Verb-ing</div>
-      <p>Dipakai untuk aktivitas yang sedang terjadi saat ini atau proyek yang sedang berjalan saat ini.</p>
+        <!-- TAB: PRESENT CONTINUOUS -->
+        <div id="continuous" class="grammar-tab-content" style="display: none;">
+          <div class="card">
+            <h3>📌 Present Continuous Tense (Sedang Berlangsung)</h3>
+            <div class="formula">Rumus: Subject + am/is/are + Verb-ing</div>
+            <p>Dipakai untuk aktivitas yang sedang terjadi saat ini.</p>
 
-      <div class="quiz-group"><p class="quiz-title">1. Right now, I _______ the regional financial report.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> am auditing</label><label class="quiz-option"><input type="radio" name="c1" value="b"> audit</label><label class="quiz-option"><input type="radio" name="c1" value="c"> audited</label></div>
-      <div class="quiz-group"><p class="quiz-title">2. The IT team _______ the corporate server this morning.</p><label class="quiz-option"><input type="radio" name="c2" value="a"> is updating</label><label class="quiz-option"><input type="radio" name="c2" value="b"> updates</label><label class="quiz-option"><input type="radio" name="c2" value="c"> updated</label></div>
-      <div class="quiz-group"><p class="quiz-title">3. Please speak quietly; they _______ a confidential call.</p><label class="quiz-option"><input type="radio" name="c3" value="a"> are having</label><label class="quiz-option"><input type="radio" name="c3" value="b"> have</label><label class="quiz-option"><input type="radio" name="c3" value="c"> had</label></div>
-      <div class="quiz-group"><p class="quiz-title">4. She _______ with the tax office regarding our WHT rates.</p><label class="quiz-option"><input type="radio" name="c4" value="a"> is negotiating</label><label class="quiz-option"><input type="radio" name="c4" value="b"> negotiates</label><label class="quiz-option"><input type="radio" name="c4" value="c"> negotiated</label></div>
-      <div class="quiz-group"><p class="quiz-title">5. We _______ a new inventory management web app this month.</p><label class="quiz-option"><input type="radio" name="c5" value="a"> are developing</label><label class="quiz-option"><input type="radio" name="c5" value="b"> develop</label><label class="quiz-option"><input type="radio" name="c5" value="c"> developed</label></div>
-      <div class="quiz-group"><p class="quiz-title">6. Look! The auditor _______ through our physical receipts.</p><label class="quiz-option"><input type="radio" name="c6" value="a"> is checking</label><label class="quiz-option"><input type="radio" name="c6" value="b"> checks</label><label class="quiz-option"><input type="radio" name="c6" value="c"> checked</label></div>
-      <div class="quiz-group"><p class="quiz-title">7. Why _______ you _______ late today?</p><label class="quiz-option"><input type="radio" name="c7" value="a"> are / working</label><label class="quiz-option"><input type="radio" name="c7" value="b"> do / work</label><label class="quiz-option"><input type="radio" name="c7" value="c"> did / worked</label></div>
-      <div class="quiz-group"><p class="quiz-title">8. Currently, the director _______ the budget proposal.</p><label class="quiz-option"><input type="radio" name="c8" value="a"> is reviewing</label><label class="quiz-option"><input type="radio" name="c8" value="b"> reviews</label><label class="quiz-option"><input type="radio" name="c8" value="c"> reviewed</label></div>
-      <div class="quiz-group"><p class="quiz-title">9. They _______ the new salary structure this week.</p><label class="quiz-option"><input type="radio" name="c9" value="a"> are finalizing</label><label class="quiz-option"><input type="radio" name="c9" value="b"> finalize</label><label class="quiz-option"><input type="radio" name="c9" value="c"> finalized</label></div>
-      <div class="quiz-group"><p class="quiz-title">10. I _______ for the bus to head to the office right now.</p><label class="quiz-option"><input type="radio" name="c10" value="a"> am waiting</label><label class="quiz-option"><input type="radio" name="c10" value="b"> wait</label><label class="quiz-option"><input type="radio" name="c10" value="c"> waited</label></div>
+            <div class="quiz-group"><p class="quiz-title">1. Right now, I _______ the regional financial report.</p><label class="quiz-option"><input type="radio" name="c1" value="a"> am auditing</label><label class="quiz-option"><input type="radio" name="c1" value="b"> audit</label></div>
 
-      <div class="story-box">
-        <h4>📖 Soal Cerita / Case Study:</h4>
-        <p>"If you visit our office right now, you will see a busy scene. The design team <strong>(A. is pitching / B. pitches)</strong> their new branding concept. Meanwhile, the accounting managers <strong>(C. are discussing / D. discuss)</strong> tax compliance updates, and I <strong>(E. am writing / F. write)</strong> a summary report for our board."</p>
-      </div>
-      <div class="quiz-group">
-        <p class="quiz-title">11. Pilih kombinasi kata kerja yang tepat:</p>
-        <label class="quiz-option"><input type="radio" name="c11" value="a"> A - C - E (is pitching, are discussing, am writing)</label>
-        <label class="quiz-option"><input type="radio" name="c11" value="b"> B - D - F (pitches, discuss, write)</label>
-        <label class="quiz-option"><input type="radio" name="c11" value="c"> A - D - E (is pitching, discuss, am writing)</label>
-      </div>
+            <button class="submit-btn" onclick="checkQuiz('continuous', ['a'])">Cek Hasil Present Continuous</button>
+            <div id="res-continuous" class="result-box"></div>
+          </div>
+        </div>
 
-      <button class="submit-btn" onclick="checkQuiz('continuous', continuousAnswers)">Cek Hasil Present Continuous</button>
-      <div id="res-continuous" class="result-box"></div>
-    </div>
-  </div>
+        <!-- TAB: PRESENT PERFECT -->
+        <div id="perfect" class="grammar-tab-content" style="display: none;">
+          <div class="card">
+            <h3>📌 Present Perfect Tense (Sudah Selesai / Pengalaman)</h3>
+            <div class="formula">Rumus: Subject + have/has + Verb 3</div>
+            <p>Dipakai untuk pekerjaan yang baru selesai dan hasilnya relevan sekarang.</p>
 
-  <!-- TAB 4: PRESENT PERFECT -->
-  <div id="perfect" class="tab-content">
-    <div class="card">
-      <h3>📌 Present Perfect Tense (Sudah/Belum Terjadi)</h3>
-      <div class="formula">Rumus: Subject + have/has + Verb 3</div>
-      <p>Dipakai untuk pekerjaan yang sudah selesai dilakukan dan hasilnya relevan saat ini.</p>
+            <div class="quiz-group"><p class="quiz-title">1. We _______ the quarterly financial statement.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> have finalized</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finalized</label></div>
 
-      <div class="quiz-group"><p class="quiz-title">1. We _______ the quarterly financial statement.</p><label class="quiz-option"><input type="radio" name="pf1" value="a"> have finalized</label><label class="quiz-option"><input type="radio" name="pf1" value="b"> finalized</label><label class="quiz-option"><input type="radio" name="pf1" value="c"> finalize</label></div>
-      <div class="quiz-group"><p class="quiz-title">2. She _______ working on the audit report.</p><label class="quiz-option"><input type="radio" name="pf2" value="a"> has finished</label><label class="quiz-option"><input type="radio" name="pf2" value="b"> finished</label><label class="quiz-option"><input type="radio" name="pf2" value="c"> finishes</label></div>
-      <div class="quiz-group"><p class="quiz-title">3. I _______ the tax declaration form yet.</p><label class="quiz-option"><input type="radio" name="pf3" value="a"> haven't submitted</label><label class="quiz-option"><input type="radio" name="pf3" value="b"> didn't submit</label><label class="quiz-option"><input type="radio" name="pf3" value="c"> don't submit</label></div>
-      <div class="quiz-group"><p class="quiz-title">4. The CEO _______ the new budget allocation.</p><label class="quiz-option"><input type="radio" name="pf4" value="a"> has approved</label><label class="quiz-option"><input type="radio" name="pf4" value="b"> approved</label><label class="quiz-option"><input type="radio" name="pf4" value="c"> approve</label></div>
-      <div class="quiz-group"><p class="quiz-title">5. They _______ in Kuala Lumpur for three days now.</p><label class="quiz-option"><input type="radio" name="pf5" value="a"> have been</label><label class="quiz-option"><input type="radio" name="pf5" value="b"> were</label><label class="quiz-option"><input type="radio" name="pf5" value="c"> are</label></div>
-      <div class="quiz-group"><p class="quiz-title">6. _______ you _______ the client payment receipt?</p><label class="quiz-option"><input type="radio" name="pf6" value="a"> Have / received</label><label class="quiz-option"><input type="radio" name="pf6" value="b"> Did / receive</label><label class="quiz-option"><input type="radio" name="pf6" value="c"> Do / receive</label></div>
-      <div class="quiz-group"><p class="quiz-title">7. The vendor _______ their updated bank details.</p><label class="quiz-option"><input type="radio" name="pf7" value="a"> has sent</label><label class="quiz-option"><input type="radio" name="pf7" value="b"> sent</label><label class="quiz-option"><input type="radio" name="pf7" value="c"> sends</label></div>
-      <div class="quiz-group"><p class="quiz-title">8. We _______ this accounting software for over two years.</p><label class="quiz-option"><input type="radio" name="pf8" value="a"> have used</label><label class="quiz-option"><input type="radio" name="pf8" value="b"> used</label><label class="quiz-option"><input type="radio" name="pf8" value="c"> use</label></div>
-      <div class="quiz-group"><p class="quiz-title">9. He _______ three client calls this morning.</p><label class="quiz-option"><input type="radio" name="pf9" value="a"> has made</label><label class="quiz-option"><input type="radio" name="pf9" value="b"> made</label><label class="quiz-option"><input type="radio" name="pf9" value="c"> makes</label></div>
-      <div class="quiz-group"><p class="quiz-title">10. The company _______ its annual target ahead of time.</p><label class="quiz-option"><input type="radio" name="pf10" value="a"> has achieved</label><label class="quiz-option"><input type="radio" name="pf10" value="b"> achieved</label><label class="quiz-option"><input type="radio" name="pf10" value="c"> achieves</label></div>
+            <button class="submit-btn" onclick="checkQuiz('perfect', ['a'])">Cek Hasil Present Perfect</button>
+            <div id="res-perfect" class="result-box"></div>
+          </div>
+        </div>
+      </section>
 
-      <div class="story-box">
-        <h4>📖 Soal Cerita / Case Study:</h4>
-        <p>"Our team is ready for the end-of-year audit. We <strong>(A. have reconciled / B. reconciled)</strong> all accounts, and the lead auditor <strong>(C. has checked / D. checked)</strong> our inventory records. So far, no major issues <strong>(E. have emerged / F. emerged)</strong>."</p>
-      </div>
-      <div class="quiz-group">
-        <p class="quiz-title">11. Pilih kombinasi kata kerja yang tepat:</p>
-        <label class="quiz-option"><input type="radio" name="pf11" value="a"> A - C - E (have reconciled, has checked, have emerged)</label>
-        <label class="quiz-option"><input type="radio" name="pf11" value="b"> B - D - F (reconciled, checked, emerged)</label>
-        <label class="quiz-option"><input type="radio" name="pf11" value="c"> A - D - E (have reconciled, checked, have emerged)</label>
-      </div>
+      <!-- ================= MODUL 2: MANDARIN EXERCISE ================= -->
+      <section id="mandarin" class="module-section">
+        <h1>🏮 Mandarin Exercise</h1>
+        <p class="subtitle">Latihan Nada (Tones), Pinyin, dan Kosakata Bisnis</p>
+        <div class="card">
+          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
+          <h3>Modul Mandarin Segera Hadir</h3>
+          <p>Section ini bakal diisi materi pengenalan 4 nada dasar, pinyin interaktif, dan kuis *flashcard* percakapan harian.</p>
+        </div>
+      </section>
 
-      <button class="submit-btn" onclick="checkQuiz('perfect', perfectAnswers)">Cek Hasil Present Perfect</button>
-      <div id="res-perfect" class="result-box"></div>
-    </div>
+      <!-- ================= MODUL 3: HPP SIMULATOR UMKM ================= -->
+      <section id="hpp" class="module-section">
+        <h1>📊 HPP Simulator UMKM</h1>
+        <p class="subtitle">Kalkulator Harga Pokok Penjualan & Margin Target</p>
+        <div class="card">
+          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
+          <h3>Kalkulator Penentuan Harga Jual</h3>
+          <p>Section ini bakal nampung form biaya bahan baku, biaya operasional, dan simulasi penetapan target keuntungan (margin %).</p>
+        </div>
+      </section>
+
+      <!-- ================= MODUL 4: ACCOUNTING & FINANCE ================= -->
+      <section id="finance" class="module-section">
+        <h1>📈 Accounting & Finance Hub</h1>
+        <p class="subtitle">Update Perpajakan, Jurnal Akuntansi, & Rasio Keuangan</p>
+        <div class="card">
+          <span class="badge-dev">🛠️ Dalam Pengembangan</span>
+          <h3>Pusat Referensi Akuntansi & Pajak</h3>
+          <p>Section ini bakal berisi *cheat sheet* aturan pajak terbaru, latihan jurnal akuntansi, dan rumus rasio finansial sederhana.</p>
+        </div>
+      </section>
+
+    </main>
   </div>
 
   <script>
-    // Tab Navigation Logic
-    function openTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabName).classList.add('active');
+    // Module Switcher (Sidebar)
+    function switchModule(moduleId) {
+      document.querySelectorAll('.module-section').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      
+      document.getElementById(moduleId).classList.add('active');
       event.currentTarget.classList.add('active');
     }
 
-    // Key Jawaban
-    const pastAnswers = ['a','b','a','b','a','b','a','a','b','a','a'];
-    const presentAnswers = ['a','b','a','b','a','a','a','b','b','a','a'];
-    const continuousAnswers = ['a','a','a','a','a','a','a','a','a','a','a'];
-    const perfectAnswers = ['a','a','a','a','a','a','a','a','a','a','a'];
+    // Grammar Sub-tab Switcher
+    function openGrammarTab(tabName) {
+      document.querySelectorAll('.grammar-tab-content').forEach(t => t.style.display = 'none');
+      document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
 
-    // Engine Pengecek Skor
+      document.getElementById(tabName).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    // Quiz Checker Engine
     function checkQuiz(tabPrefix, answers) {
       let score = 0;
       let total = answers.length;
@@ -212,9 +228,7 @@
         let inputName = prefixMap[tabPrefix] + i;
         let selected = document.querySelector(`input[name="${inputName}"]:checked`)?.value;
         
-        if (selected === answers[i - 1]) {
-          score++;
-        }
+        if (selected === answers[i - 1]) score++;
       }
 
       let resDiv = document.getElementById(`res-${tabPrefix}`);
@@ -222,11 +236,11 @@
       let percentage = Math.round((score / total) * 100);
 
       if (percentage >= 80) {
-        resDiv.style.background = '#d4edda'; resDiv.style.color = '#155724';
-        resDiv.innerHTML = `🎉 Mantap Lu Luar Biasa! Skor: ${score} / ${total} (${percentage}%)`;
+        resDiv.style.background = '#d1fae5'; resDiv.style.color = '#065f46';
+        resDiv.innerHTML = `🎉 Mantap! Skor Lu: ${score} / ${total} (${percentage}%)`;
       } else {
-        resDiv.style.background = '#f8d7da'; resDiv.style.color = '#721c24';
-        resDiv.innerHTML = `💪 Lumayan! Skor: ${score} / ${total} (${percentage}%). Coba review lagi tenses ini ya!`;
+        resDiv.style.background = '#fee2e2'; resDiv.style.color = '#991b1b';
+        resDiv.innerHTML = `💪 Skor Lu: ${score} / ${total} (${percentage}%). Yuk coba dipelajari lagi!`;
       }
     }
   </script>
