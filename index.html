@@ -151,12 +151,12 @@
             <label style="font-weight:bold; font-size:14px; display:block; margin-bottom:8px;">📷 Upload Struk Makan:</label>
             <div class="input-group" style="margin-bottom:0;">
               <input type="file" id="receiptImage" accept="image/*" class="form-input">
-              <button class="btn-secondary" onclick="scanReceiptOCR()" id="ocrBtn">🔍 Scan Struk (OCR)</button>
+              <button class="btn-secondary" onclick="scanReceiptOCR()" id="ocrBtn">🔍 Scan Struk (OCR High Precision)</button>
             </div>
             <div id="ocrStatus" style="font-size:13px; color:#0284c7; margin-top:8px; font-weight:bold;"></div>
             
             <details style="margin-top:10px; font-size:12px; color:#64748b;">
-              <summary style="cursor:pointer; font-weight:bold;">📄 Lihat Teks Mentah Hasil Scan (Debug)</summary>
+              <summary style="cursor:pointer; font-weight:bold;">📄 Lihat Teks Mentah Hasil Scan (Debug & Pre-processing)</summary>
               <textarea id="rawOcrText" style="width:100%; height:120px; margin-top:6px; font-family:monospace; font-size:11px; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" readonly placeholder="Hasil pembacaan teks mentah dari gambar akan muncul di sini..."></textarea>
             </details>
           </div>
@@ -872,7 +872,7 @@
     }
 
     // =========================================================================
-    // SPLIT BILL LOGIC & ADVANCED RECEIPT PARSER (DEFAULT EMPTY STATE)
+    // SPLIT BILL LOGIC & ADVANCED RECEIPT PARSER (WITH IMAGE BINARIZATION)
     // =========================================================================
     let peopleList = [];
     let itemList = [];
@@ -983,6 +983,35 @@
       renderItemTable();
     }
 
+    // CANVAS IMAGE PRE-PROCESSING FOR HIGH OCR ACCURACY
+    function preprocessImageToCanvas(file) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          // Convert to Grayscale & Binarize Threshold (Hitam-Putih Kontras)
+          for (let i = 0; i < data.length; i += 4) {
+            let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            let v = avg > 140 ? 255 : 0; // Filter threshold binarization
+            data[i] = v;
+            data[i + 1] = v;
+            data[i + 2] = v;
+          }
+          ctx.putImageData(imageData, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
     async function scanReceiptOCR() {
       const fileInput = document.getElementById('receiptImage');
       const statusDiv = document.getElementById('ocrStatus');
@@ -996,11 +1025,15 @@
 
       const file = fileInput.files[0];
       btn.disabled = true;
-      statusDiv.innerHTML = "⏳ Membaca gambar struk... Mohon tunggu beberapa detik.";
+      statusDiv.innerHTML = "⏳ Pre-processing gambar & OCR... Mohon tunggu.";
 
       try {
+        // Step 1: Preprocess Gambar ke Hitam-Putih
+        const preprocessedDataUrl = await preprocessImageToCanvas(file);
+
+        // Step 2: Tesseract OCR Engine
         const worker = await Tesseract.createWorker('ind');
-        const ret = await worker.recognize(file);
+        const ret = await worker.recognize(preprocessedDataUrl);
         await worker.terminate();
 
         const fullText = ret.data.text;
@@ -1008,21 +1041,23 @@
 
         const lines = fullText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
         let scannedCount = 0;
-        let pendingName = "";
 
         const ignoreKeywords = [
           'qq fx', 'table', 'server', 'cashier', 'subtotal', 'grand total', 'total', 
           'rounding', 'qris', 'thank you', 'items', 'sc :', 'pb1 :', 'no.', 'date', 
-          'time in', 'purpose', 'change', 'cash', 'tunai'
+          'time in', 'purpose', 'change', 'cash', 'tunai', 'suptota', 'suptotal'
         ];
 
-        for (let i = 0; i < lines.length; i++) {
-          let line = lines[i];
+        lines.forEach(line => {
           let lowerLine = line.toLowerCase();
 
-          if (ignoreKeywords.some(kw => lowerLine.includes(kw))) continue;
+          // Abaikan baris faktur, tanggal, jam, atau kata kunci header/footer
+          if (ignoreKeywords.some(kw => lowerLine.includes(kw))) return;
+          if (line.match(/\d{2}[-\/]\d{2}[-\/]\d{4}/)) return; // tanggal
+          if (line.match(/QQFX/i) || line.replace(/\D/g, '').length > 8) return; // nomor faktur panjang
 
-          const priceMatch = line.match(/([\d\.\,]{3,10})\s*$/);
+          // Tangkap angka harga di ujung kanan baris
+          const priceMatch = line.match(/([\d\.\,]{3,8})\s*$/);
 
           if (priceMatch) {
             let rawPriceStr = priceMatch[1].replace(/[^\d]/g, '');
@@ -1034,35 +1069,29 @@
                                .replace(/[^a-zA-Z0-9\s\(\)\+\-\.\,]/g, '')
                                .trim();
 
-            if (!itemName && pendingName) {
-              itemName = pendingName;
-              pendingName = "";
-            } else if (pendingName && itemName) {
-              itemName = pendingName + " " + itemName;
-              pendingName = "";
-            }
-
-            if (price > 0 && itemName.length >= 2) {
-              itemList.push({ id: Date.now() + Math.random(), name: itemName, price: price, assignedTo: [] });
+            // Batasi harga wajar single item (di bawah 5 juta dan di atas 1000 per porsi)
+            if (price >= 1000 && price <= 5000000 && itemName.length >= 3) {
+              itemList.push({ 
+                id: Date.now() + Math.random(), 
+                name: itemName, 
+                price: price, 
+                assignedTo: [] 
+              });
               scannedCount++;
             }
-          } else {
-            if (line.length > 2 && !line.match(/^\d+x/i)) {
-              pendingName = pendingName ? (pendingName + " " + line) : line;
-            }
           }
-        }
+        });
 
         if (scannedCount > 0) {
           statusDiv.innerHTML = `✅ Berhasil mendeteksi ${scannedCount} item dari struk! Silakan periksa tabel di bawah.`;
         } else {
-          statusDiv.innerHTML = `⚠️ Teks terbaca, tetapi tidak ada item dengan harga valid. Coba masukkan manual di bawah atau periksa 'Teks Mentah Hasil Scan'.`;
+          statusDiv.innerHTML = `⚠️ Teks terbaca, tetapi tidak ada item dengan harga valid. Coba gunakan foto yang lebih terang atau input manual di bawah.`;
         }
         
         renderItemTable();
       } catch (err) {
         console.error(err);
-        statusDiv.innerHTML = "❌ Gagal scan struk. Coba gunakan foto yang lebih terang atau input manual.";
+        statusDiv.innerHTML = "❌ Gagal scan struk. Silakan periksa teks mentah atau input manual.";
       } finally {
         btn.disabled = false;
       }
